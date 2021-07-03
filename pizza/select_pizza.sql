@@ -1,24 +1,30 @@
 /*3*/
 --a) Quantas pizzas foram pedidas pela comanda 235?
-SELECT COUNT(*) AS pizza_comanda235 FROM pizza WHERE comanda=235 ;
+SELECT COUNT(*) AS pizza_comanda235 
+FROM pizza 
+WHERE comanda=235 ;
 --b) Quantas pizzas de tamanho grande ou família foram pedidas pela comanda 235?
-SELECT COUNT(*) AS pizza_comanda235_tamanho FROM pizza WHERE comanda=235 AND (tamanho='G' OR tamanho='F');
+SELECT COUNT(*) AS pizza_comanda235_tamanho 
+FROM pizza 
+WHERE comanda=235 AND (tamanho='G' OR tamanho='F');
 --c) Qual a quantidade de comandas não pagas na última semana(ultima semana != semana passada)
-SELECT COUNT(*) AS comanda_npaga_lastweek FROM comanda WHERE pago=0 AND data BETWEEN DATE('now','weekday 0','-7 days') AND DATE('now','weekday 0');
+SELECT COUNT(*) AS comanda_npaga_lastweek 
+FROM comanda 
+WHERE pago=0 AND data BETWEEN DATE('now','weekday 0','-7 days') AND DATE('now','weekday 0');
 --d) Quantos ingredientes possui o sabor margherita, sabendo que o código do sabor margherita é 123?
-SELECT COUNT(*) AS qt_ingredientes_margherita FROM saboringrediente WHERE sabor=123 ;
+SELECT COUNT(*) AS qt_ingredientes_margherita 
+FROM saboringrediente
+WHERE sabor=123 ;
 --e) Quantos sabores contém o ingrediente catupiri, sabendo que o código do ingrediente catupiri é 234?
-SELECT COUNT(*) AS qt_sabores_catupiri FROM saboringrediente WHERE ingrediente=234 ;
+SELECT COUNT(*) AS qt_sabores_catupiri 
+FROM saboringrediente 
+WHERE ingrediente=234 ;
 --f) Qual a quantidade média de ingredientes por sabor?
 /*
       considerando media de ingredientes por sabor=quantidade de ingredientes agrupados por sabor/quantidade total de ingredientes
-      não é possivel apenas com um select,pois para acessar o total de ingredientes será necessário fazer um sub select 
-      com subselect:
-      select sabor,
-             cast(count(*) as real)/cast((select count(*) from saboringrediente) as real) as media_por_sabor 
-             from saboringrediente 
-             group by sabor;
-  */
+      não é possivel apenas com um select,pois para acessar o total de ingredientes será necessário fazer 
+      com subselect:  
+*/
 --g) Quantos sabores possuem mais de 8 ingredientes?
 SELECT  
 COUNT(COUNT(sabor)) OVER() AS qt_sabores_ingredientes_mais8
