@@ -1,14 +1,14 @@
-drop table pizzasabor;
-drop table pizza;
-drop table comanda;
-drop table precoportamanho;
-drop table saboringrediente;
-drop table mesa;
-drop table borda;
-drop table sabor;
-drop table ingrediente;
-drop table tipo;
-drop table tamanho;
+drop table if exists pizzasabor;
+drop table if exists pizza;
+drop table if exists comanda;
+drop table if exists precoportamanho;
+drop table if exists saboringrediente;
+drop table if exists mesa;
+drop table if exists borda;
+drop table if exists sabor;
+drop table if exists ingrediente;
+drop table if exists tipo;
+drop table if exists tamanho;
 
 create table tamanho (
 	codigo char(1) not null,
