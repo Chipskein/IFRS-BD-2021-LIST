@@ -1,33 +1,37 @@
-
---drop table amigo;
---drop table citacao;
---drop table assuntopost;
---drop table assunto;
---drop table post;
---drop table grupoperfil;
---drop table paginaperfil;
---drop table grupo;
---drop table pagina;
---drop table perfil;
+/*1*/
+drop table if exists amigo;
+drop table if exists citacao;
+drop table if exists assuntopost;
+drop table if exists assunto;
+drop table if exists post;
+drop table if exists grupoperfil;
+drop table if exists paginaperfil;
+drop table if exists grupo;
+drop table if exists pagina;
+drop table if exists perfil;
 create table perfil (
+	--precisamos guardar a idade do usuario ou a data de nascimento
 	email varchar(100) not null,
 	nome varchar(100) not null,
 	senha varchar(20) not null,
 	estado char(2) not null,
 	cidade varchar(100) not null,
 	pais varchar(100) not null,
-	data datetime,
+	data datetime,--data de registro
 	primary key (email)
 );
 
 insert into perfil (email, senha, nome, cidade, estado, pais, data) values
 ('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00'),
 ('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00'),
-('joao@hotmail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00'),
+('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00'),
 ('pedro@gmail.com', '2345','Pedro Alencar Pereira', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:05'),
-('mariazinha@hotmail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10'),
-('joana@hotmail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15'),
-('xmen@hotmail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20');
+('mcalbuq@mymail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10'),
+('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15'),
+('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20'),
+--adicionados para letra k) e n)
+('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20'),
+('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20');
 create table amigo (
 	perfilAmigo varchar(100) not null,
 	perfil varchar(100) not null,
@@ -36,13 +40,13 @@ create table amigo (
 	primary key (perfilAmigo, perfil)
 );
 insert into amigo (perfil, perfilAmigo, data) values
-	('professor@hotmail.com', 'joao@hotmail.com', '2021-05-17 10:00'),
+	('professor@hotmail.com', 'joaosbras@mymail.com', '2021-05-17 10:00'),
 	('professor@hotmail.com', 'pedro@gmail.com', '2021-05-17 10:05'),
-	('professor@hotmail.com', 'mariazinha@hotmail.com', '2021-05-17 10:10'),
-	('professor@hotmail.com', 'joana@hotmail.com', '2021-05-17 10:15'),
-	('professor@hotmail.com', 'xmen@hotmail.com', '2021-05-17 10:20'),
-	('joao@hotmail.com', 'xmen@hotmail.com', '2021-05-17 10:40'),
-	('xmen@hotmail.com', 'joao@hotmail.com', '2021-05-17 10:40');
+	('professor@hotmail.com', 'mcalbuq@mymail.com', '2021-05-17 10:10'),
+	('professor@hotmail.com', 'jorosamed@mymail.com', '2021-05-17 10:15'),
+	('professor@hotmail.com', 'pxramos@mymail.com', '2021-05-17 10:20'),
+	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40'),
+	('pxramos@mymail.com', 'joaosbras@mymail.com', '2021-05-17 10:40');
 create table post (
 	codigo integer not null,
 	texto varchar(1000),
@@ -54,15 +58,27 @@ create table post (
 	primary key (codigo)
 );
 insert into post (texto,perfil, postagem, data) values
-	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joao@hotmail.com', null, '2021-06-02 15:00'),
+	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com', null, '2021-06-02 15:00'),
 	('gostei','pedro@gmail.com', 1 ,'2021-06-02 15:05'),
-	('gostei','mariazinha@hotmail.com', 1 ,'2021-06-02 15:10'),
+	('gostei','mcalbuq@mymail.com', 1 ,'2021-06-02 15:10'),
 	('Alguém mais ficou com dúvida no comando INSERT?','pedro@gmail.com',1,'2021-06-02 15:15'),
-	('Eu também','joana@hotmail.com', 4,'2021-06-02 15:20'),
-	('triste','xmen@hotmail.com', 4 ,'2021-06-02 15:20'),
-	('Já agendaste horário de atendimento com o professor?','joao@hotmail.com',5,'2021-06-02 15:30'),
+	('Eu também','jorosamed@mymail.com', 4,'2021-06-02 15:20'),
+	('triste','pxramos@mymail.com', 4 ,'2021-06-02 15:20'),
+	('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com',5,'2021-06-02 15:30'),
 	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com',null, '2021-06-02 15:35'),
-	(null,'joao@hotmail.com',8, '2021-06-02 15:35');
+	(null,'joaosbras@mymail.com',8, '2021-06-02 15:35');
+create table assunto(
+	--tabela assunto criada
+	codigo integer not null,
+	nome varchar(100),
+	primary key (codigo)
+);
+	--assuntos adicionados
+insert into assunto(codigo,nome) values
+				   (1,"BD"),
+				   (2,"INSERT"),
+				   (3,"SQLite"),
+				   (4,"atendimento");
 create table assuntoPost(
 	assunto integer not null,
 	post integer not null,
@@ -92,12 +108,12 @@ create table citacao (
 );
 insert into citacao (perfil,post) values
 	('den@ifrs.riogrande.edu.br',1),
-	('joana@hotmail.com',8),
-	('xmen@hotmail.com',8);
+	('jorosamed@mymail.com',8),
+	('pxramos@mymail.com',8);
 
 
 create table grupo (
-	codigo integer not null
+	codigo integer not null,
 	nome varchar(100) not null,
 	primary key (codigo)
 );
@@ -110,7 +126,7 @@ create table grupoPerfil (
 );
 
 create table pagina (
-	codigo integer not null
+	codigo integer not null,
 	nome varchar(100) not null,
 	primary key (codigo)
 );
@@ -122,3 +138,4 @@ create table paginaPerfil (
 	foreign key (pagina) references pagina(codigo),
 	primary key (pagina,perfil)
 );
+/*2*/
