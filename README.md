@@ -30,7 +30,7 @@
 1.  letras m  [...]
 
 ## legenda
-x=feito + testes básicos
-ok=amplamente testado
-...=não feito
+* x=feito + testes básicos
+* ...=não feito
+* ok=amplamente testado
 
