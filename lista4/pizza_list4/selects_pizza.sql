@@ -144,46 +144,10 @@ group by ano_mes,sabor.nome
 order by comanda.data,por_mes desc;
 
 --l) Qual o ranking da quantidade de pizzas pedidas por tipo por tamanho nos últimos 6 meses?
-/*testando*/
-/**/
-/*
-select 
-pizza.codigo as codigo_pizza,
-comanda.numero as comanda_codigo,
-comanda.data as comanda_Data,
-tamanho.codigo as tamanho_codigo,
-pizzasabor.sabor as  sabor_pizza,
-sabor.tipo as sabor_tipo,
-tipo.nome as tipo_nome
-from pizza,comanda,tamanho,pizzasabor,sabor,tipo 
-where 
-comanda.numero=pizza.comanda and 
-pizza.tamanho=tamanho.codigo and
-pizza.codigo=pizzasabor.pizza and
-sabor.codigo=pizzasabor.sabor and
-tipo.codigo=sabor.tipo and
-comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days')  
-order by tipo.codigo,tamanho.codigo;
-
-silvio
-select tipo.nome, tamanho.nome, count(*) as tipos_por_tamanho_maisPedidos
-from comanda,pizza,tipo,tamanho
-where comanda.numero=pizza.comanda AND
-tamanho.codigo=pizza.tamanho AND
-comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days') 
-group by tamanho 
-order by count(*) desc;
-
-
-
-*/
 --m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
 --ingredientes mais pedidos + borda
 
 
-
-
---j) Qual o ranking dos sabores salgados mais pedidos por mês nos últimos 12 meses?
 
 
 
