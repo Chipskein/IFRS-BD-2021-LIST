@@ -76,6 +76,7 @@ comanda.data between datetime('now','start of month','-1 months') and datetime('
 group by sabor 
 having count(*)>20;
 
+
 --i) Qual o ranking dos ingredientes mais pedidos nos últimos 12 meses?
 select ingrediente.nome, count(*) as ingredientes_mais_pedidos
 from ingrediente,comanda, pizza, tipo, sabor, pizzasabor, saboringrediente
@@ -87,30 +88,84 @@ sabor.codigo=pizzasabor.sabor AND
 comanda.data between datetime('now','start of month','-12 months') and datetime('now','start of month','-1 days') 
 group by ingrediente 
 order by count(*) desc;
-
 --j) Qual o ranking dos sabores salgados mais pedidos por mês nos últimos 12 meses?
-select tipo.nome,sabor.nome,count(*) as sabores_salgados_maisPedidos
+select 
+strftime('%Y-%m',comanda.data) ano_mes,
+case strftime('%m',comanda.data)
+    when '01' then 'janeiro'
+    when '02' then 'fevereiro'
+    when '03' then 'marco'
+    when '04' then 'abril'
+    when '05' then 'maio'
+    when '06' then 'junho'
+    when '07' then 'julho'
+    when '08' then 'agosto'
+    when '09' then 'setembro'
+    when '10' then 'outubro'
+    when '11' then 'novembro'
+    when '12' then 'dezembro'
+end as mes_nome,
+sabor.nome,count(sabor.nome) as por_mes
 from comanda,pizza,pizzasabor,sabor,tipo 
-where tipo.nome like '%salgadas%' AND 
-sabor.tipo=tipo.codigo AND
-comanda.numero=pizza.comanda AND
-pizza.codigo=pizzasabor.pizza AND
-sabor.codigo=pizzasabor.sabor AND
-comanda.data between datetime('now','start of month','-12 months') and datetime('now','start of month','-1 days') 
-group by sabor 
-order by count(*) desc;
+where comanda.numero=pizza.comanda 
+and pizzasabor.pizza=pizza.codigo 
+and pizzasabor.sabor=sabor.codigo
+and tipo.nome like "%salgadas%"
+and sabor.tipo=tipo.codigo
+and comanda.data between datetime('now','-12 months') and datetime('now')
+group by ano_mes,sabor.nome
+order by comanda.data,por_mes desc;
 --k) Qual o ranking dos sabores doces mais pedidos por mês nos últimos 12 meses?
-select tipo.nome,sabor.nome,count(*) as sabores_doces_maisPedidos
+select 
+strftime('%Y-%m',comanda.data) ano_mes,
+case strftime('%m',comanda.data)
+    when '01' then 'janeiro'
+    when '02' then 'fevereiro'
+    when '03' then 'marco'
+    when '04' then 'abril'
+    when '05' then 'maio'
+    when '06' then 'junho'
+    when '07' then 'julho'
+    when '08' then 'agosto'
+    when '09' then 'setembro'
+    when '10' then 'outubro'
+    when '11' then 'novembro'
+    when '12' then 'dezembro'
+end as mes_nome,
+sabor.nome,count(sabor.nome) as por_mes
 from comanda,pizza,pizzasabor,sabor,tipo 
-where tipo.nome like '%doces%' AND 
-sabor.tipo=tipo.codigo AND
-comanda.numero=pizza.comanda AND
-pizza.codigo=pizzasabor.pizza AND
-sabor.codigo=pizzasabor.sabor AND
-comanda.data between datetime('now','start of month','-12 months') and datetime('now','start of month','-1 days') 
-group by sabor 
-order by count(*) desc;
+where comanda.numero=pizza.comanda 
+and pizzasabor.pizza=pizza.codigo 
+and pizzasabor.sabor=sabor.codigo
+and tipo.nome like "%doces%"
+and sabor.tipo=tipo.codigo
+and comanda.data between datetime('now','-12 months') and datetime('now')
+group by ano_mes,sabor.nome
+order by comanda.data,por_mes desc;
+
 --l) Qual o ranking da quantidade de pizzas pedidas por tipo por tamanho nos últimos 6 meses?
+/*testando*/
+/**/
+/*
+select 
+pizza.codigo as codigo_pizza,
+comanda.numero as comanda_codigo,
+comanda.data as comanda_Data,
+tamanho.codigo as tamanho_codigo,
+pizzasabor.sabor as  sabor_pizza,
+sabor.tipo as sabor_tipo,
+tipo.nome as tipo_nome
+from pizza,comanda,tamanho,pizzasabor,sabor,tipo 
+where 
+comanda.numero=pizza.comanda and 
+pizza.tamanho=tamanho.codigo and
+pizza.codigo=pizzasabor.pizza and
+sabor.codigo=pizzasabor.sabor and
+tipo.codigo=sabor.tipo and
+comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days')  
+order by tipo.codigo,tamanho.codigo;
+
+silvio
 select tipo.nome, tamanho.nome, count(*) as tipos_por_tamanho_maisPedidos
 from comanda,pizza,tipo,tamanho
 where comanda.numero=pizza.comanda AND
@@ -118,16 +173,22 @@ tamanho.codigo=pizza.tamanho AND
 comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days') 
 group by tamanho 
 order by count(*) desc;
---m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
 
-select ingrediente.nome, borda.nome, count(*) as ingredientes_mais_pedidos
-from ingrediente,comanda, pizza, tipo, sabor, pizzasabor, saboringrediente, borda
-where ingrediente.codigo= saboringrediente.ingrediente AND
-sabor.tipo=tipo.codigo AND
-comanda.numero=pizza.comanda AND
-pizza.codigo=pizzasabor.pizza AND
-pizza.borda=borda.codigo AND
-sabor.codigo=pizzasabor.sabor AND
-comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days') 
-group by ingrediente 
-order by count(*) desc;
+
+
+*/
+--m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
+--ingredientes mais pedidos + borda
+
+
+
+
+--j) Qual o ranking dos sabores salgados mais pedidos por mês nos últimos 12 meses?
+
+
+
+
+
+
+
+
