@@ -155,7 +155,26 @@ comanda.data BETWEEN datetime('now','-6 months') and datetime('now')
 group by tipo.codigo,pizza.tamanho
 order by pizzasp_tipop_tamanho desc;
 --m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
---ingredientes mais pedidos + borda
+--ingredientes acompanhados de cada borda
+
+select 
+borda.nome as borda,
+ingrediente.nome as ingrediente,
+count(*) as ingrediente_por_borda 
+from comanda,pizza,pizzasabor,sabor,saboringrediente,ingrediente,borda
+where 
+comanda.numero=pizza.comanda and
+pizzasabor.pizza=pizza.codigo and
+pizzasabor.sabor=sabor.codigo and
+saboringrediente.sabor=sabor.codigo and
+saboringrediente.ingrediente=ingrediente.codigo and
+pizza.borda is not null and
+pizza.borda=borda.codigo and
+comanda.data BETWEEN datetime('now','-6 months') and datetime('now')
+group by borda.nome,ingrediente.nome
+order by borda.nome,ingrediente_por_borda desc;
+
+/*
 select ingrediente.nome, borda.nome, count() as ingredientes_mais_pedidos_com_borda
 from ingrediente,comanda, pizza, tipo, sabor, pizzasabor, saboringrediente, borda
 where ingrediente.codigo= saboringrediente.ingrediente AND
