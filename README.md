@@ -30,7 +30,7 @@
 9. letras i  [x]
 10. letras j  [x]
 11. letras k  [x]
-12. letras l  [...]
+12. letras l  [x]
 13. letras m  [...]
 
 ## legenda

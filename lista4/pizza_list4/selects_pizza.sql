@@ -142,17 +142,19 @@ and sabor.tipo=tipo.codigo
 and comanda.data between datetime('now','-12 months') and datetime('now')
 group by ano_mes,sabor.nome
 order by comanda.data,por_mes desc;
-
 --l) Qual o ranking da quantidade de pizzas pedidas por tipo por tamanho nos últimos 6 meses?
+select 
+DISTINCT
+tipo.nome as tipo,
+pizza.tamanho as tamanho,
+count(*) as pizzasp_tipop_tamanho
+from comanda,pizza,pizzasabor,sabor,tipo
+where pizza.comanda=comanda.numero and
+pizzasabor.pizza=pizza.codigo AND
+pizzasabor.sabor=sabor.codigo and
+tipo.codigo=sabor.tipo and
+comanda.data BETWEEN datetime('now','-6 months') and datetime('now') 
+group by tipo.codigo,pizza.tamanho
+order by pizzasp_tipop_tamanho desc;
 --m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
 --ingredientes mais pedidos + borda
-
-
-
-
-
-
-
-
-
-
