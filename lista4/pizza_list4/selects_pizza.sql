@@ -172,7 +172,7 @@ pizza.borda is not null and
 pizza.borda=borda.codigo and
 comanda.data BETWEEN datetime('now','-6 months') and datetime('now')
 group by borda.nome,ingrediente.nome
-order by borda.nome,ingrediente_por_borda desc;
+order by ingrediente_por_borda desc;
 
 /*
 select ingrediente.nome, borda.nome, count() as ingredientes_mais_pedidos_com_borda
