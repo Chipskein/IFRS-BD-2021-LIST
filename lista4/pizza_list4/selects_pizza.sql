@@ -75,8 +75,6 @@ sabor.codigo=pizzasabor.sabor AND
 comanda.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days') 
 group by sabor 
 having count(*)>20;
-
-
 --i) Qual o ranking dos ingredientes mais pedidos nos últimos 12 meses?
 select ingrediente.nome, count(*) as ingredientes_mais_pedidos
 from ingrediente,comanda, pizza, tipo, sabor, pizzasabor, saboringrediente
@@ -158,3 +156,14 @@ group by tipo.codigo,pizza.tamanho
 order by pizzasp_tipop_tamanho desc;
 --m) Qual o ranking dos ingredientes mais pedidos acompanhando cada borda nos últimos 6 meses?
 --ingredientes mais pedidos + borda
+select ingrediente.nome, borda.nome, count() as ingredientes_mais_pedidos_com_borda
+from ingrediente,comanda, pizza, tipo, sabor, pizzasabor, saboringrediente, borda
+where ingrediente.codigo= saboringrediente.ingrediente AND
+sabor.tipo=tipo.codigo AND
+comanda.numero=pizza.comanda AND
+pizza.codigo=pizzasabor.pizza AND
+pizza.borda=borda.codigo AND
+sabor.codigo=pizzasabor.sabor AND
+comanda.data between datetime('now','start of month','-6 months') and datetime('now','start of month','-1 days') 
+group by ingrediente, borda
+order by count() desc;
