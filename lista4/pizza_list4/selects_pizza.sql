@@ -64,7 +64,7 @@ select
         comanda.numero=pizza.comanda AND
         pizza.codigo=pizzasabor.pizza AND
         sabor.codigo=pizzasabor.sabor AND
-        comanda.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days') 
+        comanda.data between date('now','start of month','-1 months') and date('now','start of month','-1 days') 
     group by sabor 
     having count(*)>20;
 --g) Quais os nomes dos sabores salgados que foram pedidos mais de 20 vezes no mês passado?
@@ -79,7 +79,7 @@ select
         comanda.numero=pizza.comanda AND
         pizza.codigo=pizzasabor.pizza AND
         sabor.codigo=pizzasabor.sabor AND
-        comanda.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days') 
+        comanda.data between date('now','start of month','-1 months') and date('now','start of month','-1 days') 
     group by sabor 
     having count(*)>20;
 --h) Quais is nomes dos sabores doces que foram pedidos mais de 20 vezes no mês passado?
@@ -94,7 +94,7 @@ select
         comanda.numero=pizza.comanda AND
         pizza.codigo=pizzasabor.pizza AND
         sabor.codigo=pizzasabor.sabor AND
-        comanda.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days') 
+        comanda.data between date('now','start of month','-1 months') and date('now','start of month','-1 days') 
     group by sabor 
     having count(*)>20;
 
