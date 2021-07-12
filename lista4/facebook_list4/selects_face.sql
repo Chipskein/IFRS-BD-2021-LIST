@@ -137,6 +137,21 @@ select
     (perfil.email=amigo.perfil or perfil.email=amigo.perfilAmigo) and perfil.email not like grupoPerfil.perfil
 ;
 --m) Quais os nomes dos usuários que receberam mais de 1000 curtidas em uma postagem, em menos de 24 horas após a postagem, nos últimos 7 dias?
+--Testar com outras datas
+select 
+    perfil.nome as nome,
+    count(*) as curtidas_na_postagem
+    from perfil,post,reaction
+    where 
+    perfil.email=post.perfil and
+    reaction.postagem=post.codigo and
+    reaction.texto='gostei' 
+    --and reaction.data between datetime(post.data,'-24 hours') and datetime(post.data) 
+    --and post.data between datetime('now','-7 days') and datetime('now')
+    group by perfil.nome,post.codigo
+    having count(*)>2
+;
+
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
 
 
