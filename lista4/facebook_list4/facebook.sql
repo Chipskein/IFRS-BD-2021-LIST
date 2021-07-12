@@ -20,10 +20,10 @@ create table perfil (
 	cidade varchar(100) not null,
 	pais varchar(100) not null,
 	data datetime,--data de registro
-	DataNascimento date,
+	nascimento date,
 	primary key (email)
 );
-insert into perfil (email, senha, nome, cidade, estado, pais, data) values
+insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento) values
 	('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00', '1921-07-30'),
 	('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00', '1981-07-30'),
 	('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00', '1991-07-30'),
