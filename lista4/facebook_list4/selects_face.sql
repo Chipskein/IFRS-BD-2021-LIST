@@ -11,14 +11,52 @@ select
 select * 
     from perfil,amigo 
     where (amigo.perfilAmigo=perfil.email or amigo.perfil=perfil.email) 
-    and (amigo.perfil like '%pxramos@mymail.com%' or amigo.perfilAmigo like '%pxramos@mymail.com%' or amigo.perfil like '%jorosamed@mymail.com%' or amigo.perfilAmigo like '%jorosamed@mymail.com%') 
-    and perfil.email not like '%pxramos@mymail.com%' or perfil.email not like '%jorosamed@mymail.com%'
+    and (amigo.perfil like '%pxramos@mymail.com%' or amigo.perfil like '%jorosamed@mymail.com%' and amigo.perfilAmigo like '%pxramos@mymail.com%' or amigo.perfilAmigo like '%jorosamed@mymail.com%') 
+    and perfil.email not like '%pxramos@mymail.com%' and perfil.email not like '%jorosamed@mymail.com%'
 ;
 
 --c) Qual a média de curtidas nas postagens que contém o assunto banco de dados?
+select
+    count(*) as curtidas,
+    assunto.nome as assunto,
+    cast(count(*)as real)/count(distinct(post)) as media 
+    from reaction,assunto,assuntoPost, post
+    where 
+        reaction.postagem=post.codigo and
+        reaction.texto='gostei' and
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and
+        assunto.nome='BD'
+;
+ 
 --d) Qual a média de comentários das postagens que contém o assunto banco de dados?
+select
+    count(*) as comentarios,
+    assunto.nome as assunto,
+    cast(count(*)as real)/count(distinct(comentario.postagem)) as media 
+    from comentario,assunto,assuntoPost, post
+    where 
+        comentario.postagem=post.codigo and
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and
+        assunto.nome='BD'
+;
+
 --e) Quantas postagens sobre o assunto banco de dados receberam a reação amei nos últimos 3 meses?
+select
+    count(*) as ameis,
+    count(distinct(post)) as postagens
+    from reaction,assunto,assuntoPost, post
+    where 
+        reaction.postagem=post.codigo and
+        reaction.texto='amei' and
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and
+        assunto.nome='BD' and
+        reaction.data between datetime('now','-3 months') and datetime('now')
+;
 --f) Qual o ranking dos assuntos mais postados na última semana?
+
     --considera-se ultima semana esta semana
     --testar em outra data 
 select 
@@ -100,7 +138,5 @@ select
 ;
 --m) Quais os nomes dos usuários que receberam mais de 1000 curtidas em uma postagem, em menos de 24 horas após a postagem, nos últimos 7 dias?
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
-
-
 
 

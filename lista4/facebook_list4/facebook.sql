@@ -20,19 +20,20 @@ create table perfil (
 	cidade varchar(100) not null,
 	pais varchar(100) not null,
 	data datetime,--data de registro
+	DataNascimento date,
 	primary key (email)
 );
 insert into perfil (email, senha, nome, cidade, estado, pais, data) values
-	('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00'),
-	('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00'),
-	('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00'),
-	('pedro@gmail.com', '2345','Pedro Alencar Pereira', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:05'),
-	('mcalbuq@mymail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10'),
-	('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15'),
-	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20'),
+	('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00', '1921-07-30'),
+	('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00', '1981-07-30'),
+	('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00', '1991-07-30'),
+	('pedro@gmail.com', '2345','Pedro Alencar Pereira', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:05', '2001-07-30'),
+	('mcalbuq@mymail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10', '1985-07-30'),
+	('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15', '1995-07-30'),
+	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20', '1974-07-30'),
 	--adicionados para letra k) e n)
-	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20'),
-	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20');
+	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20', '2002-07-30'),
+	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30');
 create table amigo (
 	perfilAmigo varchar(100) not null,
 	perfil varchar(100) not null,
