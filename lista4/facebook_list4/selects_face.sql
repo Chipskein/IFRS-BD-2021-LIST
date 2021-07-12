@@ -9,7 +9,7 @@ select
 
 --b) Quais os nomes dos usuários que são amigos de Paulo Xavier Ramos, e-mail pxramos@mymail.com, e também de Joana Rosa Medeiros, e-mail jorosamed@mymail.com?
 select * 
-    from perfil, amigo 
+    from perfil,amigo 
     where (amigo.perfilAmigo=perfil.email or amigo.perfil=perfil.email) 
     and (amigo.perfil like '%pxramos@mymail.com%' or amigo.perfilAmigo like '%pxramos@mymail.com%' or amigo.perfil like '%jorosamed@mymail.com%' or amigo.perfilAmigo like '%jorosamed@mymail.com%') 
     and perfil.email not like '%pxramos@mymail.com%' or perfil.email not like '%jorosamed@mymail.com%'
@@ -46,6 +46,13 @@ select
     order by postagem_by_state desc
 ;
 --h) Qual o ranking da quantidade de postagens contendo o assunto banco de dados por estado no Brasil nos últimos 3 meses?
+select * 
+from perfil,post,assuntoPost,assunto
+where
+perfil.email=post.email and
+assuntoPost.post=post.codigo and
+assuntoPost.assunto=assunto.codigo;
+
 --i) Qual o ranking dos usuários do Brasil que mais receberam curtidas em suas postagens nos últimos 30 dias?
 --j) Qual o ranking da quantidade de reações às postagens do grupo SQLite por faixa etária por gênero nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43- 51, 51-60 e 60-.
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?

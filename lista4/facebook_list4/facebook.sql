@@ -45,7 +45,7 @@ insert into amigo (perfil, perfilAmigo, data) values
 	('professor@hotmail.com', 'mcalbuq@mymail.com', '2021-05-17 10:10'),
 	('professor@hotmail.com', 'jorosamed@mymail.com', '2021-05-17 10:15'),
 	('professor@hotmail.com', 'pxramos@mymail.com', '2021-05-17 10:20'),
-	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40'),
+	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40');
 create table post (
 	codigo integer not null,
 	texto varchar(1000),
@@ -56,7 +56,7 @@ create table post (
 	foreign key (postagem) references post(codigo),
 	primary key (codigo)
 );
-insert into post (texto,perfil, postagem, data) values
+insert into post (texto,perfil,postagem,data) values
 	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com', null, '2021-06-02 15:00'),
 	('gostei','pedro@gmail.com', 1 ,'2021-06-02 15:05'),
 	('gostei','mcalbuq@mymail.com', 1 ,'2021-06-02 15:10'),
@@ -66,6 +66,7 @@ insert into post (texto,perfil, postagem, data) values
 	('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com',5,'2021-06-02 15:30'),
 	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com',null, '2021-06-02 15:35'),
 	(null,'joaosbras@mymail.com',8, '2021-06-02 15:35');
+
 create table assunto(
 	--tabela assunto criada
 	codigo integer not null,
