@@ -19,15 +19,15 @@ select *
 --d) Qual a média de comentários das postagens que contém o assunto banco de dados?
 --e) Quantas postagens sobre o assunto banco de dados receberam a reação amei nos últimos 3 meses?
 --f) Qual o ranking dos assuntos mais postados na última semana?
---considera-se ultima semana está semana
+    --considera-se ultima semana esta semana
 select 
     assunto.nome,
     count(*) as assunto_semana 
     from assunto,assuntoPost,post
     where 
-    assunto.codigo=assuntoPost.assunto and
-    post.codigo=assuntoPost.post --and
-    --post.data between datetime('now','weekday 0','- 7 days') and datetime('now','weekday 0')
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post --and
+        --post.data between datetime('now','weekday 0','- 7 days') and datetime('now','weekday 0')
     group by assunto.codigo
     order by assunto_semana desc
 ;
@@ -38,22 +38,27 @@ select
     count(*) as postagem_by_state
     from perfil,post 
     where 
-    perfil.email=post.perfil 
-    --and post.postagem is null
-    and post.data between datetime('now','-3 months') and datetime('now')
-    and perfil.pais like '%Brasil%'
+        perfil.email=post.perfil 
+        and post.data between datetime('now','-3 months') and datetime('now')
+        and perfil.pais like '%Brasil%'
     group by perfil.estado
     order by postagem_by_state desc
 ;
 --h) Qual o ranking da quantidade de postagens contendo o assunto banco de dados por estado no Brasil nos últimos 3 meses?
-select * 
-from perfil,post,assuntoPost,assunto
-where
-perfil.email=post.email and
-assuntoPost.post=post.codigo and
-assuntoPost.assunto=assunto.codigo;
-
+select 
+    assunto.nome, 
+    count(*) as assunto_em_postagem
+    from perfil,post,assuntoPost,assunto
+    where
+    perfil.email=post.perfil and
+    assuntoPost.post=post.codigo and
+    assuntoPost.assunto=assunto.codigo
+    group by assunto.codigo
+    order by assunto_em_postagem desc
+;
 --i) Qual o ranking dos usuários do Brasil que mais receberam curtidas em suas postagens nos últimos 30 dias?
+
+
 --j) Qual o ranking da quantidade de reações às postagens do grupo SQLite por faixa etária por gênero nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43- 51, 51-60 e 60-.
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?
 --l) Quais os nomes dos usuários que são amigos dos membros do grupo Banco de Dados-IFRS2021?
