@@ -28,12 +28,12 @@ select
     where 
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post 
-        and post.data between datetime('now','weekday 0','- 7 days') and datetime('now','weekday 0')
+        --and post.data between datetime('now','weekday 0','- 7 days') and datetime('now','weekday 0')
     group by assunto.codigo
     order by assunto_semana desc
 ;
 --g) Qual o ranking da quantidade de postagens por estado no Brasil nos últimos 3 meses?
---postagem=post,comentario,resposta,reação
+--postagem=post
 select 
     perfil.estado as estado,
     count(*) as postagem_by_state
@@ -52,37 +52,52 @@ select
     count(*) as assunto_em_postagem
     from perfil,post,assuntoPost,assunto
     where
-    perfil.email=post.perfil and
-    assuntoPost.post=post.codigo and
-    assuntoPost.assunto=assunto.codigo and
-    assunto.nome like '%bd%' and
-    post.data between datetime('now','-3 months') and datetime('now')
+        perfil.email=post.perfil and
+        assuntoPost.post=post.codigo and
+        assuntoPost.assunto=assunto.codigo and
+        assunto.nome like '%bd%' and
+        post.data between datetime('now','-3 months') and datetime('now')
     group by perfil.estado
     order by assunto_em_postagem
 ;
 --i) Qual o ranking dos usuários do Brasil que mais receberam curtidas em suas postagens nos últimos 30 dias?
     --testar em outra data
-    --não consigo pegar o nome do dono do post
-select
-    post.postagem,
-    count(*) as curtidas_cada_usuario
-    from perfil,post,perfil as teste
+select 
+    perfil.nome,
+    count(*) as curtidas_usuario
+    from perfil,post,reaction 
     where 
-    teste.email=post.perfil and
-    --post.postagem is NULL and
-    perfil.email=post.perfil and
-    post.texto='emoji(gostei)' and
-    perfil.pais like '%brasil%' 
-    --and post.data between datetime('now','-30 days') and datetime('now')
-    group by post.postagem
-    order by curtidas_cada_usuario desc
+    perfil.email=post.perfil and 
+    reaction.postagem=post.codigo and
+    perfil.pais like '%brasil%' and
+    reaction.texto='gostei' and
+    post.data between datetime('now','-30 days') and datetime('now')
+    group by perfil.nome
+    order by curtidas_usuario desc
 ;
+
 --j) Qual o ranking da quantidade de reações às postagens do grupo SQLite por faixa etária por gênero nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43- 51, 51-60 e 60-.
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?
-
-
-
+select 
+    perfil.nome
+    from post,comentario,perfil
+    where 
+    comentario.postagem=post.codigo and
+    perfil.email=post.perfil and
+    comentario.perfil='pele@cbf.com.br' and
+    comentario.data between datetime('now','-1 months') and datetime('now')
+;
 --l) Quais os nomes dos usuários que são amigos dos membros do grupo Banco de Dados-IFRS2021?
+select
+    DISTINCT
+    perfil.nome as amigo
+    from grupo,grupoPerfil,amigo,perfil
+    where 
+    grupo.nome like '%Banco de Dados-IFRS2021%' and
+    grupo.codigo=grupoPerfil.grupo and
+    (amigo.perfil=grupoPerfil.perfil or amigo.perfilAmigo=grupoPerfil.perfil) AND
+    (perfil.email=amigo.perfil or perfil.email=amigo.perfilAmigo) and perfil.email not like grupoPerfil.perfil
+;
 --m) Quais os nomes dos usuários que receberam mais de 1000 curtidas em uma postagem, em menos de 24 horas após a postagem, nos últimos 7 dias?
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
 

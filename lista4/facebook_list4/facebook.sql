@@ -81,7 +81,13 @@ create table assuntoPost(
 	foreign key (post) references post(codigo),
 	primary key (post, assunto)
 	);
-
+insert into assuntoPost(post,assunto) values
+					   (1,1),
+					   (1,2),
+					   (2,1),
+					   (2,2),
+					   (2,3),
+					   (2,4);
 create table citacao (
 	codigo integer not null,
 	perfil varchar(100) not null,
@@ -129,25 +135,13 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('triste','pxramos@mymail.com',null,1,'2021-06-02 15:20'),
 	('gostei','pele@cbf.com.br',1,null,CURRENT_TIMESTAMP);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 create table grupo (
 	codigo integer not null,
 	nome varchar(100) not null,
 	primary key (codigo)
 );
+INSERT INTO grupo(codigo,nome) values
+				(1,'Banco de Dados-IFRS2021');
 create table grupoPerfil (
 	grupo integer not null,
 	perfil varchar(100) not null,
@@ -155,6 +149,12 @@ create table grupoPerfil (
 	foreign key (grupo) references grupo(codigo),
 	primary key (grupo,perfil)
 );
+INSERT INTO grupoPerfil(grupo,perfil) values
+						(1,'professor@hotmail.com'),
+						(1,'joaosbras@mymail.com'),
+						(1,'mcalbuq@mymail.com'),
+						(1,'pxramos@mymail.com'),
+						(1,'jorosamed@mymail.com');
 
 create table pagina (
 	codigo integer not null,
