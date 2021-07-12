@@ -46,7 +46,6 @@ insert into amigo (perfil, perfilAmigo, data) values
 	('professor@hotmail.com', 'jorosamed@mymail.com', '2021-05-17 10:15'),
 	('professor@hotmail.com', 'pxramos@mymail.com', '2021-05-17 10:20'),
 	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40'),
-	('pxramos@mymail.com', 'joaosbras@mymail.com', '2021-05-17 10:40');
 create table post (
 	codigo integer not null,
 	texto varchar(1000),
@@ -139,3 +138,4 @@ create table paginaPerfil (
 	primary key (pagina,perfil)
 );
 /*2*/
+
