@@ -115,6 +115,49 @@ select
 ;
 
 --j) Qual o ranking da quantidade de reações às postagens do grupo SQLite por faixa etária por gênero nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43- 51, 51-60 e 60-.
+-- Vi um cara dividir os dias por 365.25 mas deixei como ta ali, se quiser troca
+select 
+    count(*) as Reacoes,
+    case 
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer)<18 then '-18'
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 18 and 21 then '18-21'
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 21 and 25 then '21-25'
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 25 and 30 then '25-30'
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 30 and 36 then '30-36'
+    when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 36 and 43 then '36-43'
+        when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 43 and 51 then '43-51'
+        when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer) BETWEEN 51 and 60 then '51-60'
+        when cast ((
+    JulianDay('now') - JulianDay(perfil.nascimento)
+    ) / 365 As integer)>60 then '+60'
+    end as idade,
+    perfil.genero
+    from post,reaction,perfil
+    where 
+    reaction.postagem=post.codigo and
+    perfil.email=reaction.perfil and
+    post.grupo == 2 and
+    post.data between datetime('now','-1 months') and datetime('now')
+    group by idade, perfil.genero
+    order by count(*) desc
+;
+
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?
 select 
     perfil.nome

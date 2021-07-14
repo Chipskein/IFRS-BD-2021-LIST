@@ -176,7 +176,11 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','pedro@gmail.com',1,null,'2021-06-02 15:05'),
 	('gostei','mcalbuq@mymail.com',1,null,'2021-06-02 15:10'),
 	('triste','pxramos@mymail.com',null,1,'2021-06-02 15:20'),
-	('gostei','pele@cbf.com.br',1,null,CURRENT_TIMESTAMP);
+	('gostei','pele@cbf.com.br',1,null,CURRENT_TIMESTAMP),
+	('gostei','pxramos@mymail.com',5,null,'2021-06-02 15:20'),
+	('triste','pele@cbf.com.br',6,null,CURRENT_TIMESTAMP),
+	('gostei','pedro@gmail.com',6,null,'2021-06-02 15:05'),
+	('gostei','mcalbuq@mymail.com',5,null,'2021-06-02 15:10');
 
 
 create table grupoPerfil (
