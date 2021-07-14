@@ -48,21 +48,42 @@ insert into amigo (perfil, perfilAmigo, data) values
 	('professor@hotmail.com', 'jorosamed@mymail.com', '2021-05-17 10:15'),
 	('professor@hotmail.com', 'pxramos@mymail.com', '2021-05-17 10:20'),
 	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40');
+
+create table grupo (
+	codigo integer not null,
+	nome varchar(100) not null,
+	primary key (codigo)
+);
+INSERT INTO grupo(codigo,nome) values
+				(1,'Banco de Dados-IFRS2021'),
+				(2,'SQlite');
+create table pagina (
+	codigo integer not null,
+	nome varchar(100) not null,
+	primary key (codigo)
+);
 create table post (
 	codigo integer not null,
 	texto varchar(1000),
 	perfil varchar(100) not null,
-	--postagem integer, removido 
+	grupo  integer,--se grupo e pagina forem nulos o post foi feito no feed do dono do post,não é possivel fazer postagens no feed de outros usuario
+	pagina integer, 
 	data datetime,
 	foreign key (perfil) references perfil(email),
-	--foreign key (postagem) references post(codigo),
+	foreign key (grupo) references grupo(codigo),
+	foreign key (pagina) references pagina(codigo),
 	primary key (codigo)
 );
-insert into post (texto,perfil,data) values
-	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com','2021-06-02 15:00'),
-	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com','2021-06-02 15:35'),
-	('salve salve familia aqui é o paulao','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-1 days')),
-	('paulão é rei po','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'));
+insert into post (texto,perfil,data,grupo) values
+	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com','2021-06-02 15:00',null),
+	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com','2021-06-02 15:35',null),
+	('salve salve familia aqui é o paulao','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-1 days'),null),
+	('paulão é rei po','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),null),
+	('Sqlite é muito tb hahahah','mcalbuq@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('SQlite top topotpotpto muito top','jorosamed@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('SQlite hahahahah go birrrl','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('çafasfasfa','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2);
+	
 	--(null,'joaosbras@mymail.com',8, '2021-06-02 15:35');
 create table assunto(
 	--tabela assunto criada
@@ -157,14 +178,7 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('triste','pxramos@mymail.com',null,1,'2021-06-02 15:20'),
 	('gostei','pele@cbf.com.br',1,null,CURRENT_TIMESTAMP);
 
-create table grupo (
-	codigo integer not null,
-	nome varchar(100) not null,
-	primary key (codigo)
-);
-INSERT INTO grupo(codigo,nome) values
-				(1,'Banco de Dados-IFRS2021'),
-				(2,'SQlite');
+
 create table grupoPerfil (
 	grupo integer not null,
 	perfil varchar(100) not null,
@@ -183,11 +197,6 @@ INSERT INTO grupoPerfil(grupo,perfil) values
 						(2,'mcalbuq@mymail.com'),
 						(2,'pxramos@mymail.com'),
 						(2,'jorosamed@mymail.com');
-create table pagina (
-	codigo integer not null,
-	nome varchar(100) not null,
-	primary key (codigo)
-);
 
 create table paginaPerfil (
 	pagina integer not null,
