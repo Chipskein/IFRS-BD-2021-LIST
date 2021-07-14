@@ -13,28 +13,27 @@ drop table if exists grupo;
 drop table if exists pagina;
 drop table if exists perfil;
 create table perfil (
-	--precisamos guardar a idade do usuario ou a data de nascimento
 	email varchar(100) not null,
 	nome varchar(100) not null,
 	senha varchar(20) not null,
 	estado char(2) not null,
 	cidade varchar(100) not null,
 	pais varchar(100) not null,
-	data datetime,--data de registro
-	nascimento date,
+	data datetime,
+	nascimento date, --adicionado para letra j)
+	genero char(1) CHECK(genero='M' or genero='F' or genero is null),--adicionada para letra j),genero is null qualquer coisa que não seja H ou M
 	primary key (email)
 );
-insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento) values
-	('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00', '1921-07-30'),
-	('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00', '1981-07-30'),
-	('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00', '1991-07-30'),
-	('pedro@gmail.com', '2345','Pedro Alencar Pereira', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:05', '2001-07-30'),
-	('mcalbuq@mymail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10', '1985-07-30'),
-	('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15', '1995-07-30'),
-	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20', '1974-07-30'),
-	--adicionados para letra k) e n)
-	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20', '2002-07-30'),
-	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30');
+insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento,genero) values
+	('den@ifrs.riogrande.edu.br', '12345','IFRS Campus Rio Grande', 'Rio Grande', 'RS', 'Brasil','2010-01-01 08:00', '1921-07-30',NULL),
+	('professor@hotmail.com', '12345','Professor de BD', 'Rio Grande', 'RS', 'Brasil','2010-01-01 09:00', '1981-07-30','M'),
+	('joaosbras@mymail.com', '42345','João Silva Brasil', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:00', '1991-07-30','M'),
+	('pedro@gmail.com', '2345','Pedro Alencar Pereira', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:05', '2001-07-30','M'),
+	('mcalbuq@mymail.com', '823456','Maria Cruz Albuquerque', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:10', '1985-07-30','F'),
+	('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15', '1995-07-30','F'),
+	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20', '1974-07-30','M'),
+	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20', '2002-07-30','M'),
+	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30','M');
 create table amigo (
 	perfilAmigo varchar(100) not null,
 	perfil varchar(100) not null,
@@ -99,7 +98,7 @@ insert into assuntoPost(post,assunto) values
 					   (3,7),
 					   (4,6),
 					   (4,7);
---tabela compartilhamento adicionada
+--tabela compartilhamento adicionada para letra n)
 create table compartilhamento(
 	perfil varchar(100) not null,
 	codigo_post integer not null,
@@ -164,7 +163,8 @@ create table grupo (
 	primary key (codigo)
 );
 INSERT INTO grupo(codigo,nome) values
-				(1,'Banco de Dados-IFRS2021');
+				(1,'Banco de Dados-IFRS2021'),
+				(2,'SQlite');
 create table grupoPerfil (
 	grupo integer not null,
 	perfil varchar(100) not null,
@@ -177,8 +177,12 @@ INSERT INTO grupoPerfil(grupo,perfil) values
 						(1,'joaosbras@mymail.com'),
 						(1,'mcalbuq@mymail.com'),
 						(1,'pxramos@mymail.com'),
-						(1,'jorosamed@mymail.com');
-
+						(1,'jorosamed@mymail.com'),
+						(2,'professor@hotmail.com'),
+						(2,'joaosbras@mymail.com'),
+						(2,'mcalbuq@mymail.com'),
+						(2,'pxramos@mymail.com'),
+						(2,'jorosamed@mymail.com');
 create table pagina (
 	codigo integer not null,
 	nome varchar(100) not null,

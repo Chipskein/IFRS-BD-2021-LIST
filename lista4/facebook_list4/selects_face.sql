@@ -127,7 +127,7 @@ select
 ;
 --l) Quais os nomes dos usuários que são amigos dos membros do grupo Banco de Dados-IFRS2021?
 select
-    DISTINCT
+    distinct
     perfil.nome as amigo
     from grupo,grupoPerfil,amigo,perfil
     where 
@@ -138,6 +138,7 @@ select
 ;
 --m) Quais os nomes dos usuários que receberam mais de 1000 curtidas em uma postagem, em menos de 24 horas após a postagem, nos últimos 7 dias?
 --Testar com outras datas
+--testar mais não tenho certeza se esta certa
 select 
     perfil.nome as nome,
     count(*) as curtidas_na_postagem
@@ -154,7 +155,7 @@ select
 
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
 select 
-    DISTINCT
+    distinct
     assunto.nome
     from compartilhamento,post,assuntoPost,assunto
     where 
