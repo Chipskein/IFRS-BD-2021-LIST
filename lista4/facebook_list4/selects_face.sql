@@ -153,5 +153,16 @@ select
 ;
 
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
-
+select 
+    DISTINCT
+    assunto.nome
+    from compartilhamento,post,assuntoPost,assunto
+    where 
+        assuntoPost.assunto=assunto.codigo and
+        assuntoPost.post=post.codigo and
+        post.codigo=compartilhamento.codigo_post and
+        compartilhamento.perfil='joaosbras@mymail.com' and
+        post.perfil='pmartinssilva90@mymail.com' and 
+        compartilhamento.data_compartilhamento BETWEEN datetime('now','-3 months') and datetime('now')
+;
 

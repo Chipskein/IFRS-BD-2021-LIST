@@ -3,6 +3,7 @@ drop table if exists amigo;
 drop table if exists reaction;
 drop table if exists comentario;
 drop table if exists citacao;
+drop table if exists compartilhamento;
 drop table if exists assuntopost;
 drop table if exists assunto;
 drop table if exists post;
@@ -52,15 +53,17 @@ create table post (
 	codigo integer not null,
 	texto varchar(1000),
 	perfil varchar(100) not null,
-	postagem integer,
+	--postagem integer, removido 
 	data datetime,
 	foreign key (perfil) references perfil(email),
-	foreign key (postagem) references post(codigo),
+	--foreign key (postagem) references post(codigo),
 	primary key (codigo)
 );
-insert into post (texto,perfil,postagem,data) values
-	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com', null, '2021-06-02 15:00'),
-	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com',null, '2021-06-02 15:35');
+insert into post (texto,perfil,data) values
+	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com','2021-06-02 15:00'),
+	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com','2021-06-02 15:35'),
+	('salve salve familia aqui é o paulao','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-1 days')),
+	('paulão é rei po','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'));
 	--(null,'joaosbras@mymail.com',8, '2021-06-02 15:35');
 create table assunto(
 	--tabela assunto criada
@@ -68,12 +71,14 @@ create table assunto(
 	nome varchar(100),
 	primary key (codigo)
 );
-	--assuntos adicionados
 insert into assunto(codigo,nome) values
-				   (1,"BD"),
-				   (2,"INSERT"),
-				   (3,"SQLite"),
-				   (4,"atendimento");
+				   (1,'BD'),
+				   (2,'INSERT'),
+				   (3,'SQLite'),
+				   (4,'atendimento'),
+				   (5,'Paulao lindo'),
+				   (6,'deus grego'),
+				   (7,'100% jesus');
 
 create table assuntoPost(
 	assunto integer not null,
@@ -88,7 +93,24 @@ insert into assuntoPost(post,assunto) values
 					   (2,1),
 					   (2,2),
 					   (2,3),
-					   (2,4);
+					   (2,4),
+					   (3,5),
+					   (3,6),
+					   (3,7),
+					   (4,6),
+					   (4,7);
+--tabela compartilhamento adicionada
+create table compartilhamento(
+	perfil varchar(100) not null,
+	codigo_post integer not null,
+	data_compartilhamento datetime DEFAULT CURRENT_TIMESTAMP,
+	FOREIGN KEY (perfil) REFERENCES perfil(email),
+	FOREIGN KEY (codigo_post) REFERENCES post(codigo)
+);
+insert into compartilhamento(perfil,codigo_post,data_compartilhamento) values
+		('joaosbras@mymail.com',2,'2021-06-02 15:40'),
+		('joaosbras@mymail.com',3,datetime(CURRENT_TIMESTAMP,'-1 hours')),
+		('joaosbras@mymail.com',4,CURRENT_TIMESTAMP);
 create table citacao (
 	codigo integer not null,
 	perfil varchar(100) not null,
