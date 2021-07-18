@@ -33,7 +33,11 @@ insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento,ge
 	('jorosamed@mymail.com', '1234','Joana Rosa Medeiros', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:15', '1995-07-30','F'),
 	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20', '1974-07-30','M'),
 	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20', '2002-07-30','M'),
-	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30','M');
+	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30','M'),
+	('paulafernandes@mymail.com', '*****','Paula Fernandes Amaral', 'Tambau', 'MG', 'Brasil','2010-01-01 13:20', '1999-08-30','F'),
+	('marciasilva@mymail.com', '*****','Marcia Silva', 'Tambaú', 'MG', 'Brasil','2010-01-01 13:20', '2001-07-30','F'),
+	('jessicabtstop@mymail.com', '*****','Jessica Kpopper', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2000-05-23','F'),
+	('pequenopedrinho@mymail.com', '*****','Pedrinho', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2002-01-03','M');
 create table amigo (
 	perfilAmigo varchar(100) not null,
 	perfil varchar(100) not null,
@@ -47,7 +51,10 @@ insert into amigo (perfil, perfilAmigo, data) values
 	('professor@hotmail.com', 'mcalbuq@mymail.com', '2021-05-17 10:10'),
 	('professor@hotmail.com', 'jorosamed@mymail.com', '2021-05-17 10:15'),
 	('professor@hotmail.com', 'pxramos@mymail.com', '2021-05-17 10:20'),
-	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40');
+	('mcalbuq@mymail.com','jessicabtstop@mymail.com', '2021-05-17 10:10'),
+	('mcalbuq@mymail.com','pequenopedrinho@mymail.com', '2021-05-17 10:10'),
+	('joaosbras@mymail.com', 'pxramos@mymail.com', '2021-05-17 10:40'),
+	('joaosbras@mymail.com', 'jorosamed@mymail.com', '2021-05-18 10:40');
 
 create table grupo (
 	codigo integer not null,
@@ -180,7 +187,9 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','pxramos@mymail.com',5,null,'2021-06-02 15:20'),
 	('triste','pele@cbf.com.br',6,null,CURRENT_TIMESTAMP),
 	('gostei','pedro@gmail.com',6,null,'2021-06-02 15:05'),
-	('gostei','mcalbuq@mymail.com',5,null,'2021-06-02 15:10');
+	('gostei','mcalbuq@mymail.com',5,null,'2021-06-02 15:10'),
+	('gostei','pedro@gmail.com',8,null,'2021-07-16 15:05'),
+	('gostei','mcalbuq@mymail.com',8,null,'2021-07-16 15:10');
 
 
 create table grupoPerfil (
