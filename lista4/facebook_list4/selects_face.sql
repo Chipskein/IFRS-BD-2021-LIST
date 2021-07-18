@@ -1,3 +1,4 @@
+--1)
 -- a) Quais os nomes dos usuários que são amigos de Maria Cruz Albuquerque, e-mail mcalbuq@mymail.com?
 select 
     perfil.nome 
@@ -115,8 +116,8 @@ select
 ;
 
 --j) Qual o ranking da quantidade de reações às postagens do grupo SQLite por faixa etária por gênero nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43- 51, 51-60 e 60-.
--- Vi um cara dividir os dias por 365.25 mas deixei como ta ali, se quiser troca
 select 
+    grupo.nome as grupo,
     count(*) as Reacoes,
     case 
     when cast ((
@@ -148,11 +149,12 @@ select
     ) / 365 As integer)>60 then '+60'
     end as idade,
     perfil.genero
-    from post,reaction,perfil
+    from grupo,post,reaction,perfil
     where 
     reaction.postagem=post.codigo and
     perfil.email=reaction.perfil and
-    post.grupo == 2 and
+    grupo.nome like '%SQlite%' and
+    post.grupo = grupo.codigo and
     post.data between datetime('now','-1 months') and datetime('now')
     group by idade, perfil.genero
     order by count(*) desc
@@ -207,4 +209,24 @@ select
         post.perfil='pmartinssilva90@mymail.com' and 
         compartilhamento.data_compartilhamento BETWEEN datetime('now','-3 months') and datetime('now')
 ;
-
+--2)
+/*
+*Adicionados
+    perfil(nascimento)
+        foi adicionado pois é necessário para saber a idade do usuario
+    perfil(genero)
+        foi adicionado pois é necessário saber o genero do usuario
+    post(grupo)
+        foi adicionado pois é possivel fazer post no feed de um grupo
+    post(pagina)
+        foi adicionado pois é possivel fazer posts no feed de uma página
+    compartilhamento
+        foi adicionado para guardar o compartilhamento de um post por um usuario de uma forma mais clara
+    comentario 
+        foi adicionado para guardar os comentario de um post de uma forma mais clara
+    reaction
+        foi adicionado para guardar as reaçoes de um post ou comentario de uma forma mais clara
+*Removido
+    post(postagem)
+        devido a adição da tabela comentario não é necessário o atributo postagem
+*/

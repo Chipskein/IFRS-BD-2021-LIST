@@ -34,7 +34,7 @@ insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento,ge
 	('pxramos@mymail.com', '123','Paulo Xavier Ramos', 'Rio Grande', 'RS', 'Brasil','2020-01-01 13:20', '1974-07-30','M'),
 	('pele@cbf.com.br', '*****','Edson Arantes do Nascimento', 'Rio de Janeiro', 'RJ', 'Brasil','2009-01-01 13:20', '2002-07-30','M'),
 	('pmartinssilva90@mymail.com', '*****','Paulo Martins Silva', 'Jundiai', 'SP', 'Brasil','2010-01-01 13:20', '1950-07-30','M'),
-	('paulafernandes@mymail.com', '*****','Paula Fernandes Amaral', 'Tambau', 'MG', 'Brasil','2010-01-01 13:20', '1999-08-30','F'),
+	('paulafernandes@mymail.com', '*****','Paula Fernandes Amaral', 'Tambaú', 'MG', 'Brasil','2010-01-01 13:20', '1999-08-30','F'),
 	('marciasilva@mymail.com', '*****','Marcia Silva', 'Tambaú', 'MG', 'Brasil','2010-01-01 13:20', '2001-07-30','F'),
 	('jessicabtstop@mymail.com', '*****','Jessica Kpopper', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2000-05-23','F'),
 	('pequenopedrinho@mymail.com', '*****','Pedrinho', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2002-01-03','M');
@@ -73,8 +73,9 @@ create table post (
 	codigo integer not null,
 	texto varchar(1000),
 	perfil varchar(100) not null,
-	grupo  integer,--se grupo e pagina forem nulos o post foi feito no feed do dono do post,não é possivel fazer postagens no feed de outros usuario
-	pagina integer, 
+	--postagem integer removido
+	grupo  integer,--adicionado ,se grupo e pagina forem nulos o post foi feito no feed do dono do post,não é possivel fazer postagens no feed de outros usuario
+	pagina integer, --adicionado
 	data datetime,
 	foreign key (perfil) references perfil(email),
 	foreign key (grupo) references grupo(codigo),
@@ -91,9 +92,7 @@ insert into post (texto,perfil,data,grupo) values
 	('SQlite hahahahah go birrrl','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
 	('çafasfasfa','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2);
 	
-	--(null,'joaosbras@mymail.com',8, '2021-06-02 15:35');
 create table assunto(
-	--tabela assunto criada
 	codigo integer not null,
 	nome varchar(100),
 	primary key (codigo)
@@ -189,7 +188,9 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','pedro@gmail.com',6,null,'2021-06-02 15:05'),
 	('gostei','mcalbuq@mymail.com',5,null,'2021-06-02 15:10'),
 	('gostei','pedro@gmail.com',8,null,'2021-07-16 15:05'),
-	('gostei','mcalbuq@mymail.com',8,null,'2021-07-16 15:10');
+	('gostei','mcalbuq@mymail.com',8,null,'2021-07-16 15:10'),
+	('amei','pedro@gmail.com',2,null,'2021-07-16 15:05'),
+	('amei','mcalbuq@mymail.com',2,null,'2021-07-16 15:10');
 
 
 create table grupoPerfil (
