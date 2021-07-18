@@ -69,11 +69,12 @@ select
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and
         lower(assunto.nome)='bd' and
-        reaction.data between datetime('now','-3 months') and datetime('now')
+        reaction.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 second')
 ;
 --f) Qual o ranking dos assuntos mais postados na última semana?
 
     --considera-se ultima semana esta semana
+    --entre 00:00:00 do domingo e 23:59:59 do sabado desta semana
 select 
     assunto.nome,
     count(*) as assunto_semana 
@@ -81,7 +82,7 @@ select
     where 
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post 
-        and post.data between datetime('now','weekday 0','-7 days') and datetime('now','weekday 0')
+        and post.data between datetime(date('now'),'weekday 0','-7 days') and datetime(date('now'),'weekday 0','-1 second')
     group by assunto.codigo
     order by assunto_semana desc
 ;

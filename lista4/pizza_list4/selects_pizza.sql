@@ -6,18 +6,20 @@ select
     ingrediente.nome as ingrediente_san_tome
     from sabor,saboringrediente,ingrediente
     where 
-        sabor.nome like '%sao tome e principe%' AND 
+        lower(sabor.nome)='sao tome e principe' AND 
         sabor.codigo=saboringrediente.sabor AND 
-        saboringrediente.ingrediente=ingrediente.codigo;
+        saboringrediente.ingrediente=ingrediente.codigo
+;
 
 --b) Quais os nomes dos sabores que contém o ingrediente bacon?
 select 
     sabor.nome as names_from_bacon
     from sabor,saboringrediente,ingrediente 
     where 
-        ingrediente.nome like '%bacon%' AND 
+        lower(ingrediente.nome)='bacon' AND 
         ingrediente.codigo=saboringrediente.ingrediente AND
-        saboringrediente.sabor=sabor.codigo;
+        saboringrediente.sabor=sabor.codigo
+;
 --c) Quais os nomes dos sabores que contém os ingredientes bacon e gorgonzola?
     --testado com outros ingredientes
 select 
@@ -25,7 +27,7 @@ select
     from sabor,saboringrediente,ingrediente 
     where 
         sabor.codigo=saboringrediente.sabor AND 
-        (ingrediente.nome like '%bacon%' or ingrediente.nome like '%gorgonzola%') AND
+        (lower(ingrediente.nome)='bacon' or lower(ingrediente.nome)='gorgonzola') AND
         saboringrediente.ingrediente=ingrediente.codigo
     group by sabor 
     having count(*)>1;
@@ -99,6 +101,7 @@ select
     having count(*)>20;
 
 --i) Qual o ranking dos ingredientes mais pedidos nos últimos 12 meses?
+--ultimos 11 meses + mes atual
 select
     ingrediente.nome as ingrediente,
     count(*) as pedido_ingrediente_counter
@@ -109,7 +112,7 @@ select
         pizzasabor.sabor=sabor.codigo and
         saboringrediente.sabor=sabor.codigo AND
         saboringrediente.ingrediente=ingrediente.codigo and
-        comanda.data between date('now','-12 months') and date('now')
+        comanda.data between date('now','start of month','-11 months') and date('now','start of month','+1 month','-1 days')
     group by ingrediente.codigo
     order by pedido_ingrediente_counter desc;
 --j) Qual o ranking dos sabores salgados mais pedidos por mês nos últimos 12 meses?
@@ -138,7 +141,7 @@ select
         pizzasabor.sabor=sabor.codigo and
         tipo.nome like '%salgadas%' and
         sabor.tipo=tipo.codigo and
-        comanda.data between date('now','-12 months') and date('now')
+        comanda.data between date('now','start of month','-11 months') and date('now','start of month','+1 month','-1 days')
     group by 
         strftime('%Y-%m',comanda.data),sabor.nome
     order by strftime('%Y-%m',comanda.data) asc,por_mes desc;
@@ -169,12 +172,13 @@ select
         pizzasabor.sabor=sabor.codigo and
         tipo.nome like '%doces%' and
         sabor.tipo=tipo.codigo and
-        comanda.data between date('now','-12 months') and date('now')
+        comanda.data between date('now','start of month','-11 months') and date('now','start of month','+1 month','-1 days')
     group by 
         strftime('%Y-%m',comanda.data),sabor.nome
     order by strftime('%Y-%m',comanda.data) asc,por_mes desc;
 
 --l) Qual o ranking da quantidade de pizzas pedidas por tipo por tamanho nos últimos 6 meses?
+--ultimos 6 meses=ultimos 5 meses+mes atual
 select 
     distinct
         tipo.nome as tipo,
@@ -186,7 +190,7 @@ select
         pizzasabor.pizza=pizza.codigo AND
         pizzasabor.sabor=sabor.codigo and
         tipo.codigo=sabor.tipo and
-        comanda.data BETWEEN date('now','-6 months') and date('now') 
+        comanda.data BETWEEN date('now','start of month','-5 months') and date('now','start of month','+1 month','-1 days')
     group by 
         tipo.codigo,
         pizza.tamanho
@@ -207,7 +211,7 @@ select
         saboringrediente.ingrediente=ingrediente.codigo and
         pizza.borda is not null and
         pizza.borda=borda.codigo and
-        comanda.data BETWEEN date('now','-6 months') and date('now')
+        comanda.data BETWEEN  date('now','start of month','-5 months') and date('now','start of month','+1 month','-1 days')
     group by 
         borda.nome,
         ingrediente.nome
