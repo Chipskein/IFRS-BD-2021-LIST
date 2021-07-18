@@ -202,6 +202,8 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','pxramos@mymail.com',2,null,'2021-07-17 15:15'),
 	('amei','pedro@gmail.com',2,null,'2021-07-16 15:05'),
 	('amei','pedro@gmail.com',3,null,'2021-07-16 15:05'),
+	('amei','pedro@gmail.com',8,null,'2021-07-16 15:05'),
+	('amei','pedro@gmail.com',9,null,'2021-07-16 15:05'),
 	('amei','mcalbuq@mymail.com',2,null,'2021-07-16 15:10');
 
 
