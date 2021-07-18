@@ -24,10 +24,10 @@ select
     from reaction,assunto,assuntoPost, post
     where 
         reaction.postagem=post.codigo and
-        reaction.texto='gostei' and
+        lower(reaction.texto)='gostei' and
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and
-        assunto.nome='BD'
+        lower(assunto.nome)='bd'
 ;
  
 --d) Qual a média de comentários das postagens que contém o assunto banco de dados?
@@ -40,7 +40,7 @@ select
         comentario.postagem=post.codigo and
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and
-        assunto.nome='BD'
+        lower(assunto.nome)='bd'
 ;
 
 --e) Quantas postagens sobre o assunto banco de dados receberam a reação amei nos últimos 3 meses?
@@ -50,16 +50,15 @@ select
     from reaction,assunto,assuntoPost, post
     where 
         reaction.postagem=post.codigo and
-        reaction.texto='amei' and
+        lower(reaction.texto)='amei' and
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and
-        assunto.nome='BD' and
+        lower(assunto.nome)='bd' and
         reaction.data between datetime('now','-3 months') and datetime('now')
 ;
 --f) Qual o ranking dos assuntos mais postados na última semana?
 
     --considera-se ultima semana esta semana
-    --testar em outra data 
 select 
     assunto.nome,
     count(*) as assunto_semana 
@@ -67,7 +66,7 @@ select
     where 
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post 
-        and post.data between datetime('now','weekday 0','- 7 days') and datetime('now','weekday 0')
+        and post.data between datetime('now','weekday 0','-7 days') and datetime('now','weekday 0')
     group by assunto.codigo
     order by assunto_semana desc
 ;
@@ -94,7 +93,7 @@ select
         perfil.email=post.perfil and
         assuntoPost.post=post.codigo and
         assuntoPost.assunto=assunto.codigo and
-        assunto.nome like '%bd%' and
+        lower(assunto.nome)='bd' and
         post.data between datetime('now','-3 months') and datetime('now')
     group by perfil.estado
     order by assunto_em_postagem
@@ -109,7 +108,7 @@ select
     perfil.email=post.perfil and 
     reaction.postagem=post.codigo and
     perfil.pais like '%brasil%' and
-    reaction.texto='gostei' and
+    lower(reaction.texto)='gostei' and
     reaction.data between datetime('now','-30 days') and datetime('now')
     group by perfil.nome
     order by curtidas_usuario desc
@@ -153,7 +152,7 @@ select
     where 
     reaction.postagem=post.codigo and
     perfil.email=reaction.perfil and
-    grupo.nome like '%SQlite%' and
+    lower(grupo.nome)='sqlite' and
     post.grupo = grupo.codigo and
     post.data between datetime('now','-1 months') and datetime('now')
     group by idade, perfil.genero
@@ -167,7 +166,7 @@ select
     where 
     comentario.postagem=post.codigo and
     perfil.email=post.perfil and
-    comentario.perfil='pele@cbf.com.br' and
+    lower(comentario.perfil)='pele@cbf.com.br' and
     comentario.data between datetime('now','-1 months') and datetime('now')
 ;
 --l) Quais os nomes dos usuários que são amigos dos membros do grupo Banco de Dados-IFRS2021?
@@ -177,7 +176,7 @@ select
     perfil.nome as amigo
     from grupo,grupoPerfil,amigo,perfil
     where 
-    grupo.nome like '%Banco de Dados-IFRS2021%' and
+    lower(grupo.nome)='banco de dados-ifrs2021' and
     grupo.codigo=grupoPerfil.grupo and
     (amigo.perfil=grupoPerfil.perfil or amigo.perfilAmigo=grupoPerfil.perfil) AND
     (perfil.email=amigo.perfil or perfil.email=amigo.perfilAmigo) and perfil.email not like grupoPerfil.perfil
@@ -190,7 +189,7 @@ select
     where 
     perfil.email=post.perfil and
     reaction.postagem=post.codigo and
-    reaction.texto='gostei' 
+    lower(reaction.texto)='gostei' 
     and reaction.data between datetime(post.data) and datetime(post.data,'+24 hours') 
     and post.data between datetime('now','-7 days') and datetime('now')
     group by perfil.nome,post.codigo
@@ -205,8 +204,8 @@ select
         assuntoPost.assunto=assunto.codigo and
         assuntoPost.post=post.codigo and
         post.codigo=compartilhamento.codigo_post and
-        compartilhamento.perfil='joaosbras@mymail.com' and
-        post.perfil='pmartinssilva90@mymail.com' and 
+        lower(compartilhamento.perfil)='joaosbras@mymail.com' and
+        lower(post.perfil)='pmartinssilva90@mymail.com' and 
         compartilhamento.data_compartilhamento BETWEEN datetime('now','-3 months') and datetime('now')
 ;
 --2)
@@ -229,4 +228,4 @@ select
 *Removido
     post(postagem)
         devido a adição da tabela comentario não é necessário o atributo postagem
-*/
+*/ 
