@@ -87,18 +87,20 @@ select
 ;
 --g) Qual o ranking da quantidade de postagens por estado no Brasil nos últimos 3 meses?
 --postagem=post
+--ultimos 3 meses = 2 meses passdos+mes atual
 select 
     perfil.estado as estado,
     count(*) as postagem_by_state
     from perfil,post 
     where 
         perfil.email=post.perfil 
-        and post.data between datetime('now','-3 months') and datetime('now')
+        and post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
         and perfil.pais like '%Brasil%'
     group by perfil.estado
     order by postagem_by_state desc
 ;
 --h) Qual o ranking da quantidade de postagens contendo o assunto banco de dados por estado no Brasil nos últimos 3 meses?
+--ultimos 3 meses = 2 mes passdos + mes atual
 select 
     assunto.nome,
     perfil.estado,
@@ -109,7 +111,7 @@ select
         assuntoPost.post=post.codigo and
         assuntoPost.assunto=assunto.codigo and
         lower(assunto.nome)='bd' and
-        post.data between datetime('now','-3 months') and datetime('now')
+        post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
     group by perfil.estado
     order by assunto_em_postagem desc
 ;
@@ -169,12 +171,13 @@ select
     perfil.email=reaction.perfil and
     lower(grupo.nome)='sqlite' and
     post.grupo = grupo.codigo and
-    post.data between datetime('now','-1 months') and datetime('now')
+    reaction.data between datetime('now','-60 days') and datetime('now')
     group by idade, perfil.genero
     order by count(*) desc
 ;
 
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?
+--ultimo mes=este mês
 select 
     distinct
     perfil.nome
@@ -183,7 +186,7 @@ select
     comentario.postagem=post.codigo and
     perfil.email=post.perfil and
     lower(comentario.perfil)='pele@cbf.com.br' and
-    comentario.data between datetime('now','-1 months') and datetime('now')
+    comentario.data between datetime('now','start of month') and datetime('now','start of month','+1 months','-1 day')
 ;
 --l) Quais os nomes dos usuários que são amigos dos membros do grupo Banco de Dados-IFRS2021?
 --considera-se tambem os usuarios que são amigos dos membros do grupo e que também são membros do grupo
@@ -219,6 +222,7 @@ select
     having count(*)>1000
 ;
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
+--ultimos 3 meses = 2 mes passdos + mes atual
 select 
     distinct
     assunto.nome
@@ -229,7 +233,7 @@ select
         post.codigo=compartilhamento.codigo_post and
         lower(compartilhamento.perfil)='joaosbras@mymail.com' and
         lower(post.perfil)='pmartinssilva90@mymail.com' and 
-        compartilhamento.data_compartilhamento BETWEEN datetime('now','-3 months') and datetime('now')
+        compartilhamento.data_compartilhamento BETWEEN datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
 ;
 --2)
 /*
