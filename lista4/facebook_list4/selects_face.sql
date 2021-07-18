@@ -94,7 +94,7 @@ select
     from perfil,post 
     where 
         perfil.email=post.perfil 
-        and post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
+        and post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 second')
         and perfil.pais like '%Brasil%'
     group by perfil.estado
     order by postagem_by_state desc
@@ -111,7 +111,7 @@ select
         assuntoPost.post=post.codigo and
         assuntoPost.assunto=assunto.codigo and
         lower(assunto.nome)='bd' and
-        post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
+        post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 second')
     group by perfil.estado
     order by assunto_em_postagem desc
 ;
@@ -233,7 +233,7 @@ select
         post.codigo=compartilhamento.codigo_post and
         lower(compartilhamento.perfil)='joaosbras@mymail.com' and
         lower(post.perfil)='pmartinssilva90@mymail.com' and 
-        compartilhamento.data_compartilhamento BETWEEN datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 days')
+        compartilhamento.data_compartilhamento BETWEEN datetime('now','start of month','-2 months') and datetime('now','start of month','+1 month','-1 second')
 ;
 --2)
 /*
