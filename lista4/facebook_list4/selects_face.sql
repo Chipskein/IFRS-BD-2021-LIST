@@ -3,17 +3,32 @@
 select 
     perfil.nome 
     from perfil,amigo 
-    where (amigo.perfilAmigo=perfil.email or amigo.perfil=perfil.email) and 
-    (amigo.perfil like '%mcalbuq@mymail.com%' or amigo.perfilAmigo like '%mcalbuq@mymail.com%') and 
-    perfil.email not like '%mcalbuq@mymail.com%'
+    where 
+        (
+            lower(amigo.perfilAmigo)=lower(perfil.email) or 
+            lower(amigo.perfil)=lower(perfil.email)
+        ) 
+        and (
+                lower(amigo.perfil)='mcalbuq@mymail.com' or 
+                lower(amigo.perfilAmigo)='mcalbuq@mymail.com'
+            ) 
+        and perfil.email not like 'mcalbuq@mymail.com'
 ;
 
 --b) Quais os nomes dos usuários que são amigos de Paulo Xavier Ramos, e-mail pxramos@mymail.com, e também de Joana Rosa Medeiros, e-mail jorosamed@mymail.com?
 select perfil.nome
     from perfil,amigo 
-    where (amigo.perfilAmigo=perfil.email or amigo.perfil=perfil.email) 
-    and (amigo.perfil like '%pxramos@mymail.com%' or amigo.perfil like '%jorosamed@mymail.com%' and amigo.perfilAmigo like '%pxramos@mymail.com%' or amigo.perfilAmigo like '%jorosamed@mymail.com%') 
-    and perfil.email not like '%pxramos@mymail.com%' and perfil.email not like '%jorosamed@mymail.com%'
+    where 
+        (
+            lower(amigo.perfilAmigo)=lower(perfil.email) or 
+            lower(amigo.perfil)=lower(perfil.email)
+        ) 
+    and (
+            lower(amigo.perfil)='pxramos@mymail.com' or lower(amigo.perfil)='jorosamed@mymail.com' and 
+            lower(amigo.perfilAmigo)='pxramos@mymail.com' or lower(amigo.perfilAmigo)='jorosamed@mymail.com'
+        ) 
+    and perfil.email not like 'pxramos@mymail.com' 
+    and perfil.email not like 'jorosamed@mymail.com'
 ;
 
 --c) Qual a média de curtidas nas postagens que contém o assunto banco de dados?
@@ -45,7 +60,7 @@ select
 
 --e) Quantas postagens sobre o assunto banco de dados receberam a reação amei nos últimos 3 meses?
 select
-    count(*) as ameis,
+    --count(*) as ameis,
     count(distinct(post)) as postagens
     from reaction,assunto,assuntoPost, post
     where 
@@ -96,7 +111,7 @@ select
         lower(assunto.nome)='bd' and
         post.data between datetime('now','-3 months') and datetime('now')
     group by perfil.estado
-    order by assunto_em_postagem
+    order by assunto_em_postagem desc
 ;
 --i) Qual o ranking dos usuários do Brasil que mais receberam curtidas em suas postagens nos últimos 30 dias?
     --testar em outra data
@@ -161,6 +176,7 @@ select
 
 --k) Quais os nomes dos usuários que tiveram alguma postagem comentada pelo usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, no último mês?
 select 
+    distinct
     perfil.nome
     from post,comentario,perfil
     where 
@@ -176,15 +192,22 @@ select
     perfil.nome as amigo
     from grupo,grupoPerfil,amigo,perfil
     where 
-    lower(grupo.nome)='banco de dados-ifrs2021' and
-    grupo.codigo=grupoPerfil.grupo and
-    (amigo.perfil=grupoPerfil.perfil or amigo.perfilAmigo=grupoPerfil.perfil) AND
-    (perfil.email=amigo.perfil or perfil.email=amigo.perfilAmigo) and perfil.email not like grupoPerfil.perfil
+        lower(grupo.nome)='banco de dados-ifrs2021' and
+        grupo.codigo=grupoPerfil.grupo and
+    (
+        lower(amigo.perfil)=lower(grupoPerfil.perfil) or 
+        lower(amigo.perfilAmigo)=lower(grupoPerfil.perfil)
+    ) AND
+    (
+        lower(perfil.email)=lower(amigo.perfil) or 
+        lower(perfil.email)=lower(amigo.perfilAmigo)
+    ) and 
+        lower(perfil.email) not like lower(grupoPerfil.perfil)
 ;
 --m) Quais os nomes dos usuários que receberam mais de 1000 curtidas em uma postagem, em menos de 24 horas após a postagem, nos últimos 7 dias?
 select 
-    perfil.nome as nome,
-    count(*) as curtidas_na_postagem
+    distinct
+    perfil.nome as nome
     from perfil,post,reaction
     where 
     perfil.email=post.perfil and
@@ -193,7 +216,7 @@ select
     and reaction.data between datetime(post.data) and datetime(post.data,'+24 hours') 
     and post.data between datetime('now','-7 days') and datetime('now')
     group by perfil.nome,post.codigo
-    having count(*)>=1000
+    having count(*)>1000
 ;
 --n) Quais os assuntos das postagens do usuário Paulo Martins Silva, e-mail pmartinssilva90@mymail.com, compartilhadas pelo usuário João Silva Brasil, e-mail joaosbras@mymail.com, nos últimos 3 meses?
 select 

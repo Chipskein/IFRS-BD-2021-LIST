@@ -90,7 +90,9 @@ insert into post (texto,perfil,data,grupo) values
 	('Sqlite é muito tb hahahah','mcalbuq@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
 	('SQlite top topotpotpto muito top','jorosamed@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
 	('SQlite hahahahah go birrrl','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
-	('çafasfasfa','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2);
+	('çafasfasfa','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('eU sOu GAymer ksksks guys','pequenopedrinho@mymail.com',datetime(CURRENT_TIMESTAMP,'-3 days'),NULL),
+	('salve rapeize','marciasilva@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),NULL);
 	
 create table assunto(
 	codigo integer not null,
@@ -120,11 +122,15 @@ insert into assuntoPost(post,assunto) values
 					   (2,2),
 					   (2,3),
 					   (2,4),
+					   (3,1),
 					   (3,5),
 					   (3,6),
 					   (3,7),
 					   (4,6),
-					   (4,7);
+					   (4,7),
+					   (8,1),
+					   (9,1),
+					   (10,1);
 --tabela compartilhamento adicionada para letra n)
 create table compartilhamento(
 	perfil varchar(100) not null,
@@ -164,7 +170,9 @@ INSERT INTO comentario(texto,perfil,postagem,data) values
 							('Alguém mais ficou com dúvida no comando INSERT?','pedro@gmail.com',1,'2021-06-02 15:15'),
 							('Eu também','jorosamed@mymail.com', 1,'2021-06-02 15:20'),
 							('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com',1,'2021-06-02 15:30'),
-							('salve salve familia','pele@cbf.com.br',1,CURRENT_TIMESTAMP);
+							('salve salve familia','pele@cbf.com.br',1,CURRENT_TIMESTAMP),
+							('salve salve familia','pele@cbf.com.br',2,CURRENT_TIMESTAMP),
+							('salve salve familia','pele@cbf.com.br',7,CURRENT_TIMESTAMP);
 --tabela reações adicionado
 create table reaction(
 	--codigo integer not null,
@@ -189,7 +197,11 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','mcalbuq@mymail.com',5,null,'2021-06-02 15:10'),
 	('gostei','pedro@gmail.com',8,null,'2021-07-16 15:05'),
 	('gostei','mcalbuq@mymail.com',8,null,'2021-07-16 15:10'),
+	('gostei','pxramos@mymail.com',8,null,'2021-07-16 15:12'),
+	('gostei','pedro@gmail.com',2,null,'2021-07-17 15:05'),
+	('gostei','pxramos@mymail.com',2,null,'2021-07-17 15:15'),
 	('amei','pedro@gmail.com',2,null,'2021-07-16 15:05'),
+	('amei','pedro@gmail.com',3,null,'2021-07-16 15:05'),
 	('amei','mcalbuq@mymail.com',2,null,'2021-07-16 15:10');
 
 
