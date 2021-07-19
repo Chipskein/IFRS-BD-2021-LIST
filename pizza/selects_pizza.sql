@@ -2,14 +2,103 @@
 perguntas:*/
 
 --a) Qual sabor tem mais ingredientes?
-
+select 
+    sabor.nome,
+    count(*) as qt_ingrediente
+    from 
+    sabor
+    join saboringrediente on sabor.codigo=saboringrediente.sabor
+    join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
+    group by sabor
+    having qt_ingrediente=(
+                select count(*) 
+                from 
+                sabor
+                    join saboringrediente on sabor.codigo=saboringrediente.sabor
+                    join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
+                group by sabor
+                order by count(*) desc
+                limit 1
+        )
+;
 --b) Qual sabor tem menos ingredientes?
+select 
+    sabor.nome,
+    count(*) as qt_ingrediente
+    from 
+    sabor
+    join saboringrediente on sabor.codigo=saboringrediente.sabor
+    join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
+    group by sabor
+    having qt_ingrediente=(
+                select count(*) 
+                from 
+                sabor
+                    join saboringrediente on sabor.codigo=saboringrediente.sabor
+                    join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
+                group by sabor
+                order by count(*) asc
+                limit 1
+        )
+;
 
 --c) Qual sabor não foi pedido nos últimos 4 domingos?
+select 
+    sabor.nome 
+    from sabor
+except
+select
+    distinct
+    sabor.nome
+    from 
+    comanda 
+    join pizza on pizza.comanda=comanda.numero
+    join pizzasabor on pizzasabor.pizza=pizza.codigo
+    join sabor on sabor.codigo=pizzasabor.sabor
+    where (
+            date(comanda.data)=date('now','weekday 0','-28 days') or
+            date(comanda.data)=date('now','weekday 0','-21 days') or
+            date(comanda.data)=date('now','weekday 0','-14 days') or
+            date(comanda.data)=date('now','weekday 0','-7 days') 
+          ) 
+;
 
 --d) Qual mesa foi mais utilizada nos últimos 60 dias?
-
+select 
+    mesa.nome
+    from mesa
+        join comanda on mesa.codigo=comanda.mesa
+        where date(comanda.data)=date('now','-60 days')
+    group by mesa.nome
+    having count(*)=(
+                        select 
+                        count(*)
+                        from mesa
+                            join comanda on mesa.codigo=comanda.mesa
+                            where date(comanda.data)=date('now','-60 days')
+                        group by mesa.nome
+                        order by count(*) desc
+                        limit 1
+                    )
+    ;
 --e) Qual mesa foi menos utilizada nos últimos 60 dias?
+select 
+    mesa.nome
+    from mesa
+        join comanda on mesa.codigo=comanda.mesa
+        where date(comanda.data)=date('now','-60 days')
+    group by mesa.nome
+    having count(*)=(
+                        select 
+                        count(*)
+                        from mesa
+                            join comanda on mesa.codigo=comanda.mesa
+                            where date(comanda.data)=date('now','-60 days')
+                        group by mesa.nome
+                        order by count(*) asc
+                        limit 1
+                    )
+;
 
 --f) Quais mesas foram utilizadas mais de 2 vezes a média de utilização de todas as mesas nos últimos 60 dias?
 
