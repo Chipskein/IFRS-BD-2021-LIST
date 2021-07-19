@@ -1,4 +1,6 @@
-# Status
+# #
+
+# Nome:Bruno e Silvio
 
 ## Facebook
 
@@ -14,7 +16,6 @@
 10. letras j  [...]
 11. letras k  [...]
 12. letras l  [...]
-
 
 ## Pizzaria
 
@@ -33,9 +34,3 @@
 13. letras m  [...]
 14. letras o  [...]
 15. letras p  [...]
-
-## legenda
-
-* x=feito + testes básicos
-* ...=não feito
-* ok=amplamente testado
