@@ -221,11 +221,99 @@ select
                             )
 ;                       
 --j) Quais foram os 3 sabores mais pedidos na última estação do ano?
+
 --Outono : De 21 de março a 21 de junho.
 --Inverno: De 22 de junho a 23 de setembro.
 --Primavera: De 24 de setembro a 21 de dezembro.
 --Verão: De 22 de dezembro a 20 de março.
-     
+--acho que tá certo
+select
+    sabor.nome,count(*)
+    from 
+    comanda
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizzasabor.pizza=pizza.codigo
+        join sabor on pizzasabor.sabor=sabor.codigo
+    where             
+            --inverno
+            (
+                strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
+                strftime('%Y',comanda.data)=strftime('%Y','now') and
+                strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
+            )
+            or
+            --outuno
+            (                   
+                strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
+                strftime('%Y',comanda.data)=strftime('%Y','now') and
+                strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
+            )
+            or 
+            --primavera
+            (                   
+                strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
+                strftime('%Y',comanda.data)=strftime('%Y','now') and
+                strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
+            )
+            or
+            --verão
+            (
+                    strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
+                    strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') and
+                    strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
+                    or
+                    strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
+                    strftime('%Y',comanda.data)=strftime('%Y','now') and
+                    strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
+            )
+    group by sabor.nome
+    having count(*) in (
+                        select
+                            distinct
+                            count(*) as qt2      
+                            from 
+                            comanda
+                                join pizza on pizza.comanda=comanda.numero
+                                join pizzasabor on pizzasabor.pizza=pizza.codigo
+                                join sabor on pizzasabor.sabor=sabor.codigo
+                            where             
+                                --inverno
+                                (
+                                    strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
+                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
+                                    strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
+                                )
+                                or
+                                --outuno
+                                (                   
+                                    strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
+                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
+                                    strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
+                                )
+                                or 
+                                --primavera
+                                (                   
+                                    strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
+                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
+                                    strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
+                                )
+                                or
+                                --verão
+                                (
+                                        strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
+                                        strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') and
+                                        strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
+                                        or
+                                        strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
+                                        strftime('%Y',comanda.data)=strftime('%Y','now') and
+                                        strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
+                                )
+                            group by sabor.nome
+                            order by qt2 desc
+                            limit 3
+                        )
+    order by count(*) desc
+;
 --k) Quais foram os 5 ingredientes mais pedidos na última estação do ano?
 
 --l) Qual é o percentual atingido de arrecadação com venda de pizzas no ano atual em comparação com o total arrecadado no ano passado?
