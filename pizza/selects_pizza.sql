@@ -258,13 +258,19 @@ select
             or
             --verão
             (
-                    strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') and
-                    strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
-                    or
-                    strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                    strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
+                        (
+                            strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
+                            strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
+                            or
+                            strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
+                            strftime('%Y',comanda.data)=strftime('%Y','now') 
+                        )
+                        and
+                        (
+                            strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
+                            or 
+                            strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
+                        )
             )
     group by sabor.nome
     having count(*) in (
@@ -300,13 +306,19 @@ select
                                 or
                                 --verão
                                 (
+                                    (
                                         strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') and
-                                        strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
+                                        strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
                                         or
                                         strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now') and
+                                        strftime('%Y',comanda.data)=strftime('%Y','now') 
+                                    )
+                                    and
+                                    (
+                                        strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
+                                        or 
                                         strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
+                                    )
                                 )
                             group by sabor.nome
                             order by qt2 desc
