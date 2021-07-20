@@ -104,17 +104,134 @@ select
 
 --g) Quais sabores estão entre os 10 mais pedidos no último mês e também no penúltimo mês?
 
+select 
+    sabor.nome
+    from 
+    comanda
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on sabor.codigo=pizzasabor.sabor
+    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    group by sabor.codigo
+    having count(*) in (
+                            select 
+                                distinct
+                                    count(*) as qt2
+                                from 
+                                comanda
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on sabor.codigo=pizzasabor.sabor
+                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                group by sabor.codigo
+                                order by qt2 desc
+                                limit 10
+                            )
+intersect
+select 
+    sabor.nome
+    from 
+    comanda
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on sabor.codigo=pizzasabor.sabor
+    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    group by sabor.codigo       
+    having count(*) in (
+                            select 
+                                distinct
+                                    count(*) as qt4
+                                from 
+                                comanda
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on sabor.codigo=pizzasabor.sabor
+                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                group by sabor.codigo
+                                order by qt4 desc
+                                limit 10
+                            )
+;
+
 --h) Quais sabores estão entre os 10 mais pedidos no último mês mas não no penúltimo mês?
+select 
+    sabor.nome
+    from 
+    comanda
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on sabor.codigo=pizzasabor.sabor
+    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    group by sabor.codigo
+    having count(*) in (
+                            select 
+                                distinct
+                                    count(*) as qt2
+                                from 
+                                comanda
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on sabor.codigo=pizzasabor.sabor
+                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                group by sabor.codigo
+                                order by qt2 desc
+                                limit 10
+                            )
+except
+select 
+    sabor.nome
+    from 
+    comanda
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on sabor.codigo=pizzasabor.sabor
+    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    group by sabor.codigo       
+    having count(*) in (
+                            select 
+                                distinct
+                                    count(*) as qt4
+                                from 
+                                comanda
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on sabor.codigo=pizzasabor.sabor
+                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                group by sabor.codigo
+                                order by qt4 desc
+                                limit 10
+                            )
+;
 
 --i) Quais sabores não foram pedidos nos últimos 3 meses?
-
+select 
+    sabor.nome 
+    from sabor 
+    where  sabor.nome not in
+                            (
+                                select 
+                                    distinct
+                                    sabor.nome
+                                    from 
+                                    comanda
+                                        join pizza on pizza.comanda=comanda.numero
+                                        join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                        join sabor on sabor.codigo=pizzasabor.sabor
+                                    where date(comanda.data) between date('now','start of month','-2 months') and date('now','start of month','+1 month','-1 days')
+                            )
+;                       
 --j) Quais foram os 3 sabores mais pedidos na última estação do ano?
-
+--Outono : De 21 de março a 21 de junho.
+--Inverno: De 22 de junho a 23 de setembro.
+--Primavera: De 24 de setembro a 21 de dezembro.
+--Verão: De 22 de dezembro a 20 de março.
+     
 --k) Quais foram os 5 ingredientes mais pedidos na última estação do ano?
 
 --l) Qual é o percentual atingido de arrecadação com venda de pizzas no ano atual em comparação com o total arrecadado no ano passado?
 
 --m) Qual dia da semana teve maior arrecadação em pizzas nos últimos 60 dias?
+
 
 --n) Qual a combinação de 2 sabores mais pedida na mesma pizza nos últimos 3 meses?
 
