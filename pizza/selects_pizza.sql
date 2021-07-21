@@ -68,32 +68,32 @@ select
     mesa.nome
     from mesa
         join comanda on mesa.codigo=comanda.mesa
-        where date(comanda.data)=date('now','-60 days')
+    where date(comanda.data) between date('now','-60 days') and date('now')
     group by mesa.nome
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
-                            where date(comanda.data)=date('now','-60 days')
+                        where date(comanda.data) between date('now','-60 days') and date('now')
                         group by mesa.nome
                         order by count(*) desc
                         limit 1
                     )
-    ;
+;
 --e) Qual mesa foi menos utilizada nos últimos 60 dias?
 select 
     mesa.nome
     from mesa
         join comanda on mesa.codigo=comanda.mesa
-        where date(comanda.data)=date('now','-60 days')
+        where date(comanda.data) between date('now','-60 days') and date('now')
     group by mesa.nome
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
-                            where date(comanda.data)=date('now','-60 days')
+                            where date(comanda.data) between date('now','-60 days') and date('now')
                         group by mesa.nome
                         order by count(*) asc
                         limit 1
@@ -101,7 +101,30 @@ select
 ;
 
 --f) Quais mesas foram utilizadas mais de 2 vezes a média de utilização de todas as mesas nos últimos 60 dias?
-
+--media=sum(quantas vezes cada mesa foi usada)/count(numero de mesas)
+-- select cast(23+30+30+22+30+25+34+35+21+35+37+32+30+28+28 as real)/15.0 
+select 
+    mesa.nome,
+    count(*)
+    from comanda
+    join mesa on comanda.mesa=mesa.codigo
+    where date(comanda.data) between date('now','-60 days') and date('now')
+    group by mesa.codigo
+    having count(*)>cast(2.0*(select 
+                            cast(sum(qt_total.qt) as real)/cast((select count(*) from mesa) as real) as media
+                            from 
+                            (  select
+                                        count(*) as qt
+                                        from 
+                                            comanda
+                                            join mesa on comanda.mesa=mesa.codigo
+                                            where date(comanda.data) between date('now','-60 days') and date('now')
+                                        group by mesa.codigo
+                                        order by qt
+                            ) as qt_total
+                            ) as integer
+                        )
+;
 --g) Quais sabores estão entre os 10 mais pedidos no último mês e também no penúltimo mês?
 
 select 
