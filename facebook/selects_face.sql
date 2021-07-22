@@ -6,8 +6,17 @@ exercícios anteriores, para responder as perguntas:*/
     distinct
     perfil.nome as perfil
     from grupo,grupoPerfil,perfil
-    where 
-    lower(grupo.nome)= ('banco de dados-ifrs2021') intersect ('sqlite')
+    where
+    lower(grupo.nome)= ('banco de dados-ifrs2021') and
+    grupo.codigo=grupoPerfil.grupo and
+    lower(perfil.email) like grupoPerfil.perfil
+    intersect
+    select
+    distinct
+    perfil.nome as perfil
+    from grupo,grupoPerfil,perfil
+    where
+    lower(grupo.nome)= ('sqlite') and
     grupo.codigo=grupoPerfil.grupo and
     lower(perfil.email) like grupoPerfil.perfil
 ;
@@ -22,13 +31,52 @@ exercícios anteriores, para responder as perguntas:*/
         perfil.email=post.perfil and
         reaction.postagem=post.codigo and
         lower(reaction.texto)='gostei' 
-        and post.data between datetime('now','-7 days') and datetime('now')
+        and post.data between datetime('now','-30 days') and datetime('now')
         group by perfil.nome,post.codigo
-        order by count(*)
+        having count(*) = (
+        select 
+            distinct
+            count(*) as rank
+            from perfil,post,reaction
+            where 
+            perfil.email=post.perfil and
+            reaction.postagem=post.codigo and
+            lower(reaction.texto)='gostei' 
+            and post.data between datetime('now','-30 days') and datetime('now')
+            group by perfil.nome,post.codigo
+            order by rank desc
+            limit 1
+        )
+        order by count(*) desc
 ;
 
 --c) Quais os 5 assuntos mais comentados no Brasil nos últimos 30 dias?
-
+select 
+    assunto.nome as nome
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='brasil'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    having count(*) in
+    (select 
+    distinct count(*) as assunto1
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='brasil'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    order by assunto1 desc
+    limit 2
+    )
+    order by count(*) desc
+;
 --d) Quais os 5 assuntos mais comentados por país nos últimos 30 dias?
 
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
