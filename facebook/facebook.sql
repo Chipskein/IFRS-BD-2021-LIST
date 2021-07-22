@@ -220,6 +220,7 @@ INSERT INTO grupoPerfil(grupo,perfil) values
 						(1,'mcalbuq@mymail.com'),
 						(1,'pxramos@mymail.com'),
 						(1,'jorosamed@mymail.com'),
+						(1,'pedro@gmail.com'),
 						(2,'professor@hotmail.com'),
 						(2,'joaosbras@mymail.com'),
 						(2,'mcalbuq@mymail.com'),

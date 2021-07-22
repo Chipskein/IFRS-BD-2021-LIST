@@ -2,8 +2,30 @@
 exercícios anteriores, para responder as perguntas:*/
 
 --a) Quais os nomes dos usuários em comum entre os grupos SQLite e Banco de Dados-IFRS-2021?
+    select
+    distinct
+    perfil.nome as perfil
+    from grupo,grupoPerfil,perfil
+    where 
+    lower(grupo.nome)= ('banco de dados-ifrs2021') intersect ('sqlite')
+    grupo.codigo=grupoPerfil.grupo and
+    lower(perfil.email) like grupoPerfil.perfil
+;
 
 --b) Qual o nome do usuário do Brasil que mais recebeu curtidas em suas postagens nos últimos 30 dias?
+
+    select 
+        distinct
+        perfil.nome as nome
+        from perfil,post,reaction
+        where 
+        perfil.email=post.perfil and
+        reaction.postagem=post.codigo and
+        lower(reaction.texto)='gostei' 
+        and post.data between datetime('now','-7 days') and datetime('now')
+        group by perfil.nome,post.codigo
+        order by count(*)
+;
 
 --c) Quais os 5 assuntos mais comentados no Brasil nos últimos 30 dias?
 
