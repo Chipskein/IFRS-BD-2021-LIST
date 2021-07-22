@@ -82,7 +82,32 @@ select
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
 
 --f) Qual o nome do usuário que postou a postagem que teve mais curtidas no Brasil nos últimos 60 dias?
-
+--postagem=post
+select
+    perfil.nome
+    from reaction
+        join post on reaction.postagem=post.codigo
+        join perfil on perfil.email=post.perfil
+    where 
+    reaction.texto='gostei' and
+    lower(perfil.pais)='brasil' and
+    reaction.data between datetime('now','-60 days')and datetime('now')
+    group by reaction.postagem
+    having count(*)=(
+                        select
+                        count(*)
+                        from reaction
+                            join post on reaction.postagem=post.codigo
+                            join perfil on perfil.email=post.perfil
+                        where 
+                        reaction.texto='gostei' and
+                        lower(perfil.pais)='brasil' and
+                        reaction.data between datetime('now','-60 days')and datetime('now')
+                        group by reaction.postagem
+                        order by count(*) desc
+                        limit 1
+                    )
+;
 --g) Qual faixa etária mais reagiu às postagens do grupo SQLite nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43-51, 51-60 e 60-.
 
 --h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
