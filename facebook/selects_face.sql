@@ -73,7 +73,7 @@ select
         and post.data between datetime('now','-30 days') and datetime('now')
     group by assunto.codigo
     order by assunto1 desc
-    limit 2
+    limit 5
     )
     order by count(*) desc
 ;
