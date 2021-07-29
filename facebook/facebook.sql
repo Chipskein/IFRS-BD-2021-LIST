@@ -37,7 +37,10 @@ insert into perfil (email, senha, nome, cidade, estado, pais, data,nascimento,ge
 	('paulafernandes@mymail.com', '*****','Paula Fernandes Amaral', 'Tambaú', 'MG', 'Brasil','2010-01-01 13:20', '1999-08-30','F'),
 	('marciasilva@mymail.com', '*****','Marcia Silva', 'Tambaú', 'MG', 'Brasil','2010-01-01 13:20', '2001-07-30','F'),
 	('jessicabtstop@mymail.com', '*****','Jessica Kpopper', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2000-05-23','F'),
-	('pequenopedrinho@mymail.com', '*****','Pedrinho', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2002-01-03','M');
+	('pequenopedrinho@mymail.com', '*****','Pedrinho', 'Apucarana', 'PR', 'Brasil','2010-01-01 13:20', '2002-01-03','M'),
+	('M&M@mymail.com', '*****','Marcinha', 'Buenos aires', 'BUE', 'Argentina','2010-01-01 13:20', '2001-07-30','F'),
+	('Flash@mymail.com', '*****','Flash', 'Buenos aires', 'BUE', 'Argentina','2010-01-01 13:20', '2000-05-23','F'),
+	('ciclope@mymail.com', '*****','ciclope', 'Washington', 'WAS', 'EUA','2010-01-01 13:20', '2002-01-03','M');
 create table amigo (
 	perfilAmigo varchar(100) not null,
 	perfil varchar(100) not null,
@@ -96,7 +99,11 @@ insert into post (texto,perfil,postagem,data,grupo) values
 	('Alguém mais ficou com dúvida no comando INSERT?','pedro@gmail.com',1,'2021-06-02 15:15', null),
 	('Eu também','jorosamed@mymail.com',1,'2021-06-02 15:20', null),
 	('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com',1,'2021-06-02 15:30', null),
-	('salve salve familia','pele@cbf.com.br',5,CURRENT_TIMESTAMP, null);
+	('salve salve familia','pele@cbf.com.br',5,CURRENT_TIMESTAMP, null),
+	('Eu não','ciclope@mymail.com',1,'2021-06-02 15:20', null),
+	('Já agendaste horário de atendimento com o betito?','M&M@mymail.com',null,'2021-06-02 15:30', null),
+	('salve salve familia','M&M@mymail.com',5,CURRENT_TIMESTAMP, null);
+
 create table assunto(
 	codigo integer not null,
 	nome varchar(100),
@@ -133,7 +140,12 @@ insert into assuntoPost(post,assunto) values
 					   (4,7),
 					   (8,1),
 					   (9,1),
-					   (10,1);
+					   (10,1),
+					   (15,3),
+					   (16,5),
+					   (16,3),
+					   (17,1),
+					   (17,4);
 --tabela compartilhamento adicionada para letra n)
 create table compartilhamento(
 	perfil varchar(100) not null,
