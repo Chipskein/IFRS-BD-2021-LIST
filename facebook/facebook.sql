@@ -75,25 +75,31 @@ create table post (
 	perfil varchar(100) not null,
 	--postagem integer removido
 	grupo  integer,--adicionado ,se grupo e pagina forem nulos o post foi feito no feed do dono do post,não é possivel fazer postagens no feed de outros usuario
-	pagina integer, --adicionado
+	pagina integer, --adicionado,
+	postagem integer,
 	data datetime,
 	foreign key (perfil) references perfil(email),
 	foreign key (grupo) references grupo(codigo),
 	foreign key (pagina) references pagina(codigo),
 	primary key (codigo)
 );
-insert into post (texto,perfil,data,grupo) values
-	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com','2021-06-02 15:00',null),
-	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com','2021-06-02 15:35',null),
-	('salve salve familia aqui é o paulao','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-1 days'),null),
-	('paulão é rei po','pmartinssilva90@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),null),
-	('Sqlite é muito tb hahahah','mcalbuq@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
-	('SQlite top topotpotpto muito top','jorosamed@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
-	('SQlite hahahahah go birrrl','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
-	('çafasfasfa','professor@hotmail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),2),
-	('eU sOu GAymer ksksks guys','pequenopedrinho@mymail.com',datetime(CURRENT_TIMESTAMP,'-3 days'),NULL),
-	('salve rapeize','marciasilva@mymail.com',datetime(CURRENT_TIMESTAMP,'-2 days'),NULL);
-	
+insert into post (texto,perfil,data, postagem,grupo) values
+	('Hoje eu aprendi como inserir dados no SQLite no IFRS','joaosbras@mymail.com',null,'2021-06-02 15:00',null),
+	('Atendimento de BD no GMeet amanhã para quem tiver dúvidas de INSERT','professor@hotmail.com',null,'2021-06-02 15:35',null),
+	('salve salve familia aqui é o paulao','pmartinssilva90@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-1 days'),null),
+	('paulão é rei po','pmartinssilva90@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),null),
+	('Sqlite é muito tb hahahah','mcalbuq@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('SQlite top topotpotpto muito top','jorosamed@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('SQlite hahahahah go birrrl','professor@hotmail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('çafasfasfa','professor@hotmail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),2),
+	('eU sOu GAymer ksksks guys','pequenopedrinho@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-3 days'),NULL),
+	('salve rapeize','marciasilva@mymail.com',null,datetime(CURRENT_TIMESTAMP,'-2 days'),NULL),
+	('Alguém mais ficou com dúvida no comando INSERT?','pedro@gmail.com','2021-06-02 15:15',1, null),
+	('Eu também','jorosamed@mymail.com','2021-06-02 15:20', 1, null),
+	('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com','2021-06-02 15:30',1, null),
+	('salve salve familia','pele@cbf.com.br',CURRENT_TIMESTAMP, 1),
+	('salve salve familia','pele@cbf.com.br',CURRENT_TIMESTAMP, 2),
+	('salve salve familia','pele@cbf.com.br',CURRENT_TIMESTAMP, 7);
 create table assunto(
 	codigo integer not null,
 	nome varchar(100),
@@ -167,12 +173,7 @@ create table comentario(
 	primary key (codigo)
 );
 INSERT INTO comentario(texto,perfil,postagem,data) values
-							('Alguém mais ficou com dúvida no comando INSERT?','pedro@gmail.com',1,'2021-06-02 15:15'),
-							('Eu também','jorosamed@mymail.com', 1,'2021-06-02 15:20'),
-							('Já agendaste horário de atendimento com o professor?','joaosbras@mymail.com',1,'2021-06-02 15:30'),
-							('salve salve familia','pele@cbf.com.br',1,CURRENT_TIMESTAMP),
-							('salve salve familia','pele@cbf.com.br',2,CURRENT_TIMESTAMP),
-							('salve salve familia','pele@cbf.com.br',7,CURRENT_TIMESTAMP);
+
 --tabela reações adicionado
 create table reaction(
 	--codigo integer not null,
