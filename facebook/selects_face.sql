@@ -226,7 +226,46 @@ select
                     )
 ;
 --j) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos?
-
+select 
+        perfil.nome
+    from grupo,grupoPerfil,perfil,amigo 
+    where
+        (
+            lower(grupo.nome)='sqlite'
+            or
+            lower(grupo.nome)='banco de dados ifrs2021'
+        ) and   
+        grupo.codigo=grupoPerfil.grupo and
+        grupoPerfil.perfil=perfil.email and
+        ( 
+            lower(perfil.email)=lower(amigo.perfil) 
+            or 
+            lower(perfil.email)=lower(amigo.perfilAmigo)
+        )
+    group by perfil.email
+    having count(*)=(
+                        select 
+                        distinct
+                        count(*) as qt_amigos_maior
+                        from grupo,grupoPerfil,perfil,amigo 
+                        where
+                            (
+                                lower(grupo.nome)='sqlite'
+                                or
+                                lower(grupo.nome)='banco de dados ifrs2021'
+                            ) and   
+                            grupo.codigo=grupoPerfil.grupo and
+                            grupoPerfil.perfil=perfil.email and
+                            ( 
+                                lower(perfil.email)=lower(amigo.perfil) 
+                                or 
+                                lower(perfil.email)=lower(amigo.perfilAmigo)
+                            )
+                        group by perfil.email
+                        order by count(*) desc
+                        limit 1
+                    )
+;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
 --l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário? Considere que, se A e B não são amigos mas possuem no mínimo 5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses, B deve ser sugerido como amigo de A.
 /*2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
