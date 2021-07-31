@@ -161,8 +161,56 @@ select
                     )
 ;
 --g) Qual faixa etária mais reagiu às postagens do grupo SQLite nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43-51, 51-60 e 60-.
---h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
 
+--h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
+--add assuntos no mes retrasado para teste
+
+--assuntos mais comentados/postados no mes passado
+select 
+        assunto.nome
+    from 
+    assunto 
+        join assuntoPost on assuntoPost.assunto=assunto.codigo 
+        join post on post.codigo=assuntoPost.post
+    where post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+    group by assunto.codigo
+    having count(*) in (
+                        select 
+                        distinct
+                            count(*)
+                        from 
+                            assunto 
+                            join assuntoPost on assuntoPost.assunto=assunto.codigo 
+                            join post on post.codigo=assuntoPost.post
+                        where post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+                        group by assunto.codigo
+                        order by count(*) desc
+                        limit 5
+                    )
+intersect
+--asuntos mais comentados/postados mes retrasado
+select 
+        assunto.nome
+    from 
+        assunto 
+        join assuntoPost on assuntoPost.assunto=assunto.codigo 
+        join post on post.codigo=assuntoPost.post
+    where post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+    group by assunto.codigo
+    having count(*) in (
+                        select 
+                        distinct
+                            count(*)
+                        from 
+                        assunto 
+                            join assuntoPost on assuntoPost.assunto=assunto.codigo 
+                            join post on post.codigo=assuntoPost.post
+                        where post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+                        group by assunto.codigo
+                        order by count(*) desc
+                        limit 5
+                    )
+;
 --i) Quais os nomes dos usuários que participam do grupo SQLite que tiveram a 1ª, 2ª e 3ª maior quantidade de comentários em uma postagem sobre o assunto select?
 --adicionar testes
 select 
