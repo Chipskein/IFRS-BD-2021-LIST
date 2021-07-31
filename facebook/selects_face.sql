@@ -164,7 +164,6 @@ select
 
 --h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
 --add assuntos no mes retrasado para teste
-
 --assuntos mais comentados/postados no mes passado
 select 
         assunto.nome
