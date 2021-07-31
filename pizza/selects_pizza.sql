@@ -560,80 +560,168 @@ select
 --n) Qual a combinação de 2 sabores mais pedida na mesma pizza nos últimos 3 meses?
 --combinação de 2 sabores mais pedida no ultimos 3 meses 
 select 
-    sabor1.nome,
-    sabor2.nome,
-    count(*)
-from
-(
-    select 
-        sabor1.sabor as sb1,
-        sabor2.sabor as sb2
-    from    (
-                select 
-                pizza.codigo as pizza
-                from 
-                comanda,pizza,pizzasabor,sabor
-                Where
-                    comanda.numero=pizza.comanda and
-                    pizzasabor.pizza=pizza.codigo and
-                    pizzasabor.sabor=sabor.codigo and
-                    date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
-                group by pizza.codigo
-                having count(*)=2
-            ) as pizzas
-            ,pizzasabor as sabor1
-            ,pizzasabor as sabor2
-            
+        sabor1.nome,
+        sabor2.nome,
+        count(*)
+    from
+    (
+        select 
+            sabor1.sabor as sb1,
+            sabor2.sabor as sb2
+        from    (
+                    select 
+                    pizza.codigo as pizza
+                    from 
+                    comanda,pizza,pizzasabor,sabor
+                    Where
+                        comanda.numero=pizza.comanda and
+                        pizzasabor.pizza=pizza.codigo and
+                        pizzasabor.sabor=sabor.codigo and
+                        date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
+                    group by pizza.codigo
+                    having count(*)=2
+                ) as pizzas
+                ,pizzasabor as sabor1
+                ,pizzasabor as sabor2
+                
+        where 
+            pizzas.pizza=sabor1.pizza and
+            pizzas.pizza=sabor2.pizza and 
+            sabor2.sabor!=sabor1.sabor
+        group by pizzas.pizza
+    ) as combination
+    ,sabor as sabor1
+    ,sabor as sabor2
     where 
-        pizzas.pizza=sabor1.pizza and
-        pizzas.pizza=sabor2.pizza and 
-        sabor2.sabor!=sabor1.sabor
-    group by pizzas.pizza
-) as combination
-,sabor as sabor1
-,sabor as sabor2
-where 
-sabor1.codigo=combination.sb1 and
-sabor2.codigo=combination.sb2
-group by (combination.sb1 || " " || combination.sb2)
-having count(*)=(
-                    select 
-                        count(*)
-                    from
-                    (
-                    select 
-                        sabor1.sabor as sb1,
-                        sabor2.sabor as sb2
-                    from    (
-                                select 
-                                pizza.codigo as pizza
-                                from 
-                                comanda,pizza,pizzasabor,sabor
-                                Where
-                                    comanda.numero=pizza.comanda and
-                                    pizzasabor.pizza=pizza.codigo and
-                                    pizzasabor.sabor=sabor.codigo and
-                                    date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
-                                group by pizza.codigo
-                                having count(*)=2
-                            ) as pizzas
-                            ,pizzasabor as sabor1
-                            ,pizzasabor as sabor2
-                    where 
-                        pizzas.pizza=sabor1.pizza and
-                        pizzas.pizza=sabor2.pizza and 
-                        sabor2.sabor!=sabor1.sabor
-                    group by pizzas.pizza
-                    ) as combination
-                    group by (combination.sb1 || " " || combination.sb2)
-                    order by count(*) desc
-                    limit 1
-            )
+    sabor1.codigo=combination.sb1 and
+    sabor2.codigo=combination.sb2
+    group by (combination.sb1 || " " || combination.sb2)
+    having count(*)=(
+                        select 
+                            count(*)
+                        from
+                        (
+                        select 
+                            sabor1.sabor as sb1,
+                            sabor2.sabor as sb2
+                        from    (
+                                    select 
+                                    pizza.codigo as pizza
+                                    from 
+                                    comanda,pizza,pizzasabor,sabor
+                                    Where
+                                        comanda.numero=pizza.comanda and
+                                        pizzasabor.pizza=pizza.codigo and
+                                        pizzasabor.sabor=sabor.codigo and
+                                        date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
+                                    group by pizza.codigo
+                                    having count(*)=2
+                                ) as pizzas
+                                ,pizzasabor as sabor1
+                                ,pizzasabor as sabor2
+                        where 
+                            pizzas.pizza=sabor1.pizza and
+                            pizzas.pizza=sabor2.pizza and 
+                            sabor2.sabor!=sabor1.sabor
+                        group by pizzas.pizza
+                        ) as combination
+                        group by (combination.sb1 || " " || combination.sb2)
+                        order by count(*) desc
+                        limit 1
+                )
 ;
 
 --o) Qual a combinação de 3 sabores mais pedida na mesma pizza nos últimos 3 meses?
-
-
+select 
+        sabor1.nome,
+        sabor2.nome,
+        sabor3.nome,
+        count(*)
+    from
+    (
+        select 
+            sabor1.sabor as sb1,
+            sabor2.sabor as sb2,
+            sabor3.sabor as sb3
+        from    (
+                    select 
+                    pizza.codigo as pizza
+                    from 
+                    comanda,pizza,pizzasabor,sabor
+                    Where
+                        comanda.numero=pizza.comanda and
+                        pizzasabor.pizza=pizza.codigo and
+                        pizzasabor.sabor=sabor.codigo and
+                        date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
+                    group by pizza.codigo
+                    having count(*)=3
+                ) as pizzas
+                ,pizzasabor as sabor1
+                ,pizzasabor as sabor2
+                ,pizzasabor as sabor3
+        where 
+            pizzas.pizza=sabor1.pizza  and
+            pizzas.pizza=sabor2.pizza  and 
+            pizzas.pizza=sabor3.pizza  and 
+            sabor2.sabor!=sabor1.sabor and
+            sabor3.sabor!=sabor2.sabor and
+            sabor3.sabor!=sabor1.sabor  
+        group by pizzas.pizza
+    ) as combination
+    ,sabor as sabor1
+    ,sabor as sabor2
+    ,sabor as sabor3
+    where 
+    sabor1.codigo=combination.sb1 and
+    sabor2.codigo=combination.sb2 and
+    sabor3.codigo=combination.sb3
+    group by (combination.sb1 || " " || combination.sb2 || " " || combination.sb3)
+    having count(*)=(
+                        select 
+                            count(*)
+                        from
+                        (
+                            select 
+                                sabor1.sabor as sb1,
+                                sabor2.sabor as sb2,
+                                sabor3.sabor as sb3
+                            from    (
+                                        select 
+                                        pizza.codigo as pizza
+                                        from 
+                                        comanda,pizza,pizzasabor,sabor
+                                        Where
+                                            comanda.numero=pizza.comanda and
+                                            pizzasabor.pizza=pizza.codigo and
+                                            pizzasabor.sabor=sabor.codigo and
+                                            date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 day')
+                                        group by pizza.codigo
+                                        having count(*)=3
+                                    ) as pizzas
+                                    ,pizzasabor as sabor1
+                                    ,pizzasabor as sabor2
+                                    ,pizzasabor as sabor3
+                            where 
+                                pizzas.pizza=sabor1.pizza  and
+                                pizzas.pizza=sabor2.pizza  and 
+                                pizzas.pizza=sabor3.pizza  and 
+                                sabor2.sabor!=sabor1.sabor and
+                                sabor3.sabor!=sabor2.sabor and
+                                sabor3.sabor!=sabor1.sabor  
+                            group by pizzas.pizza
+                        ) as combination
+                        ,sabor as sabor1
+                        ,sabor as sabor2
+                        ,sabor as sabor3
+                        where 
+                        sabor1.codigo=combination.sb1 and
+                        sabor2.codigo=combination.sb2 and
+                        sabor3.codigo=combination.sb3
+                        group by (combination.sb1 || " " || combination.sb2 || " " || combination.sb3)
+                        order by count(*) desc
+                        limit 1 
+                    )
+;
 
 --p) Qual a combinação de sabor e borda mais pedida na mesma pizza nos últimos 3 meses?
 --combinação de sabor e borda mais pedida nos últimos 3 meses
