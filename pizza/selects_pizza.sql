@@ -558,7 +558,30 @@ select
 ;
 
 --n) Qual a combinação de 2 sabores mais pedida na mesma pizza nos últimos 3 meses?
+--todas as pizzas com 2 sabores nos ultimos 3 meses
+--não terminado
+select 
+pizza.codigo as pizza ,sabor.codigo as sabor1
+from 
+pizza 
+    join pizzasabor on pizza.codigo=pizzasabor.pizza
+    join sabor on pizzasabor.sabor=sabor.codigo
+where pizza.codigo in (
+select 
+pizza.codigo
+from 
+comanda
+   join pizza on pizza.comanda=comanda.numero
+   join pizzasabor  on pizza.codigo=pizzasabor.pizza
+where comanda.data between date('now','start of month','-2 months') and date('now','start of month','+1 months','-1 days')
+group by pizza.codigo
+having count(*)=2
+) 
 
+;
 --o) Qual a combinação de 3 sabores mais pedida na mesma pizza nos últimos 3 meses?
 
 --p) Qual a combinação de sabor e borda mais pedida na mesma pizza nos últimos 3 meses?
+
+
+
