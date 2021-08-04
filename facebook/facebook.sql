@@ -142,6 +142,8 @@ insert into assuntoPost(post,assunto) values
 					   (9,1),
 					   (10,1),
 					   (15,3),
+						(15,1),
+						(15,6),
 					   (16,5),
 					   (16,3),
 					   (17,1),

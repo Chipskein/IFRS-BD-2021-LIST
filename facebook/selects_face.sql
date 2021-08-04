@@ -87,7 +87,7 @@ select
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and 
         perfil.email = post.perfil 
-        and post.data between datetime('now','-30 days') and datetime('now')
+        and post.data between datetime('now','-1000 days') and datetime('now')
     group by perfil.pais
     having count(*) in
     (select 
@@ -97,8 +97,8 @@ select
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and 
         perfil.email = post.perfil 
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by perfil.pais
+        and post.data between datetime('now','-1000 days') and datetime('now')
+    group by assunto.codigo
     order by assunto1 desc
     limit 5
     )
