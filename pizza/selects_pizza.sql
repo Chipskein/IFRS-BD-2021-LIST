@@ -43,6 +43,7 @@ select
 ;
 
 --c) Qual sabor não foi pedido nos últimos 4 domingos?
+--ultimos domingos não conta o domingo dessa semana 
 select 
     sabor.nome 
     from sabor
@@ -56,45 +57,45 @@ select
     join pizzasabor on pizzasabor.pizza=pizza.codigo
     join sabor on sabor.codigo=pizzasabor.sabor
     where (
+            date(comanda.data)=date('now','weekday 0','-35 days') or
             date(comanda.data)=date('now','weekday 0','-28 days') or
             date(comanda.data)=date('now','weekday 0','-21 days') or
-            date(comanda.data)=date('now','weekday 0','-14 days') or
-            date(comanda.data)=date('now','weekday 0','-7 days') 
+            date(comanda.data)=date('now','weekday 0','-14 days') 
           ) 
 ;
 
 --d) Qual mesa foi mais utilizada nos últimos 60 dias?
 select 
-    mesa.nome
+    mesa.nome,count(*)
     from mesa
         join comanda on mesa.codigo=comanda.mesa
     where date(comanda.data) between date('now','-60 days') and date('now')
-    group by mesa.nome
+    group by mesa.codigo
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
                         where date(comanda.data) between date('now','-60 days') and date('now')
-                        group by mesa.nome
+                        group by mesa.codigo
                         order by count(*) desc
                         limit 1
                     )
 ;
 --e) Qual mesa foi menos utilizada nos últimos 60 dias?
 select 
-    mesa.nome
+    mesa.nome,count(*)
     from mesa
         join comanda on mesa.codigo=comanda.mesa
         where date(comanda.data) between date('now','-60 days') and date('now')
-    group by mesa.nome
+    group by mesa.codigo
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
                             where date(comanda.data) between date('now','-60 days') and date('now')
-                        group by mesa.nome
+                        group by mesa.codigo
                         order by count(*) asc
                         limit 1
                     )
@@ -102,7 +103,7 @@ select
 
 --f) Quais mesas foram utilizadas mais de 2 vezes a média de utilização de todas as mesas nos últimos 60 dias?
 --media=sum(quantas vezes cada mesa foi usada)/count(numero de mesas)
--- select cast(23+30+30+22+30+25+34+35+21+35+37+32+30+28+28 as real)/15.0 
+--select cast(23+30+30+22+30+25+34+35+21+35+37+32+30+28+28 as real)/15.0 
 select 
     mesa.nome,
     count(*)
@@ -126,7 +127,7 @@ select
                         )
 ;
 --g) Quais sabores estão entre os 10 mais pedidos no último mês e também no penúltimo mês?
-
+--último mês=mes passado
 select 
     sabor.nome
     from 
@@ -134,7 +135,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
     group by sabor.codigo
     having count(*) in (
                             select 
@@ -145,7 +146,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
                                 group by sabor.codigo
                                 order by qt2 desc
                                 limit 10
@@ -158,7 +159,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')        
     group by sabor.codigo       
     having count(*) in (
                             select 
@@ -169,7 +170,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')
                                 group by sabor.codigo
                                 order by qt4 desc
                                 limit 10
@@ -184,7 +185,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
     group by sabor.codigo
     having count(*) in (
                             select 
@@ -195,7 +196,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
                                 group by sabor.codigo
                                 order by qt2 desc
                                 limit 10
@@ -208,7 +209,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')        
     group by sabor.codigo       
     having count(*) in (
                             select 
@@ -219,7 +220,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')
                                 group by sabor.codigo
                                 order by qt4 desc
                                 limit 10
@@ -227,6 +228,7 @@ select
 ;
 
 --i) Quais sabores não foram pedidos nos últimos 3 meses?
+--último 3 meses=mes passado + 2 meses retrasados
 select 
     sabor.nome 
     from sabor 
@@ -240,221 +242,361 @@ select
                                         join pizza on pizza.comanda=comanda.numero
                                         join pizzasabor on pizza.codigo=pizzasabor.pizza
                                         join sabor on sabor.codigo=pizzasabor.sabor
-                                    where date(comanda.data) between date('now','start of month','-2 months') and date('now','start of month','+1 month','-1 days')
+                                    where date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 days')
                             )
 ;                       
---j) Quais foram os 3 sabores mais pedidos na última estação do ano?
 
---Outono : De 21 de março a 21 de junho.
---Inverno: De 22 de junho a 23 de setembro.
---Primavera: De 24 de setembro a 21 de dezembro.
---Verão: De 22 de dezembro a 20 de março.
---arrumar j) e k)
---pegar estação retrasada:outono
---esta pegando a atual inverno
-    select
-        sabor.nome,count(*)
+/*
+    Solscticio=data do ano em que temos que o dia>noite
+    Equinocio=data do ano onde dia=noite
+
+    
+    2020-                       
+        Solcsticio de Dezembro      21/12/2020 10:52
+    2021                                           
+        Equinocio de Março          20/03/2021 09:37
+        Solcsticio de junho         21/05/2021 03:32
+        Equinocio de setembro       22/09/2021  19:21
+        Solcstico de dezembro       21/12/2021  15:59
+    2022
+        Equinocio de Março          20/03/2022 15:53
+       
+    Estações              começa                            termina
+        Outono       Equinocio de março         -->  solcsticio de junho
+        Inverno      Solcsticio de junho        -->  equnocio de setembro
+        Primavera    Equinocio de setembro      -->  solscticio de dezembro
+        Verão        solcsticio de dezembro do outro ano    -->  equinocio de março 
+
+*/
+--default
+/*
+
+78.8
+171.6
+265.2
+355.1
+
+*/
+
+
+
+--j) Quais foram os 3 sabores mais pedidos na última estação do ano?
+select 
+    datas.station,sabor.nome,count(*)
+    from
+    (
+        select 
+        DISTINCT
+        comanda.data as data,
+        case 
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+            --verao solcsticio de dezembro - final do ano
+            when 
+                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                or 
+                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                then 'verao'
+            else 'verao' -- 2021-01-01 return null,por algum motivo
+        end as station
         from 
         comanda
-            join pizza on pizza.comanda=comanda.numero
-            join pizzasabor on pizzasabor.pizza=pizza.codigo
-            join sabor on pizzasabor.sabor=sabor.codigo
-        where             
-                --inverno
-                (
-                    strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                    strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
-                )
-                or
-                --outuno
-                (                   
-                    strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                    strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
-                )
-                or 
-                --primavera
-                (                   
-                    strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                    strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
-                )
-                or
-                --verão
-                (
-                            (
-                                strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                                strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
-                                or
-                                strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                                strftime('%Y',comanda.data)=strftime('%Y','now') 
-                            )
-                            and
-                            (
-                                strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
-                                or 
-                                strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
-                            )
-                )
-        group by sabor.nome
-        having count(*) in (
-                            select
+        where
+            strftime('%Y',comanda.data)=strftime('%Y','now')
+            and station = (
+                                select 
                                 distinct
-                                count(*) as qt2      
+                                case 
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                    --verao solcsticio de dezembro - final do ano
+                                    when 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                        or 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                        then 'verao'
+                                    else 'verao' -- 2021-01-01 return null,por algum motivo
+                                end as station
                                 from 
                                 comanda
-                                    join pizza on pizza.comanda=comanda.numero
-                                    join pizzasabor on pizzasabor.pizza=pizza.codigo
-                                    join sabor on pizzasabor.sabor=sabor.codigo
-                                where             
-                                    --inverno
-                                    (
-                                        strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                        strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
-                                    )
-                                    or
-                                    --outuno
-                                    (                   
-                                        strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                        strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
-                                    )
-                                    or 
-                                    --primavera
-                                    (                   
-                                        strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                        strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
-                                    )
-                                    or
-                                    --verão
-                                    (
-                                        (
-                                            strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                                            strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
-                                            or
-                                            strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                                            strftime('%Y',comanda.data)=strftime('%Y','now') 
-                                        )
-                                        and
-                                        (
-                                            strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
-                                            or 
-                                            strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
-                                        )
-                                    )
-                                group by sabor.nome
-                                order by qt2 desc
-                                limit 3
+                                where 
+                                    strftime('%Y',comanda.data)=strftime('%Y','now')
+                                    and station != (
+                                                        select 
+                                                            distinct
+                                                            case 
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                                --verao solcsticio de dezembro - final do ano
+                                                                when 
+                                                                    strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                    or 
+                                                                    strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                    then 'verao'
+                                                                else 'verao'-- 2021-01-01 return null,por algum motivo
+                                                            end as station
+                                                            from 
+                                                            comanda
+                                                            where 
+                                                                strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                            order by comanda.data desc 
+                                                            limit  1
+                                                    )
+                                order by comanda.data desc 
+                                limit  1
                             )
-        order by count(*) desc
-    ;
-    --k) Quais foram os 5 ingredientes mais pedidos na última estação do ano?
-    select
-        ingrediente.nome,count(*)
+
+    ) as datas
+        join comanda on comanda.data=datas.data
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizzasabor.pizza=pizza.codigo
+        join sabor on sabor.codigo=pizzasabor.sabor
+    group by sabor.codigo
+    having count(*) in (
+                        select 
+                        distinct
+                        count(*)
+                        from
+                            (
+                                select 
+                                DISTINCT
+                                comanda.data as data,
+                                case 
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                    --verao solcsticio de dezembro - final do ano
+                                    when 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                        or 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                        then 'verao'
+                                    else 'verao' -- 2021-01-01 return null,por algum motivo
+                                end as station
+                                from 
+                                comanda
+                                where
+                                    strftime('%Y',comanda.data)=strftime('%Y','now')
+                                    and station = (
+                                                        select 
+                                                        distinct
+                                                        case 
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                            --verao solcsticio de dezembro - final do ano
+                                                            when 
+                                                                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                or 
+                                                                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                then 'verao'
+                                                            else 'verao' -- 2021-01-01 return null,por algum motivo
+                                                        end as station
+                                                        from 
+                                                        comanda
+                                                        where 
+                                                            strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                            and station != (
+                                                                                select 
+                                                                                    distinct
+                                                                                    case 
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                                                        --verao solcsticio de dezembro - final do ano
+                                                                                        when 
+                                                                                            strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                                            or 
+                                                                                            strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                                            then 'verao'
+                                                                                        else 'verao'-- 2021-01-01 return null,por algum motivo
+                                                                                    end as station
+                                                                                    from 
+                                                                                    comanda
+                                                                                    where 
+                                                                                        strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                                                    order by comanda.data desc 
+                                                                                    limit  1
+                                                                            )
+                                                        order by comanda.data desc 
+                                                        limit  1
+                                                    )
+
+                            ) as datas
+                            join comanda on comanda.data=datas.data
+                            join pizza on pizza.comanda=comanda.numero
+                            join pizzasabor on pizzasabor.pizza=pizza.codigo
+                            join sabor on sabor.codigo=pizzasabor.sabor
+                        group by sabor.codigo
+                        order by count(*) desc
+                        limit 3
+                    )
+    order by count(*) desc
+;
+--k) Quais foram os 5 ingredientes mais pedidos na última estação do ano?
+select 
+    datas.station,ingrediente.nome,count(*)
+    from
+    (
+        select 
+        DISTINCT
+        comanda.data as data,
+        case 
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+            --verao solcsticio de dezembro - final do ano
+            when 
+                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                or 
+                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                then 'verao'
+            else 'verao' -- 2021-01-01 return null,por algum motivo
+        end as station
         from 
         comanda
-            join pizza on pizza.comanda=comanda.numero
-            join pizzasabor on pizzasabor.pizza=pizza.codigo
-            join sabor on pizzasabor.sabor=sabor.codigo
-            join saboringrediente on saboringrediente.sabor=sabor.codigo
-            join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
-        where                                        
-            --inverno
-            (
-                strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
-                strftime('%Y',comanda.data)=strftime('%Y','now') and
-                strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
-            )
-            or
-            --outuno
-            (                   
-                strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
-                strftime('%Y',comanda.data)=strftime('%Y','now') and
-                strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
-            )
-            or 
-            --primavera
-            (                   
-                strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
-                strftime('%Y',comanda.data)=strftime('%Y','now') and
-                strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
-            )
-            or
-            --verão
-            (
-                (
-                    strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
-                    or
-                    strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                    strftime('%Y',comanda.data)=strftime('%Y','now') 
-                )
-                and
-                (
-                    strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
-                    or 
-                    strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
-                )
-            )
-        group by ingrediente.nome
-        having count(*) in (
-                        select
+        where
+            strftime('%Y',comanda.data)=strftime('%Y','now')
+            and station = (
+                                select 
+                                distinct
+                                case 
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                    --verao solcsticio de dezembro - final do ano
+                                    when 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                        or 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                        then 'verao'
+                                    else 'verao' -- 2021-01-01 return null,por algum motivo
+                                end as station
+                                from 
+                                comanda
+                                where 
+                                    strftime('%Y',comanda.data)=strftime('%Y','now')
+                                    and station != (
+                                                        select 
+                                                            distinct
+                                                            case 
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                                when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                                --verao solcsticio de dezembro - final do ano
+                                                                when 
+                                                                    strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                    or 
+                                                                    strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                    then 'verao'
+                                                                else 'verao'-- 2021-01-01 return null,por algum motivo
+                                                            end as station
+                                                            from 
+                                                            comanda
+                                                            where 
+                                                                strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                            order by comanda.data desc 
+                                                            limit  1
+                                                    )
+                                order by comanda.data desc 
+                                limit  1
+                            )
+
+    ) as datas
+        join comanda on comanda.data=datas.data
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizzasabor.pizza=pizza.codigo
+        join sabor on sabor.codigo=pizzasabor.sabor
+        join saboringrediente on saboringrediente.sabor=sabor.codigo
+        join ingrediente on ingrediente.codigo=saboringrediente.ingrediente
+    group by ingrediente.codigo
+    having count(*) in (
+                            select 
                             distinct
-                            count(*) as qt     
-                            from 
-                            comanda
+                            count(*)
+                            from
+                            (
+                                select 
+                                DISTINCT
+                                comanda.data as data,
+                                case 
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                    when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                    --verao solcsticio de dezembro - final do ano
+                                    when 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                        or 
+                                        strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                        then 'verao'
+                                    else 'verao' -- 2021-01-01 return null,por algum motivo
+                                end as station
+                                from 
+                                comanda
+                                where
+                                    strftime('%Y',comanda.data)=strftime('%Y','now')
+                                    and station = (
+                                                        select 
+                                                        distinct
+                                                        case 
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                            when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                            --verao solcsticio de dezembro - final do ano
+                                                            when 
+                                                                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                or 
+                                                                strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                then 'verao'
+                                                            else 'verao' -- 2021-01-01 return null,por algum motivo
+                                                        end as station
+                                                        from 
+                                                        comanda
+                                                        where 
+                                                            strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                            and station != (
+                                                                                select 
+                                                                                    distinct
+                                                                                    case 
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-03-20 09:37:01') and strftime('%m-%d %H:%M:%S','2021-05-21 03:32') then 'outono'
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-05-21 03:32:01') and strftime('%m-%d %H:%M:%S','2021-09-22 19:21') then 'inverno'
+                                                                                        when strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2021-09-22 19:21:01') and strftime('%m-%d %H:%M:%S','2021-12-21 15:59') then 'primavera'
+                                                                                        --verao solcsticio de dezembro - final do ano
+                                                                                        when 
+                                                                                            strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-12-21 15:59:01') and strftime('%m-%d %H:%M:%S','2020-12-31') 
+                                                                                            or 
+                                                                                            strftime('%m-%d',comanda.data) between strftime('%m-%d %H:%M:%S','2020-01-01') and strftime('%m-%d %H:%M:%S','2021-03-20 09:37')
+                                                                                            then 'verao'
+                                                                                        else 'verao'-- 2021-01-01 return null,por algum motivo
+                                                                                    end as station
+                                                                                    from 
+                                                                                    comanda
+                                                                                    where 
+                                                                                        strftime('%Y',comanda.data)=strftime('%Y','now')
+                                                                                    order by comanda.data desc 
+                                                                                    limit  1
+                                                                            )
+                                                        order by comanda.data desc 
+                                                        limit  1
+                                                    )
+
+                            ) as datas
+                                join comanda on comanda.data=datas.data
                                 join pizza on pizza.comanda=comanda.numero
                                 join pizzasabor on pizzasabor.pizza=pizza.codigo
-                                join sabor on pizzasabor.sabor=sabor.codigo
+                                join sabor on sabor.codigo=pizzasabor.sabor
                                 join saboringrediente on saboringrediente.sabor=sabor.codigo
-                                join ingrediente on saboringrediente.ingrediente=ingrediente.codigo
-                            where                                        
-                                --inverno
-                                (
-                                    strftime('2020-%m-%d',comanda.data) between date('2020-06-22') and date('2020-09-23') and
-                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                    strftime('2020-%m-%d','now') between date('2020-06-22') and date('2020-09-23')
-                                )
-                                or
-                                --outuno
-                                (                   
-                                    strftime('2020-%m-%d',comanda.data) between date('2020-03-21') and date('2020-06-21') and
-                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                    strftime('2020-%m-%d','now') between date('2020-03-21') and date('2020-06-21')
-                                )
-                                or 
-                                --primavera
-                                (                   
-                                    strftime('2020-%m-%d',comanda.data) between date('2020-09-24') and date('2020-12-21') and
-                                    strftime('%Y',comanda.data)=strftime('%Y','now') and
-                                    strftime('2020-%m-%d','now') between date('2020-09-24') and date('2020-12-21')
-                                )
-                                or
-                                --verão
-                                (
-                                    (
-                                        strftime('2020-%m-%d',comanda.data) between date('2020-12-22') and date('2020-12-31') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now','-1 years') 
-                                        or
-                                        strftime('2021-%m-%d',comanda.data) between date('2021-01-01') and date('2021-03-20') and
-                                        strftime('%Y',comanda.data)=strftime('%Y','now') 
-                                    )
-                                    and
-                                    (
-                                        strftime('2020-%m-%d','now') between date('2020-12-22') and date('2020-12-31')
-                                        or 
-                                        strftime('2021-%m-%d','now') between date('2021-01-01') and date('2021-03-20')
-                                    )
-                                )
-                            group by ingrediente.nome
-                            order by qt desc
+                                join ingrediente on ingrediente.codigo=saboringrediente.ingrediente
+                            group by ingrediente.codigo
+                            order by count(*) desc
                             limit 5
-                    )
-        order by count(*) desc
-    ;                          
+                        )
+    order by count(*) desc
+;
+
 --l) Qual é o percentual atingido de arrecadação com venda de pizzas no ano atual em comparação com o total arrecadado no ano passado?
 --100 000 ano passado
 --50 000 ano atual
@@ -740,7 +882,7 @@ select
         pizzasabor.sabor=sabor.codigo and
         pizza.borda is not null and
         pizza.borda=borda.codigo and
-        comanda.data between  date('now','start of month','-3 months') and date('now','-1 days')
+        comanda.data between  date('now','start of month','-3 months') and date('now','start of month','-1 days')
     group by 
         --(pizza.codigo || borda.codigo),
         borda.codigo,
@@ -755,7 +897,7 @@ select
                                 pizzasabor.sabor=sabor.codigo and
                                 pizza.borda is not null and
                                 pizza.borda=borda.codigo and
-                                comanda.data between  date('now','start of month','-3 months') and date('now','-1 days')
+                                comanda.data between  date('now','start of month','-3 months') and date('now','start of month','-1 days')
                             group by
                                 --(pizza.codigo || borda.codigo),
                                 borda.codigo,
