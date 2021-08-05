@@ -314,7 +314,136 @@ select
                     )
 ;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
---l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário? Considere que, se A e B não são amigos mas possuem no mínimo 5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses, B deve ser sugerido como amigo de A.
+/*
+    joao silva --> professor bd --> todos amigos do professor bd
+*/
+select 
+perfil_email,
+amigo_email
+from (
+        select 
+        case 
+            when perfil.email=amigo.perfil
+                then amigo.perfil
+            else amigo.perfilAmigo
+        end as perfil_email,
+        case 
+            when perfil.email!=amigo.perfil
+                then amigo.perfil
+            else amigo.perfilAmigo
+        end as amigo_email
+        from 
+        amigo,perfil
+        where 
+        (
+            amigo.perfil=perfil.email 
+            or 
+            amigo.perfilAmigo=perfil.email 
+        ) and 
+        perfil.email in (
+                            select 
+                            distinct
+                            grupoPerfil.perfil 
+                            from 
+                            grupo 
+                            join grupoPerfil on grupo.codigo=grupoPerfil.grupo
+                            where 
+                                (
+                                lower(grupo.nome)='sqlite'
+                                or
+                                lower(grupo.nome)='banco de dados-ifrs2021'
+                                )
+                        )
+        order by perfil.email
+)
+        
+       
+
+        
+--l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário? 
+--Considere que, se A e B não são amigos mas possuem no mínimo 
+--5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses, 
+--B deve ser sugerido como amigo de A.
+/*
+USER_A=professor@hotmail.com
+USER_B=joaosbras@mymail.com
+TESTADO com count(*)>1 
+*/
+
+select 
+        tmp.prf as perfil1,
+        case 
+            when  
+                count(*)>1 
+                --and tmp2.prf not in () 
+                then 
+                tmp2.prf--,count(tmp.asst or tmp2.asst) asst_cm
+            else 'Sem assuntos suficientes'
+        end as perfil2
+    from
+        (
+            select 
+            perfil.nome as prf,
+            assunto.nome as asst
+            from 
+            perfil 
+                join post on perfil.email=post.perfil
+                join assuntoPost on assuntoPost.post=post.codigo
+                join assunto on assunto.codigo=assuntoPost.assunto
+            where 
+            perfil.email='professor@hotmail.com' and
+            datetime(post.data) between datetime('now','start of month','-3 months') and datetime('now','start of month','-1 days')
+            group by assunto.codigo
+            having count(*) in (
+                                    select 
+                                    distinct
+                                    count(*)
+                                    from 
+                                    perfil 
+                                        join post on perfil.email=post.perfil
+                                        join assuntoPost on assuntoPost.post=post.codigo
+                                        join assunto on assunto.codigo=assuntoPost.assunto
+                                    where 
+                                    perfil.email='professor@hotmail.com' and
+                                    datetime(post.data) between datetime('now','start of month','-3 months') and datetime('now','start of month','-1 days')
+                                    group by assunto.codigo
+                                    order by count(*) desc
+                                    limit 10
+                                )
+        
+        ) as tmp
+        join (    
+                select 
+                perfil.nome as prf,
+                assunto.nome as asst
+                from 
+                perfil 
+                    join post on perfil.email=post.perfil
+                    join assuntoPost on assuntoPost.post=post.codigo
+                    join assunto on assunto.codigo=assuntoPost.assunto
+                where 
+                perfil.email='joaosbras@mymail.com' and
+                datetime(post.data) between datetime('now','start of month','-3 months') and datetime('now','start of month','-1 days')
+                group by assunto.codigo
+                having count(*) in (
+                                        select 
+                                        distinct
+                                        count(*)
+                                        from 
+                                        perfil 
+                                            join post on perfil.email=post.perfil
+                                            join assuntoPost on assuntoPost.post=post.codigo
+                                            join assunto on assunto.codigo=assuntoPost.assunto
+                                        where 
+                                        perfil.email='joaosbras@mymail.com' 
+                                        and datetime(post.data) between datetime('now','start of month','-3 months') and datetime('now','start of month','-1 days')
+                                        group by assunto.codigo
+                                        order by count(*) desc
+                                        limit 10
+                                    )
+            ) as tmp2 on tmp2.asst=tmp.asst
+    ;
+
 /*2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
 uma rede social nas listas de exercícios anteriores para que o exercício 1 acima pudesse ser
 resolvido.*/
