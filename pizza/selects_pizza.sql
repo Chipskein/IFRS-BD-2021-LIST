@@ -43,6 +43,7 @@ select
 ;
 
 --c) Qual sabor não foi pedido nos últimos 4 domingos?
+--ultimos domingos não conta o domingo dessa semana 
 select 
     sabor.nome 
     from sabor
@@ -56,45 +57,45 @@ select
     join pizzasabor on pizzasabor.pizza=pizza.codigo
     join sabor on sabor.codigo=pizzasabor.sabor
     where (
+            date(comanda.data)=date('now','weekday 0','-35 days') or
             date(comanda.data)=date('now','weekday 0','-28 days') or
             date(comanda.data)=date('now','weekday 0','-21 days') or
-            date(comanda.data)=date('now','weekday 0','-14 days') or
-            date(comanda.data)=date('now','weekday 0','-7 days') 
+            date(comanda.data)=date('now','weekday 0','-14 days') 
           ) 
 ;
 
 --d) Qual mesa foi mais utilizada nos últimos 60 dias?
 select 
-    mesa.nome
+    mesa.nome,count(*)
     from mesa
         join comanda on mesa.codigo=comanda.mesa
     where date(comanda.data) between date('now','-60 days') and date('now')
-    group by mesa.nome
+    group by mesa.codigo
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
                         where date(comanda.data) between date('now','-60 days') and date('now')
-                        group by mesa.nome
+                        group by mesa.codigo
                         order by count(*) desc
                         limit 1
                     )
 ;
 --e) Qual mesa foi menos utilizada nos últimos 60 dias?
 select 
-    mesa.nome
+    mesa.nome,count(*)
     from mesa
         join comanda on mesa.codigo=comanda.mesa
         where date(comanda.data) between date('now','-60 days') and date('now')
-    group by mesa.nome
+    group by mesa.codigo
     having count(*)=(
                         select 
                         count(*)
                         from mesa
                             join comanda on mesa.codigo=comanda.mesa
                             where date(comanda.data) between date('now','-60 days') and date('now')
-                        group by mesa.nome
+                        group by mesa.codigo
                         order by count(*) asc
                         limit 1
                     )
@@ -102,7 +103,7 @@ select
 
 --f) Quais mesas foram utilizadas mais de 2 vezes a média de utilização de todas as mesas nos últimos 60 dias?
 --media=sum(quantas vezes cada mesa foi usada)/count(numero de mesas)
--- select cast(23+30+30+22+30+25+34+35+21+35+37+32+30+28+28 as real)/15.0 
+--select cast(23+30+30+22+30+25+34+35+21+35+37+32+30+28+28 as real)/15.0 
 select 
     mesa.nome,
     count(*)
@@ -126,7 +127,7 @@ select
                         )
 ;
 --g) Quais sabores estão entre os 10 mais pedidos no último mês e também no penúltimo mês?
-
+--último mês=mes passado
 select 
     sabor.nome
     from 
@@ -134,7 +135,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
     group by sabor.codigo
     having count(*) in (
                             select 
@@ -145,7 +146,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
                                 group by sabor.codigo
                                 order by qt2 desc
                                 limit 10
@@ -158,7 +159,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')        
     group by sabor.codigo       
     having count(*) in (
                             select 
@@ -169,7 +170,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')
                                 group by sabor.codigo
                                 order by qt4 desc
                                 limit 10
@@ -184,7 +185,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+    where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
     group by sabor.codigo
     having count(*) in (
                             select 
@@ -195,7 +196,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month') and  date('now','start of month','+1 months','-1 days')
+                                where date(comanda.data) between date('now','start of month','-1 month') and  date('now','start of month','-1 days')
                                 group by sabor.codigo
                                 order by qt2 desc
                                 limit 10
@@ -208,7 +209,7 @@ select
         join pizza on pizza.comanda=comanda.numero
         join pizzasabor on pizza.codigo=pizzasabor.pizza
         join sabor on sabor.codigo=pizzasabor.sabor
-    where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')        
+    where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')        
     group by sabor.codigo       
     having count(*) in (
                             select 
@@ -219,7 +220,7 @@ select
                                     join pizza on pizza.comanda=comanda.numero
                                     join pizzasabor on pizza.codigo=pizzasabor.pizza
                                     join sabor on sabor.codigo=pizzasabor.sabor
-                                where date(comanda.data) between date('now','start of month','-1 months') and  date('now','start of month','-1 days')
+                                where date(comanda.data) between date('now','start of month','-2 months') and  date('now','start of month','-1 month','-1 days')
                                 group by sabor.codigo
                                 order by qt4 desc
                                 limit 10
@@ -227,6 +228,7 @@ select
 ;
 
 --i) Quais sabores não foram pedidos nos últimos 3 meses?
+--último 3 meses=mes passado + 2 meses retrasados
 select 
     sabor.nome 
     from sabor 
@@ -240,7 +242,7 @@ select
                                         join pizza on pizza.comanda=comanda.numero
                                         join pizzasabor on pizza.codigo=pizzasabor.pizza
                                         join sabor on sabor.codigo=pizzasabor.sabor
-                                    where date(comanda.data) between date('now','start of month','-2 months') and date('now','start of month','+1 month','-1 days')
+                                    where date(comanda.data) between date('now','start of month','-3 months') and date('now','start of month','-1 days')
                             )
 ;                       
 
@@ -266,8 +268,18 @@ select
         Verão        solcsticio de dezembro do outro ano    -->  equinocio de março 
 
 */
---*não consegui aplicar a fórmula para calcular o solcsticio e o equinocio por ano
---
+--default
+/*
+
+78.8
+171.6
+265.2
+355.1
+
+*/
+
+
+
 --j) Quais foram os 3 sabores mais pedidos na última estação do ano?
 select 
     datas.station,sabor.nome,count(*)
@@ -870,7 +882,7 @@ select
         pizzasabor.sabor=sabor.codigo and
         pizza.borda is not null and
         pizza.borda=borda.codigo and
-        comanda.data between  date('now','start of month','-3 months') and date('now','-1 days')
+        comanda.data between  date('now','start of month','-3 months') and date('now','start of month','-1 days')
     group by 
         --(pizza.codigo || borda.codigo),
         borda.codigo,
@@ -885,7 +897,7 @@ select
                                 pizzasabor.sabor=sabor.codigo and
                                 pizza.borda is not null and
                                 pizza.borda=borda.codigo and
-                                comanda.data between  date('now','start of month','-3 months') and date('now','-1 days')
+                                comanda.data between  date('now','start of month','-3 months') and date('now','start of month','-1 days')
                             group by
                                 --(pizza.codigo || borda.codigo),
                                 borda.codigo,
