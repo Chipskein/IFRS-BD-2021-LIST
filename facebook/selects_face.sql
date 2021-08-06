@@ -215,7 +215,12 @@ select
     assunto 
         join assuntoPost on assuntoPost.assunto=assunto.codigo 
         join post on post.codigo=assuntoPost.post
-    where post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+        join perfil on perfil.email=post.perfil
+
+    where 
+        post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+        and lower(perfil.pais)='brasil'
+
     group by assunto.codigo
     having count(*) in (
                         select 
@@ -225,7 +230,10 @@ select
                             assunto 
                             join assuntoPost on assuntoPost.assunto=assunto.codigo 
                             join post on post.codigo=assuntoPost.post
-                        where post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+                            join perfil on perfil.email=post.perfil
+                        where 
+                            post.data between datetime('now','start of month','-1 months') and datetime('now','start of month','-1 days')
+                            and lower(perfil.pais)='brasil'
                         group by assunto.codigo
                         order by count(*) desc
                         limit 5
@@ -238,7 +246,10 @@ select
         assunto 
         join assuntoPost on assuntoPost.assunto=assunto.codigo 
         join post on post.codigo=assuntoPost.post
-    where post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+        join perfil on post.perfil=perfil.email
+    where 
+        post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+        and lower(perfil.pais)='brasil'
     group by assunto.codigo
     having count(*) in (
                         select 
@@ -248,7 +259,10 @@ select
                         assunto 
                             join assuntoPost on assuntoPost.assunto=assunto.codigo 
                             join post on post.codigo=assuntoPost.post
-                        where post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+                            join perfil on post.perfil=perfil.email
+                        where 
+                            post.data between datetime('now','start of month','-2 months') and datetime('now','start of month','-1 months','-1 days')
+                            and lower(perfil.pais)='brasil'
                         group by assunto.codigo
                         order by count(*) desc
                         limit 5
