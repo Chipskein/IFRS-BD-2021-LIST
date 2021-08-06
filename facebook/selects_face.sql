@@ -77,24 +77,86 @@ select
 --d) Quais os 5 assuntos mais comentados por país nos últimos 30 dias?
 select 
     assunto.nome as nome,
-    perfil.pais
+    perfil.pais,
+    count(*)
     from assunto,assuntoPost,post, perfil
     where 
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil
-        and post.data between datetime('now','-120 days') and datetime('now')
-        group by assunto.nome
-        having perfil.pais in (
-            select 
-            distinct
-            perfil.pais
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='brasil'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    having count(*) in
+    (select 
+    distinct count(*) as assunto1
     from assunto,assuntoPost,post, perfil
     where 
         assunto.codigo=assuntoPost.assunto and
         post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil
-        and post.data between datetime('now','-120 days') and datetime('now'))
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='brasil'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    order by assunto1 desc
+    limit 5
+    )
+union
+
+select 
+    assunto.nome as nome,
+    perfil.pais,
+        count(*)
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='argentina'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    having count(*) in
+    (select 
+    distinct count(*) as assunto1
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='argentina'
+        and post.data between datetime('now','-30 days') and datetime('now')
+    group by assunto.codigo
+    order by assunto1 desc
+    limit 5
+    )
+    union
+    select 
+    assunto.nome as nome,
+    perfil.pais,
+        count(*)
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='eua'
+        and post.data between datetime('now','-90 days') and datetime('now')
+    group by assunto.codigo
+    having count(*) in
+    (select 
+    distinct count(*) as assunto1
+    from assunto,assuntoPost,post, perfil
+    where 
+        assunto.codigo=assuntoPost.assunto and
+        post.codigo=assuntoPost.post and 
+        perfil.email = post.perfil and 
+        lower(perfil.pais)='eua'
+        and post.data between datetime('now','-90 days') and datetime('now')
+    group by assunto.codigo
+    order by assunto1 desc
+    limit 5
+    )
+    order by count(*) desc
 ;
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
 --última=semana passada
