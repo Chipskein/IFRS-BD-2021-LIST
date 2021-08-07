@@ -22,30 +22,30 @@ select
 ;
 --b) Qual o nome do usuário do Brasil que mais recebeu curtidas em suas postagens nos últimos 30 dias?
 select 
-        distinct
+    distinct
         perfil.nome as nome
-        from perfil,post,reaction
-        where 
+    from perfil,post,reaction
+    where 
         perfil.email=post.perfil and
         reaction.postagem=post.codigo and
         lower(reaction.texto)='gostei' 
-        and post.data between datetime('now','-30 days') and datetime('now')
-        group by perfil.nome,post.codigo
-        having count(*) = (
-        select 
-            distinct
-            count(*) as rank
-            from perfil,post,reaction
-            where 
-            perfil.email=post.perfil and
-            reaction.postagem=post.codigo and
-            lower(reaction.texto)='gostei' 
-            and post.data between datetime('now','-30 days') and datetime('now')
-            group by perfil.nome,post.codigo
-            order by rank desc
-            limit 1
-        )
-        order by count(*) desc
+        and reaction.data between datetime('now','-30 days') and datetime('now')--post.data-->reaction.data
+    group by perfil.nome,post.codigo
+    having count(*) = (
+                        select 
+                            distinct
+                                count(*) as rank
+                            from perfil,post,reaction
+                            where 
+                                perfil.email=post.perfil and
+                                reaction.postagem=post.codigo and
+                                lower(reaction.texto)='gostei' 
+                                and reaction.data between datetime('now','-30 days') and datetime('now')
+                            group by perfil.nome,post.codigo
+                            order by rank desc
+                            limit 1
+                        )
+    order by count(*) desc
 ;
 --c) Quais os 5 assuntos mais comentados no Brasil nos últimos 30 dias?
 select 
@@ -194,7 +194,7 @@ select
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
 --última=semana passada
 select 
-        distinct
+    distinct
         assunto.nome
     from 
     assunto
@@ -251,55 +251,94 @@ select
                     )
 ;
 --g) Qual faixa etária mais reagiu às postagens do grupo SQLite nos últimos 60 dias? Considere as faixas etárias: -18, 18-21, 21-25, 25-30, 30-36, 36-43, 43-51, 51-60 e 60-.
--- Testar com 2 faixa etaria com o msm numero de reaçao
-select
-max(tabela.quantidade) as quantidade_Reacoes,
-faixa_etaria
-from 
-(
 select 
-    count(*) as quantidade,
-    case 
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer)<18 then '-18'
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 18 and 21 then '18-21'
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 21 and 25 then '21-25'
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 25 and 30 then '25-30'
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 30 and 36 then '30-36'
-    when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 36 and 43 then '36-43'
-        when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 43 and 51 then '43-51'
-        when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer) BETWEEN 51 and 60 then '51-60'
-        when cast ((
-    JulianDay('now') - JulianDay(perfil.nascimento)
-    ) / 365 As integer)>=60 then '+60'
-    end as faixa_etaria
+        count(*) as qt,
+        case 
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer)<18 
+            then '-18'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 18 and 21 
+            then '18-21'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 21 and 25 
+            then '21-25'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 25 and 30 
+            then '25-30'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 30 and 36 
+            then '30-36'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 36 and 43 
+            then '36-43'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 43 and 51 
+            then '43-51'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 51 and 60 
+            then '51-60'
+            when 
+                cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer)>=60 
+            then '+60'
+        end as faixa_etaria
     from grupo,post,reaction,perfil
-    where
-    
-    reaction.postagem=post.codigo and
-    perfil.email=reaction.perfil and
-    lower(grupo.nome)='sqlite' and
-    post.grupo = grupo.codigo and
-    reaction.data between datetime('now','-60 days') and datetime('now')
+    where        
+        reaction.postagem=post.codigo and
+        perfil.email=reaction.perfil and
+        lower(grupo.nome)='sqlite' and
+        post.grupo = grupo.codigo and
+        reaction.data between datetime('now','-60 days') and datetime('now')
     group by faixa_etaria
-) as tabela;
-
-
+    having count(*)=(
+                        select
+                        distinct
+                        tabela.quantidade
+                        from 
+                        (
+                            select 
+                                count(*) as quantidade,
+                                case 
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer)<18 
+                                    then '-18'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 18 and 21 
+                                    then '18-21'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 21 and 25 
+                                    then '21-25'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 25 and 30 
+                                    then '25-30'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 30 and 36 
+                                    then '30-36'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 36 and 43 
+                                    then '36-43'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 43 and 51 
+                                    then '43-51'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer) BETWEEN 51 and 60 
+                                    then '51-60'
+                                    when 
+                                        cast ((JulianDay('now') - JulianDay(perfil.nascimento)) / 365 As integer)>=60 
+                                    then '+60'
+                                end as faixa_etaria
+                                from grupo,post,reaction,perfil
+                                where        
+                                    reaction.postagem=post.codigo and
+                                    perfil.email=reaction.perfil and
+                                    lower(grupo.nome)='sqlite' and
+                                    post.grupo = grupo.codigo and
+                                    reaction.data between datetime('now','-60 days') and datetime('now')
+                                group by faixa_etaria
+                        ) as tabela
+                        limit 1
+                    )
+;
 --h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
 --add assuntos no mes retrasado para teste
 --assuntos mais comentados/postados no mes passado
