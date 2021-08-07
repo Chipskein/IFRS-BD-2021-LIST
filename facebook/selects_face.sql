@@ -105,7 +105,7 @@ from
             order by perfil.pais,count(*) desc
         ) as contagems
 ) as tmp
-where tmp.rank<5
+where tmp.rank<=5
 ;
 /*
 
