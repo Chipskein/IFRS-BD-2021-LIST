@@ -79,85 +79,10 @@ select
     assunto.nome as nome,
     perfil.pais,
     count(*)
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='brasil'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    having count(*) in
-    (select 
-    distinct count(*) as assunto1
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='brasil'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    order by assunto1 desc
-    limit 5
-    )
-union
+    from 
+    (
 
-select 
-    assunto.nome as nome,
-    perfil.pais,
-        count(*)
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='argentina'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    having count(*) in
-    (select 
-    distinct count(*) as assunto1
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='argentina'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    order by assunto1 desc
-    limit 5
     )
-    union
-    select 
-    assunto.nome as nome,
-    perfil.pais,
-        count(*)
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='eua'
-        and post.data between datetime('now','-90 days') and datetime('now')
-    group by assunto.codigo
-    having count(*) in
-    (select 
-    distinct count(*) as assunto1
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='eua'
-        and post.data between datetime('now','-90 days') and datetime('now')
-    group by assunto.codigo
-    order by assunto1 desc
-    limit 5
-    )
-    order by count(*) desc
-;
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
 --última=semana passada
 select 
@@ -434,6 +359,61 @@ select
                     )
 ;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
+select 
+perfil.email,
+count(*)
+from(
+select
+        perfil.nome as perfilNome,
+        perfil.email as emailPerfil
+    from grupo,grupoPerfil,perfil,amigo 
+    where
+        (
+            lower(grupo.nome)='sqlite'
+            or
+            lower(grupo.nome)='banco de dados ifrs2021'
+        ) and   
+        grupo.codigo=grupoPerfil.grupo and
+        grupoPerfil.perfil=perfil.email and
+        ( 
+            lower(perfil.email)=lower(amigo.perfil) 
+            or 
+            lower(perfil.email)=lower(amigo.perfilAmigo)
+        )
+    group by perfil.email
+), (
+select
+        perfil.nome as perfilNome,
+        perfil.email as emailPerfil
+    from grupo,grupoPerfil,perfil
+    where
+        (
+            lower(grupo.nome)='sqlite'
+            or
+            lower(grupo.nome)='banco de dados ifrs2021'
+        ) and   
+        grupo.codigo=grupoPerfil.grupo and
+        grupoPerfil.perfil=perfil.email and
+        ( 
+            lower(perfil.email)=lower(amigo.perfil) 
+            or 
+            lower(perfil.email)=lower(amigo.perfilAmigo)
+        )
+    group by perfil.email
+), amigo
+    where 
+        (
+            lower(amigo.perfilAmigo)=lower(perfil.email) or 
+            lower(amigo.perfil)=lower(perfil.email)
+        ) 
+        and (
+                lower(amigo.perfil)=emailPerfil or 
+                lower(amigo.perfilAmigo)=emailPerfil
+            ) 
+        and perfil.email not like emailPerfil
+        group by perfil.email
+;
+
 --l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário?Considere que, se A e B não são amigos mas possuem no mínimo 5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses,B deve ser sugerido como amigo de A.
 /*
 USER_A=professor@hotmail.com
