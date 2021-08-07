@@ -337,6 +337,7 @@ select
                                     post.grupo = grupo.codigo and
                                     reaction.data between datetime('now','-60 days') and datetime('now')
                                 group by faixa_etaria
+                                order by count(*) desc
                         ) as tabela
                         limit 1
                     )
