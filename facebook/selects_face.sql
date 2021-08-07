@@ -75,36 +75,38 @@ select
     order by count(*) desc
 ;
 --d) Quais os 5 assuntos mais comentados por país nos últimos 30 dias?
-select 
-    perfil.pais,
-    assunto.nome,
-    count(*)
-    from 
-    perfil
-    join post on post.perfil=perfil.email
-    join assuntoPost on assuntoPost.post=post.codigo
-    join assunto on assunto.codigo=assuntoPost.assunto
-    where 
-    datetime(post.data) between datetime('now','-30 days') and datetime('now')
-    group by perfil.pais,assunto.codigo
-    having count(*) in (
-                            select 
-                            distinct
-                            count(*)
-                            from 
-                            perfil
-                            join post on post.perfil=perfil.email
-                            join assuntoPost on assuntoPost.post=post.codigo
-                            join assunto on assunto.codigo=assuntoPost.assunto
-                            where 
-                            datetime(post.data) between datetime('now','-30 days') and datetime('now')
-                            group by perfil.pais,assunto.codigo
-                            order by perfil.pais,count(*) desc
-                            limit 5
-                        )
-    order by perfil.pais,count(*) desc
-;
 
+select 
+tmp.rank,
+tmp.pais,
+tmp.assunto,
+tmp.qt
+from
+(
+    select
+    contagems.*,
+    DENSE_RANK() OVER(
+        PARTITION BY contagems.pais
+        ORDER BY contagems.qt desc
+    ) as rank
+    from (
+            select 
+            perfil.pais as pais,
+            assunto.nome as assunto, 
+            count(*)  as qt
+            from
+            perfil
+            join post on post.perfil=perfil.email
+            join assuntoPost on assuntoPost.post=post.codigo
+            join assunto on assunto.codigo=assuntoPost.assunto
+            where 
+            datetime(post.data) between datetime('now','-30 days') and datetime('now')
+            group by perfil.pais,assunto.codigo
+            order by perfil.pais,count(*) desc
+        ) as contagems
+) as tmp
+where tmp.rank<5
+;
 /*
 
 select 
