@@ -540,66 +540,181 @@ select
 --         order by perfil.email
 -- ;
 --Na mao
--- select 
--- distinct
--- perfil.email
--- from (
--- select
---         perfil.nome as perfilNome,
---         perfil.email as emailPerfil
---     from perfil,grupo,grupoPerfil
---     where
---         grupo.codigo=grupoPerfil.grupo and
---         grupoPerfil.perfil=perfil.email and
---         (
---             lower(grupo.nome)='sqlite'
---             or
---             lower(grupo.nome)='banco de dados-ifrs2021'
---         )
---         group by perfil.email
---         order by perfil.email desc
--- ), perfil, amigo
---     where 
---         (
---             lower(amigo.perfilAmigo)=lower(perfil.email) or 
---             lower(amigo.perfil)=lower(perfil.email)
---         ) 
---         and (
---             lower(amigo.perfil)=emailPerfil or
---             lower(amigo.perfilAmigo)=emailPerfil 
---             ) 
---         and perfil.email not like emailPerfil 
--- intersect
--- select 
--- distinct
--- perfil.email
--- from (
--- select
---         perfil.nome as perfilNome,
---         perfil.email as emailPerfil
---     from perfil,grupo,grupoPerfil
---     where
---         grupo.codigo=grupoPerfil.grupo and
---         grupoPerfil.perfil=perfil.email and
---         (
---             lower(grupo.nome)='sqlite'
---             or
---             lower(grupo.nome)='banco de dados-ifrs2021'
---         )
---         group by perfil.email
---         order by perfil.email desc
--- ), perfil, amigo
---     where 
---         (
---             lower(amigo.perfilAmigo)=lower(perfil.email) or 
---             lower(amigo.perfil)=lower(perfil.email)
---         ) 
---         and (
---             lower(amigo.perfil)='joaosbras@mymail.com' or
---             lower(amigo.perfilAmigo)='joaosbras@mymail.com' 
---             ) 
---         and perfil.email not like 'joaosbras@mymail.com' 
--- ;
+
+select 
+count(*)
+from 
+(
+select 
+distinct
+perfil.email
+from (
+select
+        perfil.nome as perfilNome,
+        perfil.email as emailPerfil
+    from perfil,grupo,grupoPerfil
+    where
+        grupo.codigo=grupoPerfil.grupo and
+        grupoPerfil.perfil=perfil.email and
+        (
+            lower(grupo.nome)='sqlite'
+            or
+            lower(grupo.nome)='banco de dados-ifrs2021'
+        )
+        group by perfil.email
+        order by perfil.email desc
+), perfil, amigo
+    where 
+        (
+            lower(amigo.perfilAmigo)=lower(perfil.email) or 
+            lower(amigo.perfil)=lower(perfil.email)
+        ) 
+        and (
+            lower(amigo.perfil)='professor@hotmail.com' or
+            lower(amigo.perfilAmigo)='professor@hotmail.com' 
+            ) 
+        and perfil.email not like 'professor@hotmail.com' 
+intersect
+select 
+distinct
+perfil.email
+from (
+select
+        perfil.nome as perfilNome,
+        perfil.email as emailPerfil
+    from perfil,grupo,grupoPerfil
+    where
+        grupo.codigo=grupoPerfil.grupo and
+        grupoPerfil.perfil=perfil.email and
+        (
+            lower(grupo.nome)='sqlite'
+            or
+            lower(grupo.nome)='banco de dados-ifrs2021'
+        )
+        group by perfil.email
+        order by perfil.email desc
+), perfil, amigo
+    where 
+        (
+            lower(amigo.perfilAmigo)=lower(perfil.email) or 
+            lower(amigo.perfil)=lower(perfil.email)
+        ) 
+        and (
+            lower(amigo.perfil)='joaosbras@mymail.com' or
+            lower(amigo.perfilAmigo)='joaosbras@mymail.com' 
+            ) 
+        and perfil.email not like 'joaosbras@mymail.com' 
+)
+;
+
+
+select
+f1.nome,f2.nome,count() as amigos_em_comum
+from
+(
+    select 
+    perfil.email as perfil,
+    perfil.nome as nome,
+    case
+        when
+            perfil.email=amigo.perfil 
+        then amigo.perfilAmigo
+
+        when
+            perfil.email=amigo.perfilAmigo 
+        then amigo.perfil
+    end as amigo
+    from 
+    perfil
+        join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+    order by perfil.email
+) as f1
+join
+    (
+        select 
+        perfil.email as perfil,
+        perfil.nome as nome,
+        case
+            when
+                perfil.email=amigo.perfil 
+            then amigo.perfilAmigo
+
+            when
+                perfil.email=amigo.perfilAmigo 
+            then amigo.perfil
+        end as amigo
+        from 
+        perfil
+            join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+        order by perfil.email
+    ) as f2 on f1.amigo=f2.amigo
+                 where 
+                 f1.nome != f2.nome
+group by f1.perfil,f2.perfil
+having 
+f1.perfil!=f2.perfil
+and f1.perfil in (
+                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                 )
+and f2.perfil in (
+                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                 )
+                 and count() = (
+select
+distinct
+count()
+from
+(
+    select 
+    perfil.email as perfil,
+    perfil.nome as nome,
+    case
+        when
+            perfil.email=amigo.perfil 
+        then amigo.perfilAmigo
+
+        when
+            perfil.email=amigo.perfilAmigo 
+        then amigo.perfil
+    end as amigo
+    from 
+    perfil
+        join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+    order by perfil.email
+) as f1
+join
+    (
+        select 
+        perfil.email as perfil,
+        perfil.nome as nome,
+        case
+            when
+                perfil.email=amigo.perfil 
+            then amigo.perfilAmigo
+
+            when
+                perfil.email=amigo.perfilAmigo 
+            then amigo.perfil
+        end as amigo
+        from 
+        perfil
+            join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+        order by perfil.email
+    ) as f2 on f1.amigo=f2.amigo
+group by f1.perfil,f2.perfil
+having 
+f1.perfil!=f2.perfil
+and f1.perfil in (
+                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                 )
+and f2.perfil in (
+                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                 )
+order by count() desc
+limit 1
+                 )
+;
+
 
 
 --l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário?Considere que, se A e B não são amigos mas possuem no mínimo 5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses,B deve ser sugerido como amigo de A.
