@@ -488,60 +488,119 @@ select
                     )
 ;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
-select 
-perfil.email,
-count(*)
-from(
-select
-        perfil.nome as perfilNome,
-        perfil.email as emailPerfil
-    from grupo,grupoPerfil,perfil,amigo 
-    where
-        (
-            lower(grupo.nome)='sqlite'
-            or
-            lower(grupo.nome)='banco de dados ifrs2021'
-        ) and   
-        grupo.codigo=grupoPerfil.grupo and
-        grupoPerfil.perfil=perfil.email and
-        ( 
-            lower(perfil.email)=lower(amigo.perfil) 
-            or 
-            lower(perfil.email)=lower(amigo.perfilAmigo)
-        )
-    group by perfil.email
-), (
-select
-        perfil.nome as perfilNome,
-        perfil.email as emailPerfil
-    from grupo,grupoPerfil,perfil
-    where
-        (
-            lower(grupo.nome)='sqlite'
-            or
-            lower(grupo.nome)='banco de dados ifrs2021'
-        ) and   
-        grupo.codigo=grupoPerfil.grupo and
-        grupoPerfil.perfil=perfil.email and
-        ( 
-            lower(perfil.email)=lower(amigo.perfil) 
-            or 
-            lower(perfil.email)=lower(amigo.perfilAmigo)
-        )
-    group by perfil.email
-), amigo
-    where 
-        (
-            lower(amigo.perfilAmigo)=lower(perfil.email) or 
-            lower(amigo.perfil)=lower(perfil.email)
-        ) 
-        and (
-                lower(amigo.perfil)=emailPerfil or 
-                lower(amigo.perfilAmigo)=emailPerfil
-            ) 
-        and perfil.email not like emailPerfil
-        group by perfil.email
-;
+
+
+-- conta maluka
+-- select 
+-- perfil.email,
+-- count(*)/5
+-- from (
+-- select
+--         perfil.nome as perfilNome,
+--         perfil.email as emailPerfil
+--     from perfil,grupo,grupoPerfil
+--     where
+--         grupo.codigo=grupoPerfil.grupo and
+--         grupoPerfil.perfil=perfil.email and
+--         (
+--             lower(grupo.nome)='sqlite'
+--             or
+--             lower(grupo.nome)='banco de dados-ifrs2021'
+--         )
+--         group by perfil.email
+--         order by perfil.email desc
+-- ), (
+-- select
+--         perfil.nome as perfilNome2,
+--         perfil.email as emailPerfil2
+--     from perfil,grupo,grupoPerfil
+--     where
+--         grupo.codigo=grupoPerfil.grupo and
+--         grupoPerfil.perfil=perfil.email and
+--         (
+--             lower(grupo.nome)='sqlite'
+--             or
+--             lower(grupo.nome)='banco de dados-ifrs2021'
+--         )
+--         group by perfil.email
+--         order by perfil.email asc
+-- ), perfil, amigo
+--     where 
+--         (
+--             lower(amigo.perfilAmigo)=lower(perfil.email) or 
+--             lower(amigo.perfil)=lower(perfil.email)
+--         ) 
+--         and (
+--             lower(amigo.perfil)=emailPerfil or lower(amigo.perfil)=emailPerfil2 and 
+--             lower(amigo.perfilAmigo)=emailPerfil or lower(amigo.perfilAmigo)=emailPerfil2
+--             ) 
+--         and perfil.email not like emailPerfil 
+--         and perfil.email not like emailPerfil2
+--         group by perfil.email
+--         order by perfil.email
+-- ;
+--Na mao
+-- select 
+-- distinct
+-- perfil.email
+-- from (
+-- select
+--         perfil.nome as perfilNome,
+--         perfil.email as emailPerfil
+--     from perfil,grupo,grupoPerfil
+--     where
+--         grupo.codigo=grupoPerfil.grupo and
+--         grupoPerfil.perfil=perfil.email and
+--         (
+--             lower(grupo.nome)='sqlite'
+--             or
+--             lower(grupo.nome)='banco de dados-ifrs2021'
+--         )
+--         group by perfil.email
+--         order by perfil.email desc
+-- ), perfil, amigo
+--     where 
+--         (
+--             lower(amigo.perfilAmigo)=lower(perfil.email) or 
+--             lower(amigo.perfil)=lower(perfil.email)
+--         ) 
+--         and (
+--             lower(amigo.perfil)=emailPerfil or
+--             lower(amigo.perfilAmigo)=emailPerfil 
+--             ) 
+--         and perfil.email not like emailPerfil 
+-- intersect
+-- select 
+-- distinct
+-- perfil.email
+-- from (
+-- select
+--         perfil.nome as perfilNome,
+--         perfil.email as emailPerfil
+--     from perfil,grupo,grupoPerfil
+--     where
+--         grupo.codigo=grupoPerfil.grupo and
+--         grupoPerfil.perfil=perfil.email and
+--         (
+--             lower(grupo.nome)='sqlite'
+--             or
+--             lower(grupo.nome)='banco de dados-ifrs2021'
+--         )
+--         group by perfil.email
+--         order by perfil.email desc
+-- ), perfil, amigo
+--     where 
+--         (
+--             lower(amigo.perfilAmigo)=lower(perfil.email) or 
+--             lower(amigo.perfil)=lower(perfil.email)
+--         ) 
+--         and (
+--             lower(amigo.perfil)='joaosbras@mymail.com' or
+--             lower(amigo.perfilAmigo)='joaosbras@mymail.com' 
+--             ) 
+--         and perfil.email not like 'joaosbras@mymail.com' 
+-- ;
+
 
 --l) Quais os nomes dos usuários que devem ser sugeridos como amigos para um dado usuário?Considere que, se A e B não são amigos mas possuem no mínimo 5 assuntos em comum entre os 10 assuntos mais comentados por cada um nos últimos 3 meses,B deve ser sugerido como amigo de A.
 /*
