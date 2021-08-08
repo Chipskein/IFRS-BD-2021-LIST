@@ -107,73 +107,7 @@ from
 ) as tmp
 where tmp.rank<=5
 ;
-/*
-
-select 
-    assunto.nome as nome,
-    perfil.pais,
-    count(*)
-    from 
-    (
-
-select 
-    assunto.nome as nome,
-    perfil.pais,
-        count(*)
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='argentina'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    having count(*) in
-    (select 
-    distinct count(*) as assunto1
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='argentina'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    order by assunto1 desc
-    limit 5
-    )
-    union
-    select 
-    assunto.nome as nome,
-    perfil.pais,
-        count(*)
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='eua'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    having count(*) in
-    (select 
-    distinct count(*) as assunto1
-    from assunto,assuntoPost,post, perfil
-    where 
-        assunto.codigo=assuntoPost.assunto and
-        post.codigo=assuntoPost.post and 
-        perfil.email = post.perfil and 
-        lower(perfil.pais)='eua'
-        and post.data between datetime('now','-30 days') and datetime('now')
-    group by assunto.codigo
-    order by assunto1 desc
-    limit 5
-    )
-    order by count(*) desc
-;
-*/
 --e) Quais os assuntos da postagem que mais recebeu a reação amei na última semana?
---última=semana passada
 select 
     distinct
         assunto.nome
@@ -322,9 +256,7 @@ select
                     )
 ;
 --h) Dos 5 assuntos mais comentados no Brasil no mês passado, quais também estavam entre os 5 assuntos mais comentados no Brasil no mês retrasado?
---add assuntos no mes retrasado para teste
 --assuntos mais comentados/postados no mes passado
---Obs: Em nenhum lugar fala quem tem que ser do Brasil
 select 
         assunto.nome
     from 
@@ -488,128 +420,12 @@ select
                     )
 ;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
-
-
--- conta maluka
--- select 
--- perfil.email,
--- count(*)/5
--- from (
--- select
---         perfil.nome as perfilNome,
---         perfil.email as emailPerfil
---     from perfil,grupo,grupoPerfil
---     where
---         grupo.codigo=grupoPerfil.grupo and
---         grupoPerfil.perfil=perfil.email and
---         (
---             lower(grupo.nome)='sqlite'
---             or
---             lower(grupo.nome)='banco de dados-ifrs2021'
---         )
---         group by perfil.email
---         order by perfil.email desc
--- ), (
--- select
---         perfil.nome as perfilNome2,
---         perfil.email as emailPerfil2
---     from perfil,grupo,grupoPerfil
---     where
---         grupo.codigo=grupoPerfil.grupo and
---         grupoPerfil.perfil=perfil.email and
---         (
---             lower(grupo.nome)='sqlite'
---             or
---             lower(grupo.nome)='banco de dados-ifrs2021'
---         )
---         group by perfil.email
---         order by perfil.email asc
--- ), perfil, amigo
---     where 
---         (
---             lower(amigo.perfilAmigo)=lower(perfil.email) or 
---             lower(amigo.perfil)=lower(perfil.email)
---         ) 
---         and (
---             lower(amigo.perfil)=emailPerfil or lower(amigo.perfil)=emailPerfil2 and 
---             lower(amigo.perfilAmigo)=emailPerfil or lower(amigo.perfilAmigo)=emailPerfil2
---             ) 
---         and perfil.email not like emailPerfil 
---         and perfil.email not like emailPerfil2
---         group by perfil.email
---         order by perfil.email
--- ;
---Na mao
-
-select 
-count(*)
+select
+*
 from 
 (
-select 
-distinct
-perfil.email
-from (
 select
-        perfil.nome as perfilNome,
-        perfil.email as emailPerfil
-    from perfil,grupo,grupoPerfil
-    where
-        grupo.codigo=grupoPerfil.grupo and
-        grupoPerfil.perfil=perfil.email and
-        (
-            lower(grupo.nome)='sqlite'
-            or
-            lower(grupo.nome)='banco de dados-ifrs2021'
-        )
-        group by perfil.email
-        order by perfil.email desc
-), perfil, amigo
-    where 
-        (
-            lower(amigo.perfilAmigo)=lower(perfil.email) or 
-            lower(amigo.perfil)=lower(perfil.email)
-        ) 
-        and (
-            lower(amigo.perfil)='professor@hotmail.com' or
-            lower(amigo.perfilAmigo)='professor@hotmail.com' 
-            ) 
-        and perfil.email not like 'professor@hotmail.com' 
-intersect
-select 
-distinct
-perfil.email
-from (
-select
-        perfil.nome as perfilNome,
-        perfil.email as emailPerfil
-    from perfil,grupo,grupoPerfil
-    where
-        grupo.codigo=grupoPerfil.grupo and
-        grupoPerfil.perfil=perfil.email and
-        (
-            lower(grupo.nome)='sqlite'
-            or
-            lower(grupo.nome)='banco de dados-ifrs2021'
-        )
-        group by perfil.email
-        order by perfil.email desc
-), perfil, amigo
-    where 
-        (
-            lower(amigo.perfilAmigo)=lower(perfil.email) or 
-            lower(amigo.perfil)=lower(perfil.email)
-        ) 
-        and (
-            lower(amigo.perfil)='joaosbras@mymail.com' or
-            lower(amigo.perfilAmigo)='joaosbras@mymail.com' 
-            ) 
-        and perfil.email not like 'joaosbras@mymail.com' 
-)
-;
-
-
-select
-f1.nome,f2.nome,count() as amigos_em_comum
+f1.nome,f2.nome as nome2,count() as amigos_em_comum
 from
 (
     select 
@@ -713,6 +529,8 @@ and f2.perfil in (
 order by count() desc
 limit 1
                  )
+)
+
 ;
 
 
@@ -814,4 +632,6 @@ select
 ;
 /*2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
 uma rede social nas listas de exercícios anteriores para que o exercício 1 acima pudesse ser
-resolvido.*/
+resolvido.
+Nenhuma auteração foi feita na modelagem, apenas foi adicionado mais insert para testes.
+*/
