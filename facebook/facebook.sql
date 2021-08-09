@@ -102,7 +102,12 @@ insert into post (texto,perfil,postagem,data,grupo) values
 	('salve salve familia','pele@cbf.com.br',5,CURRENT_TIMESTAMP, null),
 	('Eu não','ciclope@mymail.com',1,'2021-06-02 15:20', null),
 	('Já agendaste horário de atendimento com o betito?','M&M@mymail.com',null,'2021-06-02 15:30', null),
-	('salve salve familia','M&M@mymail.com',5,CURRENT_TIMESTAMP, null);
+	('salve salve familia','M&M@mymail.com',5,CURRENT_TIMESTAMP, null),
+	('select o seu destino','professor@hotmail.com',null,CURRENT_TIMESTAMP, null),
+	('hahah engraçadao','jorosamed@mymail.com',18,CURRENT_TIMESTAMP, null),
+	('num creio ksksks','pele@cbf.com.br',18,CURRENT_TIMESTAMP, null),
+	('select é carioca','mcalbuq@mymail.com',null,CURRENT_TIMESTAMP, null),
+	('hahah engraçadao','jorosamed@mymail.com',21,CURRENT_TIMESTAMP, null);
 
 create table assunto(
 	codigo integer not null,
@@ -116,7 +121,8 @@ insert into assunto(codigo,nome) values
 				   (4,'atendimento'),
 				   (5,'Paulao lindo'),
 				   (6,'deus grego'),
-				   (7,'100% jesus');
+				   (7,'100% jesus'),
+				   (8,'select');
 
 create table assuntoPost(
 	assunto integer not null,
@@ -147,7 +153,12 @@ insert into assuntoPost(post,assunto) values
 					   (16,5),
 					   (16,3),
 					   (17,1),
-					   (17,4);
+					   (17,2),
+					   (17,3),
+					   (17,4),
+					   (18,8),
+					   (20,8),
+					   (21,8);
 --tabela compartilhamento adicionada para letra n)
 create table compartilhamento(
 	perfil varchar(100) not null,
@@ -210,6 +221,9 @@ insert into reaction(texto,perfil,postagem,comentario,data) values
 	('gostei','pedro@gmail.com',8,null,'2021-07-16 15:05'),
 	('gostei','mcalbuq@mymail.com',8,null,'2021-07-16 15:10'),
 	('gostei','pxramos@mymail.com',8,null,'2021-07-16 15:12'),
+	('gostei','pedro@gmail.com',5,null,'2021-07-16 15:05'),
+	('gostei','mcalbuq@mymail.com',5,null,'2021-07-16 15:10'),
+	('gostei','pxramos@mymail.com',5,null,'2021-07-16 15:12'),
 	('gostei','pedro@gmail.com',2,null,'2021-07-17 15:05'),
 	('gostei','pxramos@mymail.com',2,null,'2021-07-17 15:15'),
 	('amei','pedro@gmail.com',2,null,'2021-07-16 15:05'),

@@ -29,7 +29,7 @@ select
         perfil.email=post.perfil and
         reaction.postagem=post.codigo and
         lower(reaction.texto)='gostei' 
-        and reaction.data between datetime('now','-30 days') and datetime('now')--post.data-->reaction.data
+        and reaction.data between datetime('now','-30 days') and datetime('now')
     group by perfil.nome,post.codigo
     having count(*) = (
                         select 
@@ -317,7 +317,6 @@ select
                     )
 ;
 --i) Quais os nomes dos usuários que participam do grupo SQLite que tiveram a 1ª, 2ª e 3ª maior quantidade de comentários em uma postagem sobre o assunto select?
---adicionar testes
 select 
     perfil.nome
     from 
@@ -420,36 +419,63 @@ select
                     )
 ;
 --k) Quais os nomes dos usuários dos grupos SQLite ou Banco de Dados-IFRS-2021 que possuem a maior quantidade de amigos em comum?
-select
-*
-from 
-(
-select
-f1.nome,f2.nome as nome2,count() as amigos_em_comum
-from
-(
-    select 
-    perfil.email as perfil,
-    perfil.nome as nome,
-    case
-        when
-            perfil.email=amigo.perfil 
-        then amigo.perfilAmigo
 
-        when
-            perfil.email=amigo.perfilAmigo 
-        then amigo.perfil
-    end as amigo
-    from 
-    perfil
-        join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
-    order by perfil.email
-) as f1
-join
-    (
+    select
+        f1.nome,f2.nome,count() as amigos_em_comum
+        from
+        (
         select 
-        perfil.email as perfil,
-        perfil.nome as nome,
+            perfil.email as perfil,
+            perfil.nome as nome,
+            case
+                when
+                    perfil.email=amigo.perfil 
+                then amigo.perfilAmigo
+                when
+                perfil.email=amigo.perfilAmigo 
+            then amigo.perfil
+            end as amigo
+            from 
+            perfil
+                join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+            order by perfil.email
+            ) as f1
+        join
+        (
+            select 
+                perfil.email as perfil,
+                perfil.nome as nome,
+            case
+                when
+                    perfil.email=amigo.perfil 
+                then amigo.perfilAmigo
+                when
+                    perfil.email=amigo.perfilAmigo 
+                then amigo.perfil
+            end as amigo
+            from 
+            perfil
+                join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+            order by perfil.email
+        ) as f2 on f1.amigo=f2.amigo
+    group by f1.perfil,f2.perfil
+    having 
+    f1.perfil!=f2.perfil
+    and f1.perfil in (
+                        select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                     )
+    and f2.perfil in (
+                        select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                     )
+                     and count() = (
+    select
+        distinct
+        count()
+        from
+        (
+        select 
+            perfil.email as perfil,
+            perfil.nome as nome,
         case
             when
                 perfil.email=amigo.perfil 
@@ -463,75 +489,38 @@ join
         perfil
             join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
         order by perfil.email
-    ) as f2 on f1.amigo=f2.amigo
-                 where 
-                 f1.nome != f2.nome
-group by f1.perfil,f2.perfil
-having 
-f1.perfil!=f2.perfil
-and f1.perfil in (
-                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
-                 )
-and f2.perfil in (
-                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
-                 )
-                 and count() = (
-select
-distinct
-count()
-from
-(
-    select 
-    perfil.email as perfil,
-    perfil.nome as nome,
-    case
-        when
-            perfil.email=amigo.perfil 
-        then amigo.perfilAmigo
+    ) as f1
+    join
+        (
+            select 
+                perfil.email as perfil,
+                perfil.nome as nome,
+            case
+                when
+                    perfil.email=amigo.perfil 
+                then amigo.perfilAmigo
 
-        when
-            perfil.email=amigo.perfilAmigo 
-        then amigo.perfil
-    end as amigo
-    from 
-    perfil
-        join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
-    order by perfil.email
-) as f1
-join
-    (
-        select 
-        perfil.email as perfil,
-        perfil.nome as nome,
-        case
-            when
-                perfil.email=amigo.perfil 
-            then amigo.perfilAmigo
-
-            when
-                perfil.email=amigo.perfilAmigo 
-            then amigo.perfil
-        end as amigo
-        from 
-        perfil
-            join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
-        order by perfil.email
-    ) as f2 on f1.amigo=f2.amigo
-group by f1.perfil,f2.perfil
-having 
-f1.perfil!=f2.perfil
-and f1.perfil in (
-                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
-                 )
-and f2.perfil in (
-                    select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
-                 )
-order by count() desc
-limit 1
-                 )
-)
-
-;
+                when
+                    perfil.email=amigo.perfilAmigo 
+                then amigo.perfil
+            end as amigo
+            from 
+            perfil
+                join amigo on (amigo.perfil=perfil.email or amigo.perfilAmigo=perfil.email)
+            order by perfil.email
+        ) as f2 on f1.amigo=f2.amigo
+    group by f1.perfil,f2.perfil
+    having 
+    f1.perfil!=f2.perfil
+    and f1.perfil in (
+                        select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                     )
+    and f2.perfil in (
+                        select distinct grupoPerfil.perfil from grupo join grupoPerfil on grupoPerfil.grupo=grupo.codigo where lower(grupo.nome)='sqlite' or lower(grupo.nome)='banco de dados-ifrs2021'
+                     )
+    order by count() desc
+                     )
+    ;
 
 
 
@@ -539,7 +528,7 @@ limit 1
 /*
 USER_A=professor@hotmail.com
 USER_B=M&M@mymail.com
-TESTADO com count(*)>2 assuntos em comum 
+TESTADO com count(*)>3 assuntos em comum 
 */
 select
     perfil.nome as user_a,
@@ -549,7 +538,7 @@ select
                 tmp.prf as perfil1,
                 case 
                     when  
-                        count(*)>4 
+                        count(*)>3
                         and tmp2.prf not in (
                                                 select 
                                                     distinct
