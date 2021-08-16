@@ -5,27 +5,28 @@ CREATE TABLE perfil (
         estado char(2) not null,
         cidade varchar(100) not null,
         pais varchar(100) not null,
+        status varchar(10) CHECK(status='ativado' or status='desativado') not null, --add para questao c)
         data datetime,
         nascimento date, --adicionado para letra j)
         genero char(1) CHECK(genero='M' or genero='F' or genero is null),--adicionada para letra j),genero is null qualquer coisa que não seja H ou M
         primary key (email)
 );
-INSERT INTO perfil VALUES('den@ifrs.riogrande.edu.br','IFRS Campus Rio Grande','12345','RS','Rio Grande','Brasil','2010-01-01 08:00','1921-07-30',NULL);
-INSERT INTO perfil VALUES('professor@hotmail.com','Professor de BD','12345','RS','Rio Grande','Brasil','2010-01-01 09:00','1981-07-30','M');
-INSERT INTO perfil VALUES('joaosbras@mymail.com','João Silva Brasil','42345','RS','Rio Grande','Brasil','2020-01-01 13:00','1991-07-30','M');
-INSERT INTO perfil VALUES('pedro@gmail.com','Pedro Alencar Pereira','2345','RS','Rio Grande','Brasil','2020-01-01 13:05','2001-07-30','M');
-INSERT INTO perfil VALUES('mcalbuq@mymail.com','Maria Cruz Albuquerque','823456','RS','Rio Grande','Brasil','2020-01-01 13:10','1985-07-30','F');
-INSERT INTO perfil VALUES('jorosamed@mymail.com','Joana Rosa Medeiros','1234','RS','Rio Grande','Brasil','2020-01-01 13:15','1995-07-30','F');
-INSERT INTO perfil VALUES('pxramos@mymail.com','Paulo Xavier Ramos','123','RS','Rio Grande','Brasil','2020-01-01 13:20','1974-07-30','M');
-INSERT INTO perfil VALUES('pele@cbf.com.br','Edson Arantes do Nascimento','*****','RJ','Rio de Janeiro','Brasil','2009-01-01 13:20','2002-07-30','M');
-INSERT INTO perfil VALUES('pmartinssilva90@mymail.com','Paulo Martins Silva','*****','SP','Jundiai','Brasil','2010-01-01 13:20','1950-07-30','M');
-INSERT INTO perfil VALUES('paulafernandes@mymail.com','Paula Fernandes Amaral','*****','MG','Tambaú','Brasil','2010-01-01 13:20','1999-08-30','F');
-INSERT INTO perfil VALUES('marciasilva@mymail.com','Marcia Silva','*****','MG','Tambaú','Brasil','2010-01-01 13:20','2001-07-30','F');
-INSERT INTO perfil VALUES('jessicabtstop@mymail.com','Jessica Kpopper','*****','PR','Apucarana','Brasil','2010-01-01 13:20','2000-05-23','F');
-INSERT INTO perfil VALUES('pequenopedrinho@mymail.com','Pedrinho','*****','PR','Apucarana','Brasil','2010-01-01 13:20','2002-01-03','M');
-INSERT INTO perfil VALUES('M&M@mymail.com','Marcinha','*****','BUE','Buenos aires','Argentina','2010-01-01 13:20','2001-07-30','F');
-INSERT INTO perfil VALUES('Flash@mymail.com','Flash','*****','BUE','Buenos aires','Argentina','2010-01-01 13:20','2000-05-23','F');
-INSERT INTO perfil VALUES('ciclope@mymail.com','ciclope','*****','WAS','Washington','EUA','2010-01-01 13:20','2002-01-03','M');
+INSERT INTO perfil VALUES('den@ifrs.riogrande.edu.br','IFRS Campus Rio Grande','12345','RS','Rio Grande','Brasil', 'ativado','2010-01-01 08:00','1921-07-30',NULL);
+INSERT INTO perfil VALUES('professor@hotmail.com','Professor de BD','12345','RS','Rio Grande','Brasil', 'ativado','2010-01-01 09:00','1981-07-30','M');
+INSERT INTO perfil VALUES('joaosbras@mymail.com','João Silva Brasil', 'ativado','42345','RS','Rio Grande','Brasil', 'ativado','2020-01-01 13:00','1991-07-30','M');
+INSERT INTO perfil VALUES('pedro@gmail.com','Pedro Alencar Pereira','2345','RS','Rio Grande','Brasil', 'ativado','2020-01-01 13:05','2001-07-30','M');
+INSERT INTO perfil VALUES('mcalbuq@mymail.com','Maria Cruz Albuquerque','823456','RS','Rio Grande','Brasil', 'ativado','2020-01-01 13:10','1985-07-30','F');
+INSERT INTO perfil VALUES('jorosamed@mymail.com','Joana Rosa Medeiros','1234','RS','Rio Grande','Brasil', 'ativado','2020-01-01 13:15','1995-07-30','F');
+INSERT INTO perfil VALUES('pxramos@mymail.com','Paulo Xavier Ramos','123','RS','Rio Grande','Brasil', 'ativado','2020-01-01 13:20','1974-07-30','M');
+INSERT INTO perfil VALUES('pele@cbf.com.br','Edson Arantes do Nascimento','*****','RJ','Rio de Janeiro','Brasil', 'ativado','2009-01-01 13:20','2002-07-30','M');
+INSERT INTO perfil VALUES('pmartinssilva90@mymail.com','Paulo Martins Silva','*****','SP','Jundiai','Brasil', 'ativado','2010-01-01 13:20','1950-07-30','M');
+INSERT INTO perfil VALUES('paulafernandes@mymail.com','Paula Fernandes Amaral','*****','MG','Tambaú','Brasil', 'ativado','2010-01-01 13:20','1999-08-30','F');
+INSERT INTO perfil VALUES('marciasilva@mymail.com','Marcia Silva','*****','MG','Tambaú','Brasil', 'ativado','2010-01-01 13:20','2001-07-30','F');
+INSERT INTO perfil VALUES('jessicabtstop@mymail.com','Jessica Kpopper','*****','PR','Apucarana','Brasil', 'ativado','2010-01-01 13:20','2000-05-23','F');
+INSERT INTO perfil VALUES('pequenopedrinho@mymail.com','Pedrinho','*****','PR','Apucarana','Brasil', 'ativado','2010-01-01 13:20','2002-01-03','M');
+INSERT INTO perfil VALUES('M&M@mymail.com','Marcinha','*****','BUE','Buenos aires','Argentina', 'ativado','2010-01-01 13:20','2001-07-30','F');
+INSERT INTO perfil VALUES('Flash@mymail.com','Flash','*****','BUE','Buenos aires','Argentina', 'ativado','2010-01-01 13:20','2000-05-23','F');
+INSERT INTO perfil VALUES('ciclope@mymail.com','ciclope','*****','WAS','Washington','EUA', 'ativado', '2010-01-01 13:20','2002-01-03','M');
 CREATE TABLE amigo (
         perfilAmigo varchar(100) not null,
         perfil varchar(100) not null,
@@ -155,6 +156,7 @@ INSERT INTO reaction VALUES('amei','mcalbuq@mymail.com',2,NULL,'2021-07-16 15:10
 INSERT INTO reaction VALUES('gostei','pedro@gmail.com',5,NULL,'2021-07-16 15:05');
 INSERT INTO reaction VALUES('gostei','mcalbuq@mymail.com',5,NULL,'2021-07-16 15:10');
 INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',5,NULL,'2021-07-16 15:12');
+INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',25,NULL,'2021-07-16 15:12');
 CREATE TABLE grupoPerfil (
         grupo integer not null,
         perfil varchar(100) not null,
@@ -216,3 +218,5 @@ INSERT INTO post VALUES(20,'num creio ksksks','pele@cbf.com.br',NULL,NULL,18,'20
 INSERT INTO post VALUES(21,'select é carioca','mcalbuq@mymail.com',NULL,NULL,NULL,'2021-08-09 00:07:09');
 INSERT INTO post VALUES(22,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,18,'2021-08-09 00:07:09');
 INSERT INTO post VALUES(23,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,21,'2021-08-09 00:07:33');
+INSERT INTO post VALUES(24,'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio','pele@cbf.com.br',NULL,NULL,21,'2021-08-12 00:17:33');
+INSERT INTO post VALUES(25,'hahah engraçadao','jorosamed@mymail.com',2,NULL,21,'2021-08-09 00:07:33');

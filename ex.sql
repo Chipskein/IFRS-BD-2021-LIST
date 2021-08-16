@@ -3,13 +3,16 @@
 --a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail
 --pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21
 --medalhas nas Olimpíadas 2020/2021 em Tóquio".
+UPDATE post set texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio' where texto = 'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
 
 --b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma
 --postagem no grupo SQLite de para .
+--Falta pegar o ultimo, nesse caso to pegando todos
+UPDATE reaction set texto = 'amei' from  post where reaction.texto = 'gostei' and reaction.postagem = post.codigo and post.grupo = 2
 
 --c) Desativar temporariamente as contas dos usuários do Brasil que não possuem qualquer atividade
 --na rede social há mais de 5 anos.
-
+UPDATE status set status = 'desativado' from post, reaction, compartilhamento where perfil.email = post.perfil or perfil.email = reaction.perfil or perfil.email = compartilhamento.perfil
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 
 --e) Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo IFRS-Campus Rio Grande que:
