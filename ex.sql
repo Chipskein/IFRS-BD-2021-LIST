@@ -7,9 +7,37 @@ UPDATE post set texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio
 
 --b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma
 --postagem no grupo SQLite de para .
---Falta pegar o ultimo, nesse caso to pegando todos
-UPDATE reaction set texto = 'amei' from  post where reaction.texto = 'gostei' and reaction.postagem = post.codigo and post.grupo = 2
+--altera 3(8,5,25) pois elas tem a mesma data
+update 
+    reaction 
+    set texto ='amei' 
+    from 
+    (
+        select 
+            reaction.*
+        from grupo 
+            join post on post.grupo=grupo.codigo
+            join reaction on post.codigo=reaction.postagem
+        where 
+            lower(grupo.nome)='sqlite' and
+            reaction.texto='gostei' and
+            reaction.perfil='pxramos@mymail.com' and
+            reaction.data = (
 
+                                select 
+                                reaction.data as ult_data 
+                                from grupo 
+                                join post on post.grupo=grupo.codigo
+                                join reaction on post.codigo=reaction.postagem
+                                where 
+                                lower(grupo.nome)='sqlite' and
+                                reaction.texto='gostei' and
+                                reaction.perfil='pxramos@mymail.com'
+                                order by reaction.data desc
+                                limit 1
+                            )
+    )
+;
 --c) Desativar temporariamente as contas dos usuários do Brasil que não possuem qualquer atividade
 --na rede social há mais de 5 anos.
 UPDATE status set status = 'desativado' from post, reaction, compartilhamento where perfil.email = post.perfil or perfil.email = reaction.perfil or perfil.email = compartilhamento.perfil
