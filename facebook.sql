@@ -255,3 +255,8 @@ CREATE TABLE classificacaoPost (
 INSERT INTO classificacaoPost values(9,1);
 INSERT INTO classificacaoPost values(24,3);
 INSERT INTO classificacaoPost values(4,4);
+INSERT INTO classificacaoPost values(5,4);
+INSERT INTO classificacaoPost values(6,4);
+INSERT INTO classificacaoPost values(7,4);
+INSERT INTO classificacaoPost values(8,4);
+INSERT INTO classificacaoPost values(25,4);
