@@ -3,9 +3,25 @@
 --a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail
 --pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21
 --medalhas nas Olimpíadas 2020/2021 em Tóquio".
-UPDATE post set texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio' where texto = 'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
-
-
+update 
+    post 
+    set texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio' 
+    where 
+    codigo in (
+        select 
+        post.codigo 
+        from 
+        post
+        where
+        post.data=(
+                    select data from post where perfil='pele@cbf.com.br'
+                    order by post.data desc
+                    limit 1
+                )
+        and post.texto='Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
+    )
+;
+select * from post order by data desc
 --b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma
 --postagem no grupo SQLite de para .
 --altera 3 reacts(11,21,22) tem a mesma data
