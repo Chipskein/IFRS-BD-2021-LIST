@@ -68,17 +68,25 @@ update
         from perfil
         where
         email not in (
-                        select post.perfil from post where post.data between datetime('now','-5 years') and datetime('now')
+                        select post.perfil from post where strftime('%Y',post.data) between strftime('%Y','now','-5 years') and strftime('%Y','now')
                         union
-                        select reaction.perfil from reaction where reaction.data between datetime('now','-5 years') and datetime('now')
+                        select reaction.perfil from reaction where strftime('%Y',reaction.data) between strftime('%Y','now','-5 years') and strftime('%Y','now')
                         union
-                        select compartilhamento.perfil from compartilhamento where compartilhamento.data_compartilhamento between datetime('now','-5 years') and datetime('now')
+                        select compartilhamento.perfil from compartilhamento where strftime('%Y',compartilhamento.data_compartilhamento) between strftime('%Y','now','-5 years') and strftime('%Y','now')
                     )
     )
 ;
 --prova real
 select * from perfil where status='desativado'
 
+select 
+* 
+from 
+post 
+where 
+strftime('%Y',post.data) 
+between strftime('%Y','now','-5 years') and strftime('%Y','now')
+; 
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 --testado com o grupo sqlite
 -- com a classificação 'verificado'
