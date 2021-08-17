@@ -212,39 +212,37 @@ INSERT INTO citacao VALUES(1,'den@ifrs.riogrande.edu.br',1);
 INSERT INTO citacao VALUES(2,'jorosamed@mymail.com',2);
 INSERT INTO citacao VALUES(3,'pxramos@mymail.com',2);
 CREATE TABLE reaction(
-        --codigo integer not null,
+        codigo integer not null,
         texto varchar(7) CHECK(texto='gostei' or texto='amei' or texto='risos' or texto='triste'),
         perfil varchar(100) not null,
         postagem integer,
-        --comentario integer CHECK(postagem=null),
         data datetime DEFAULT CURRENT_TIMESTAMP,
         foreign key (perfil) references perfil(email),
         foreign key (postagem) references post(codigo)
-        --foreign key (comentario) references comentario(codigo)
-        --primary key (codigo)
+        primary key (codigo)
 );
-INSERT INTO reaction VALUES('gostei','pedro@gmail.com',1,'2021-06-02 15:05');
-INSERT INTO reaction VALUES('gostei','mcalbuq@mymail.com',1,'2021-06-02 15:10');
-INSERT INTO reaction VALUES('triste','pxramos@mymail.com',1,'2021-06-02 15:20');
-INSERT INTO reaction VALUES('gostei','pele@cbf.com.br',1,'2021-07-19 14:03:43');
-INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',5,'2021-06-02 15:20');
-INSERT INTO reaction VALUES('triste','pele@cbf.com.br',6,'2021-07-19 14:03:43');
-INSERT INTO reaction VALUES('gostei','pedro@gmail.com',6,'2021-06-02 15:05');
-INSERT INTO reaction VALUES('gostei','mcalbuq@mymail.com',5,'2021-06-02 15:10');
-INSERT INTO reaction VALUES('gostei','pedro@gmail.com',8,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('gostei','mcalbuq@mymail.com',8,'2021-07-16 15:10');
-INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',8,'2021-07-16 15:12');
-INSERT INTO reaction VALUES('gostei','pedro@gmail.com',2,'2021-07-17 15:05');
-INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',2,'2021-07-17 15:15');
-INSERT INTO reaction VALUES('amei','pedro@gmail.com',2,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('amei','pedro@gmail.com',3,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('amei','pedro@gmail.com',8,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('amei','pedro@gmail.com',9,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('amei','mcalbuq@mymail.com',2,'2021-07-16 15:10');
-INSERT INTO reaction VALUES('gostei','pedro@gmail.com',5,'2021-07-16 15:05');
-INSERT INTO reaction VALUES('gostei','mcalbuq@mymail.com',5,'2021-07-16 15:10');
-INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',5,'2021-07-16 15:12');
-INSERT INTO reaction VALUES('gostei','pxramos@mymail.com',25,'2021-07-16 15:12');
+INSERT INTO reaction VALUES(1,'gostei','pedro@gmail.com',1,'2021-06-02 15:05');
+INSERT INTO reaction VALUES(2,'gostei','mcalbuq@mymail.com',1,'2021-06-02 15:10');
+INSERT INTO reaction VALUES(3,'triste','pxramos@mymail.com',1,'2021-06-02 15:20');
+INSERT INTO reaction VALUES(4,'gostei','pele@cbf.com.br',1,'2021-07-19 14:03:43');
+INSERT INTO reaction VALUES(5,'gostei','pxramos@mymail.com',5,'2021-06-02 15:20');
+INSERT INTO reaction VALUES(6,'triste','pele@cbf.com.br',6,'2021-07-19 14:03:43');
+INSERT INTO reaction VALUES(7,'gostei','pedro@gmail.com',6,'2021-06-02 15:05');
+INSERT INTO reaction VALUES(8,'gostei','mcalbuq@mymail.com',5,'2021-06-02 15:10');
+INSERT INTO reaction VALUES(9,'gostei','pedro@gmail.com',8,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(10,'gostei','mcalbuq@mymail.com',8,'2021-07-16 15:10');
+INSERT INTO reaction VALUES(11,'gostei','pxramos@mymail.com',8,'2021-07-16 15:12');
+INSERT INTO reaction VALUES(12,'gostei','pedro@gmail.com',2,'2021-07-17 15:05');
+INSERT INTO reaction VALUES(13,'gostei','pxramos@mymail.com',2,'2021-07-17 15:15');
+INSERT INTO reaction VALUES(14,'amei','pedro@gmail.com',2,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(15,'amei','pedro@gmail.com',3,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(16,'amei','pedro@gmail.com',8,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(17,'amei','pedro@gmail.com',9,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(18,'amei','mcalbuq@mymail.com',2,'2021-07-16 15:10');
+INSERT INTO reaction VALUES(19,'gostei','pedro@gmail.com',5,'2021-07-16 15:05');
+INSERT INTO reaction VALUES(20,'gostei','mcalbuq@mymail.com',5,'2021-07-16 15:10');
+INSERT INTO reaction VALUES(21,'gostei','pxramos@mymail.com',5,'2021-07-16 15:12');
+INSERT INTO reaction VALUES(22,'gostei','pxramos@mymail.com',25,'2021-07-16 15:12');
 CREATE TABLE classificacaoPost (
         post integer not null,
         classificacao integer not null,
