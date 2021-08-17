@@ -24,9 +24,6 @@ fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 * O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
 
-
-
-
 /*
 2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
 uma rede social nas listas de exercícios anteriores para que o exercício 1 acima pudesse ser
