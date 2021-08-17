@@ -16,38 +16,37 @@ UPDATE status set status = 'desativado' from post, reaction, compartilhamento wh
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 --testado com o grupo sqlite
 -- com a classificação 'verificado'
-
-
-select 
-        grupo.nome,
-        grupo.codigo,
-        post.codigo,
-        post.data,
-        classificacao.nome
+delete  
     from 
-        grupo 
-            join post on post.grupo=grupo.codigo 
-            join classificacaoPost on post.codigo=classificacaoPost.post
-            join classificacao on classificacao.cod=classificacaoPost.classificacao
+    post 
     where 
-    lower(grupo.nome)='sqlite' and
-    lower(classificacao.nome)='verificado' and
-    post.data= (
-                    select 
-                    post.data
-                    from 
-                        grupo 
-                            join post on post.grupo=grupo.codigo 
-                            join classificacaoPost on post.codigo=classificacaoPost.post
-                            join classificacao on classificacao.cod=classificacaoPost.classificacao
-                    where 
-                    lower(grupo.nome)='sqlite' and
-                    lower(classificacao.nome)='verificado'
-                    order by post.data desc 
-                    limit 1
+    post.codigo in (
+                        select 
+                        post.codigo
+                        from 
+                            grupo 
+                                join post on post.grupo=grupo.codigo 
+                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                        where 
+                        lower(grupo.nome)='sqlite' and
+                        lower(classificacao.nome)='verificado' and
+                        post.data= (
+                                        select 
+                                        post.data
+                                        from 
+                                            grupo 
+                                                join post on post.grupo=grupo.codigo 
+                                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                                        where 
+                                        lower(grupo.nome)='sqlite' and
+                                        lower(classificacao.nome)='verificado'
+                                        order by post.data desc 
+                                        limit 1
+                                    )
                 )
 ;
-    
 --e) Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo IFRS-Campus Rio Grande que:
 /*
 Selo Condições considerando as postagens da semana passada no grupo
