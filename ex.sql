@@ -103,7 +103,7 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
                         lower(classificacao.nome)='verificado' and
                         post.data= (
                                         select 
@@ -114,7 +114,7 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
                                         lower(classificacao.nome)='verificado'
                                         order by post.data desc 
                                         limit 1
@@ -123,7 +123,7 @@ delete
 ;
 --prova real
 select * from post where grupo=2
---e) Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo IFRS-Campus Rio Grande que:
+--e) Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo ifrs-campus rio grande que:
 /*
 Selo Condições considerando as postagens da semana passada no grupo
 ultra-fã reagiram a 75% ou mais e comentaram 30% ou mais das postagens
@@ -151,4 +151,7 @@ Removido
 /*
     3) Explique detalhadamente porque não é possível várias pessoas distintas comprarem o mesmo
     lugar numerado no mesmo show utilizando controle de concorrência.
+    As pessoas não conseguem comprar o mesmo lugar numerado no mesmo show pois quando utilizado o controle de concorrência, nós temos o controle de quem fez a primeira ação, onde nesse caso é quem abriu aba de compra de ingresso primeiro.
+    Sempre que alguem abre a aba de compra ela tem secretamente salva a data da última compra de ingressos, logo quando ela decide comprar nós comparamos se o horário que ela tinha armazenado como última compra é o mesmo de última compra no banco de dados, caso no banco tenha outra data, a compra será cancelada e a pessoa terá que fazer todo processo novamente, assim não teremos risco de 2 pessoas comprarem o mesmo lugar no mesmo tempo.
+
 */

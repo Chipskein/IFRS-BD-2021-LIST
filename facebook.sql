@@ -20,7 +20,7 @@ CREATE TABLE perfil (
         estado char(2) not null,
         cidade varchar(100) not null,
         pais varchar(100) not null,
-        status varchar(10) CHECK(status='ativado' or status='desativado') not null, --add para questao c)
+        status varchar(10) CHECK(status='ativado' or status='desativado') not null, --adicionado para questao c)
         data datetime,
         nascimento date, --adicionado para letra j)
         genero char(1) CHECK(genero='M' or genero='F' or genero is null),--adicionada para letra j),genero is null qualquer coisa que não seja H ou M
@@ -65,6 +65,7 @@ CREATE TABLE grupo (
 );
 INSERT INTO grupo VALUES(1,'Banco de Dados-IFRS2021');
 INSERT INTO grupo VALUES(2,'SQlite');
+INSERT INTO grupo VALUES(3,'IFRS-Campus Rio Grande'); --adicionado para e)
 CREATE TABLE pagina (
         codigo integer not null,
         nome varchar(100) not null,
@@ -258,3 +259,15 @@ INSERT INTO classificacaoPost values(6,4);
 INSERT INTO classificacaoPost values(7,4);
 INSERT INTO classificacaoPost values(8,4);
 INSERT INTO classificacaoPost values(25,4);
+
+
+
+CREATE TABLE selo (
+        grupo integer not null,
+        nome varchar(250) CHECK(nome='ultra-fã' or nome='super-fã' or nome='fã') not null,
+        perfil integer not null,
+        data_recebimento datetime DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (grupo) REFERENCES grupo(codigo),
+        FOREIGN KEY (perfil) REFERENCES perfil(email)
+);
+INSERT INTO selo values(1,'ultra-fã','professor@hotmail.com', '2021-08-15');
