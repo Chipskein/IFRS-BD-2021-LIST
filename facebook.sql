@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS seloperfil;
+DROP TABLE IF EXISTS selogrupo;
 DROP TABLE IF EXISTS classificacaoPost;
 DROP TABLE IF EXISTS post;
 DROP TABLE IF EXISTS classificacao;
@@ -262,12 +264,21 @@ INSERT INTO classificacaoPost values(25,4);
 
 
 
-CREATE TABLE selo (
+CREATE TABLE selogrupo (
+        cod integer not null,
         grupo integer not null,
-        nome varchar(250) CHECK(nome='ultra-fã' or nome='super-fã' or nome='fã') not null,
-        perfil integer not null,
-        data_recebimento datetime DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (grupo) REFERENCES grupo(codigo),
-        FOREIGN KEY (perfil) REFERENCES perfil(email)
+        nome varchar(250) not null,
+        FOREIGN KEY (grupo) REFERENCES grupo(codigo)
 );
-INSERT INTO selo values(1,'ultra-fã','professor@hotmail.com', '2021-08-15');
+
+INSERT INTO selogrupo values
+        (1,3,'ultra-fa'),
+        (2,3,'super-fã'),
+        (3,3,'fa');
+
+CREATE TABLE seloperfil (
+        selo integer not null,
+        perfil varchar(100) not null,
+        validatation_date datetime,
+        FOREIGN key (selo) REFERENCES selegrupo(cod)
+);

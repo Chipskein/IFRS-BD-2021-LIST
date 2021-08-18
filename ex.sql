@@ -21,7 +21,7 @@ update
         and post.texto='Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
     )
 ;
-select * from post order by data desc
+
 --b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma
 --postagem no grupo SQLite de para .
 --altera 3 reacts(11,21,22) tem a mesma data
@@ -76,17 +76,6 @@ update
                     )
     )
 ;
---prova real
-select * from perfil where status='desativado'
-
-select 
-* 
-from 
-post 
-where 
-strftime('%Y',post.data) 
-between strftime('%Y','now','-5 years') and strftime('%Y','now')
-; 
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 --testado com o grupo sqlite
 -- com a classificação 'verificado'
@@ -121,9 +110,10 @@ delete
                                     )
                 )
 ;
---prova real
-select * from post where grupo=2
---e) Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo ifrs-campus rio grande que:
+
+--e) 
+--Atribuir um selo de fã, com validade determinada para a semana atual, 
+--para os usuários do grupo ifrs-campus rio grande que:
 /*
 Selo Condições considerando as postagens da semana passada no grupo
 ultra-fã reagiram a 75% ou mais e comentaram 30% ou mais das postagens
@@ -131,6 +121,22 @@ super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
 fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 * O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
@@ -151,6 +157,7 @@ Removido
 /*
     3) Explique detalhadamente porque não é possível várias pessoas distintas comprarem o mesmo
     lugar numerado no mesmo show utilizando controle de concorrência.
+   
     As pessoas não conseguem comprar o mesmo lugar numerado no mesmo show pois quando utilizado o controle de concorrência, nós temos o controle de quem fez a primeira ação, onde nesse caso é quem abriu aba de compra de ingresso primeiro.
     Sempre que alguem abre a aba de compra ela tem secretamente salva a data da última compra de ingressos, logo quando ela decide comprar nós comparamos se o horário que ela tinha armazenado como última compra é o mesmo de última compra no banco de dados, caso no banco tenha outra data, a compra será cancelada e a pessoa terá que fazer todo processo novamente, assim não teremos risco de 2 pessoas comprarem o mesmo lugar no mesmo tempo.
 
