@@ -159,6 +159,16 @@ INSERT INTO post VALUES(22,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,
 INSERT INTO post VALUES(23,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,21,'2021-08-09 00:07:33');
 INSERT INTO post VALUES(24,'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio','pele@cbf.com.br',NULL,NULL,21,'2021-08-12 00:17:33');
 INSERT INTO post VALUES(25,'hahah engraçadao','jorosamed@mymail.com',2,NULL,21,'2021-08-09 00:07:33');
+INSERT INTO post VALUES(26,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,21,'2021-08-09 00:07:35');
+INSERT INTO post VALUES(27,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:36');
+INSERT INTO post VALUES(28,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:37');
+INSERT INTO post VALUES(29,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:38');
+INSERT INTO post VALUES(30,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:39');
+INSERT INTO post VALUES(31,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:30');
+INSERT INTO post VALUES(32,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:12');
+INSERT INTO post VALUES(33,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:40');
+INSERT INTO post VALUES(34,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:50');
+INSERT INTO post VALUES(35,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-10 00:07:00');
 CREATE TABLE assuntoPost(
         assunto integer not null,
         post integer not null,
@@ -246,6 +256,18 @@ INSERT INTO reaction VALUES(19,'gostei','pedro@gmail.com',5,'2021-07-16 15:05');
 INSERT INTO reaction VALUES(20,'gostei','mcalbuq@mymail.com',5,'2021-07-16 15:10');
 INSERT INTO reaction VALUES(21,'gostei','pxramos@mymail.com',5,'2021-07-16 15:12');
 INSERT INTO reaction VALUES(22,'gostei','pxramos@mymail.com',25,'2021-07-16 15:12');
+
+INSERT INTO reaction VALUES(23,'gostei','pxramos@mymail.com',26,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(24,'gostei','pxramos@mymail.com',27,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(25,'gostei','joaosbras@mymail.com',35,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(26,'gostei','joaosbras@mymail.com',35,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(27,'gostei','joaosbras@mymail.com',35,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(28,'gostei','jorosamed@mymail.com',29,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(29,'gostei','pxramos@mymail.com',29,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(30,'gostei','jorosamed@mymail.com',29,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(31,'gostei','professor@hotmail.com',27,'2021-08-09 00:08:36');
+INSERT INTO reaction VALUES(32,'gostei','professor@hotmail.com',34,'2021-08-09 00:08:36');
+
 CREATE TABLE classificacaoPost (
         post integer not null,
         classificacao integer not null,

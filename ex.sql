@@ -121,7 +121,70 @@ super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
 fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 * O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
+--todas as postagens da semana passada do grupo
 
+--select reaction porcentagem
+select 
+reaction.perfil,
+(cast(count(*) as real)/
+(
+    select 
+    count(*)
+    from 
+    reaction
+    where
+    reaction.postagem in (
+                            select 
+                            post.codigo 
+                            from 
+                            post 
+                                join grupo on grupo.codigo=post.grupo
+                            where 
+                                lower(grupo.nome)='sqlite' and 
+                                post.postagem is null and
+                                datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                        )
+))*100 as porcentagem
+from 
+reaction
+where
+reaction.postagem in (
+                        select 
+                        post.codigo 
+                        from 
+                        post 
+                            join grupo on grupo.codigo=post.grupo
+                        where 
+                            lower(grupo.nome)='sqlite' and 
+                            post.postagem is null and
+                            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                     )
+group by reaction.perfil
+;
+--select comentarios postagens
+select 
+post.perfil,
+(cast (count(*) as real)/
+(
+    select 
+    count(*)
+    from 
+    post 
+        join grupo on grupo.codigo=post.grupo
+    where 
+    lower(grupo.nome)='sqlite' and 
+    post.postagem is not null and
+    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+))*100 as porcentagem
+from 
+post 
+    join grupo on grupo.codigo=post.grupo
+where 
+lower(grupo.nome)='sqlite' and 
+post.postagem is not null and
+datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+group by post.perfil
+;           
 
 
 
