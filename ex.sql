@@ -162,6 +162,7 @@ reaction.postagem in (
 group by reaction.perfil
 ;
 --select comentarios postagens
+
 select 
 post.perfil,
 (cast (count(*) as real)/
@@ -174,6 +175,17 @@ post.perfil,
     where 
     lower(grupo.nome)='sqlite' and 
     post.postagem is not null and
+    post.postagem in (
+                        select 
+                        post.codigo
+                        from 
+                        post 
+                            join grupo on grupo.codigo=post.grupo
+                        where 
+                        lower(grupo.nome)='sqlite' and 
+                        post.postagem is null and
+                        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                    ) and
     datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
 ))*100 as porcentagem
 from 
@@ -185,7 +197,6 @@ post.postagem is not null and
 datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
 group by post.perfil
 ;           
-
 
 
 

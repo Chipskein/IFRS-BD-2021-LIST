@@ -157,18 +157,18 @@ INSERT INTO post VALUES(20,'num creio ksksks','pele@cbf.com.br',NULL,NULL,18,'20
 INSERT INTO post VALUES(21,'select é carioca','mcalbuq@mymail.com',NULL,NULL,NULL,'2021-08-09 00:07:09');
 INSERT INTO post VALUES(22,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,18,'2021-08-09 00:07:09');
 INSERT INTO post VALUES(23,'hahah engraçadao','jorosamed@mymail.com',NULL,NULL,21,'2021-08-09 00:07:33');
-INSERT INTO post VALUES(24,'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio','pele@cbf.com.br',NULL,NULL,21,'2021-08-12 00:17:33');
-INSERT INTO post VALUES(25,'hahah engraçadao','jorosamed@mymail.com',2,NULL,21,'2021-08-09 00:07:33');
-INSERT INTO post VALUES(26,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,21,'2021-08-09 00:07:35');
+INSERT INTO post VALUES(24,'Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio','pele@cbf.com.br',NULL,NULL,NULL,'2021-08-12 00:17:33');
+INSERT INTO post VALUES(25,'hahah engraçadao','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:33');
+INSERT INTO post VALUES(26,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:35');
 INSERT INTO post VALUES(27,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:36');
 INSERT INTO post VALUES(28,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:37');
 INSERT INTO post VALUES(29,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:38');
 INSERT INTO post VALUES(30,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:39');
 INSERT INTO post VALUES(31,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:30');
 INSERT INTO post VALUES(32,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:12');
-INSERT INTO post VALUES(33,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:40');
-INSERT INTO post VALUES(34,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-09 00:07:50');
-INSERT INTO post VALUES(35,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,NULL,'2021-08-10 00:07:00');
+INSERT INTO post VALUES(33,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,27,'2021-08-09 00:07:40');
+INSERT INTO post VALUES(34,'lorem lorem lorem','professor@hotmail.com',2,NULL,25,'2021-08-09 00:07:50');
+INSERT INTO post VALUES(35,'lorem lorem lorem','jorosamed@mymail.com',2,NULL,26,'2021-08-10 00:07:00');
 CREATE TABLE assuntoPost(
         assunto integer not null,
         post integer not null,
