@@ -121,11 +121,15 @@ super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
 fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 * O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
---todas as postagens da semana passada do grupo
-
---select reaction porcentagem
+--select que pega as porcentagens
+select
+tmp.prf,
+tmp.porcentagem_reaction,
+tmp2.porcentagem_comment
+from
+(
 select 
-reaction.perfil,
+reaction.perfil as prf,
 (cast(count(*) as real)/
 (
     select 
@@ -144,7 +148,7 @@ reaction.perfil,
                                 post.postagem is null and
                                 datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                         )
-))*100 as porcentagem
+))*100 as porcentagem_reaction
 from 
 reaction
 where
@@ -160,11 +164,11 @@ reaction.postagem in (
                             datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                      )
 group by reaction.perfil
-;
---select comentarios postagens
-
+)as tmp
+join  
+(
 select 
-post.perfil,
+post.perfil as prf,
 (cast (count(*) as real)/
 (
     select 
@@ -187,7 +191,7 @@ post.perfil,
                         datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                     ) and
     datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-))*100 as porcentagem
+))*100 as porcentagem_comment
 from 
 post 
     join grupo on grupo.codigo=post.grupo
@@ -196,9 +200,11 @@ lower(grupo.nome)='sqlite' and
 post.postagem is not null and
 datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
 group by post.perfil
+) as tmp2 on tmp.prf=tmp2.prf
+    
 ;           
 
-
+select * from selogrupo;
 
 
 
