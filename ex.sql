@@ -76,8 +76,9 @@ update
     )
 ;
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
---testado com o grupo sqlite
--- com a classificação 'verificado'
+--testado com o grupo sqlite 
+-- e com a classificação 'verificado'
+--antes  de enviar trocar grupo para ifrs e classificação para odioso
 
 delete  
     from 
@@ -231,6 +232,7 @@ delete
     
 ;
 
+
 --e) 
 --Atribuir um selo de fã, com validade determinada para a semana atual, 
 --para os usuários do grupo ifrs-campus rio grande que:
@@ -241,113 +243,9 @@ super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
 fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 * O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
---select que pega as porcentagens
-select
-    tmp.prf,
-    tmp.porcentagem_reaction,
-    tmp2.porcentagem_comment,
-    case 
-            when 
-                tmp.porcentagem_reaction>=75.0 and
-                tmp2.porcentagem_comment>=30.0
-            then 'ultra-fa'
-            when 
-                tmp.porcentagem_reaction>=50.0 and
-                tmp2.porcentagem_comment>=20.0
-            then 'super-fa'
-            when 
-                tmp.porcentagem_reaction>=25.0 and
-                tmp2.porcentagem_comment>=10.0
-            then 'fa'
-            else 'sem selo'
-        end as selo
-    from
-    (
-    select 
-    reaction.perfil as prf,
-    (cast(count(*) as real)/
-    (
-        select 
-        count(*)
-        from 
-        reaction
-        where
-        reaction.postagem in (
-                                select 
-                                post.codigo 
-                                from 
-                                post 
-                                    join grupo on grupo.codigo=post.grupo
-                                where 
-                                    lower(grupo.nome)='sqlite' and 
-                                    post.postagem is null and
-                                    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-                            )
-    ))*100 as porcentagem_reaction
-    from 
-    reaction
-    where
-    reaction.postagem in (
-                            select 
-                            post.codigo 
-                            from 
-                            post 
-                                join grupo on grupo.codigo=post.grupo
-                            where 
-                                lower(grupo.nome)='sqlite' and 
-                                post.postagem is null and
-                                datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-                        )
-    group by reaction.perfil
-    )as tmp
-    join  
-    (
-    select 
-    post.perfil as prf,
-    (cast (count(*) as real)/
-    (
-        select 
-        count(*)
-        from 
-        post 
-            join grupo on grupo.codigo=post.grupo
-        where 
-        lower(grupo.nome)='sqlite' and 
-        post.postagem is not null and
-        post.postagem in (
-                            select 
-                            post.codigo
-                            from 
-                            post 
-                                join grupo on grupo.codigo=post.grupo
-                            where 
-                            lower(grupo.nome)='sqlite' and 
-                            post.postagem is null and
-                            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-                        ) and
-        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-    ))*100 as porcentagem_comment
-    from 
-    post 
-        join grupo on grupo.codigo=post.grupo
-    where 
-    lower(grupo.nome)='sqlite' and 
-    post.postagem is not null and
-    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-    group by post.perfil
-    ) as tmp2 on tmp.prf=tmp2.prf
-        
-;
-delete from seloperfil;
-insert into seloperfil(perfil,selo,validatation_date,grupo) 
-values
-('jorosamed@mymail.com',3,'2021-08-09 00:00',2),
-('professor@hotmail.com',2,'2021-08-09 00:00',2),
-('pxramos@mymail.com',3,'2021-08-09 00:00',2);
-	
-
-
-select * from seloperfil;--none
+--antes de enviar tem trocar o grupo='sqlite' pra 'ifrs'
+--considera-se que apenas selos validos são guardados no banco e 
+--vai atualizando conforme a condição,caso o selo expire ele será deletado
 insert into seloperfil(perfil,selo,validatation_date,grupo)
 select
     tmp.prf,
@@ -355,16 +253,53 @@ select
         when 
             tmp.porcentagem_reaction>=75.0 and
             tmp2.porcentagem_comment>=30.0
-        then 1
+        then (
+                select 
+                selogrupo.cod 
+                from 
+                selogrupo,grupo
+                where  
+                selogrupo.grupo=grupo.codigo 
+                and lower(grupo.nome)='sqlite' 
+                and selogrupo.nome='ultra-fa'
+            )
         when 
             tmp.porcentagem_reaction>=50.0 and
             tmp2.porcentagem_comment>=20.0
-        then 2
+        then  (
+                select 
+                selogrupo.cod 
+                from 
+                selogrupo,grupo
+                where  
+                selogrupo.grupo=grupo.codigo 
+                and lower(grupo.nome)='sqlite' 
+                and selogrupo.nome='super-fa'
+            )
         when 
             tmp.porcentagem_reaction>=25.0 and
             tmp2.porcentagem_comment>=10.0
-        then 3
-        else 0
+        then  (
+                select 
+                selogrupo.cod 
+                from 
+                selogrupo,grupo
+                where  
+                selogrupo.grupo=grupo.codigo 
+                and lower(grupo.nome)='sqlite' 
+                and selogrupo.nome='fa'
+            )
+        else  
+            (
+                select 
+                selogrupo.cod 
+                from 
+                selogrupo,grupo
+                where  
+                selogrupo.grupo=grupo.codigo 
+                and lower(grupo.nome)='sqlite' 
+                and selogrupo.nome='sem selo'
+            )
     end as selo,
     (select datetime(date('now','weekday 0'))),
     (select grupo.codigo from grupo where lower(grupo.nome)='sqlite')
@@ -455,16 +390,19 @@ delete
     from 
     seloperfil 
     where 
-    (selo=0 and grupo=2) or 
+    selo=(
+                select 
+                selogrupo.cod 
+                from 
+                selogrupo,grupo
+                where  
+                selogrupo.grupo=grupo.codigo 
+                and lower(grupo.nome)='sqlite' 
+                and selogrupo.nome='sem selo'
+            ) 
+    or 
     validatation_date < (select datetime(date('now','weekday 0')))
 ;
-select * from seloperfil;--resultado
-
-
-
-
-
-
 
 
 /*

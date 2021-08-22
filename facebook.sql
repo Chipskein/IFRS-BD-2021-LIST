@@ -338,7 +338,7 @@ CREATE TABLE selogrupo (
 INSERT INTO selogrupo values
         (0,2,'sem selo'),
         (1,2,'ultra-fa'),
-        (2,2,'super-fã'),
+        (2,2,'super-fa'),
         (3,2,'fa');
 
 CREATE TABLE seloperfil (
