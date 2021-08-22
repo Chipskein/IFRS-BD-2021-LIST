@@ -335,10 +335,10 @@ CREATE TABLE selogrupo (
 );
 
 INSERT INTO selogrupo values
-        (0,2,'sem selo'),
-        (1,2,'ultra-fa'),
-        (2,2,'super-fa'),
-        (3,2,'fa');
+        (0,3,'sem selo'),
+        (1,3,'ultra-fa'),
+        (2,3,'super-fa'),
+        (3,3,'fa');
 
 CREATE TABLE seloperfil (
         selo integer not null,

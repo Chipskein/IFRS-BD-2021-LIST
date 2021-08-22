@@ -1,9 +1,8 @@
 --1) Escreva comandos insert, update ou delete, utilizando as tabelas criadas para uma rede social nas listas de exercícios anteriores, para:
---a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail
---pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21
---medalhas nas Olimpíadas 2020/2021 em Tóquio".
 
---pega ultima postagem e verifica se o texto correto
+--a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio".
+
+--pega ultima postagem e verifica se é o texto para alterar
 update 
     post 
     set 
@@ -27,7 +26,7 @@ update
 
 --b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma postagem no grupo SQLite de like para amei
 
---pega a ultima reação depois verifica se é um gostei
+--pega a ultima reação e depois verifica se é um gostei
 update 
     reaction 
     set 
@@ -78,12 +77,13 @@ update
                         union
                         select compartilhamento.perfil from compartilhamento where strftime('%Y',compartilhamento.data_compartilhamento) between strftime('%Y','now','-5 years') and strftime('%Y','now')
                     )
+        and lower(pais)='brasil'
     )
 ;
 
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 
---testado com o grupo 'sqlite' e com a classificação 'verificado'
+--testado com o grupo 'sqlite' e com a classificação 'verificado' alterado para envio
 --remove citações
 delete  
     from 
@@ -98,8 +98,8 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
-                        lower(classificacao.nome)='verificado' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(classificacao.nome)='odioso' and
                         post.data= (
                                         select 
                                         post.data
@@ -109,8 +109,8 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
-                                        lower(classificacao.nome)='verificado'
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(classificacao.nome)='odioso'
                                         order by post.data desc 
                                         limit 1
                                     )
@@ -130,8 +130,8 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
-                        lower(classificacao.nome)='verificado' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(classificacao.nome)='odioso' and
                         post.data= (
                                         select 
                                         post.data
@@ -141,8 +141,8 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
-                                        lower(classificacao.nome)='verificado'
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(classificacao.nome)='odioso'
                                         order by post.data desc 
                                         limit 1
                                     )
@@ -162,8 +162,8 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
-                        lower(classificacao.nome)='verificado' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(classificacao.nome)='odioso' and
                         post.data= (
                                         select 
                                         post.data
@@ -173,8 +173,8 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
-                                        lower(classificacao.nome)='verificado'
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(classificacao.nome)='odioso'
                                         order by post.data desc 
                                         limit 1
                                     )
@@ -194,8 +194,8 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
-                        lower(classificacao.nome)='verificado' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(classificacao.nome)='odioso' and
                         post.data= (
                                         select 
                                         post.data
@@ -205,8 +205,8 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
-                                        lower(classificacao.nome)='verificado'
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(classificacao.nome)='odioso'
                                         order by post.data desc 
                                         limit 1
                                     )
@@ -220,8 +220,8 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='sqlite' and
-                        lower(classificacao.nome)='verificado' and
+                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(classificacao.nome)='odioso' and
                         post.data= (
                                         select 
                                         post.data
@@ -231,8 +231,8 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='sqlite' and
-                                        lower(classificacao.nome)='verificado'
+                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(classificacao.nome)='odioso'
                                         order by post.data desc 
                                         limit 1
                                     )
@@ -257,7 +257,7 @@ Atribuir um selo de fã, com validade determinada para a semana atual, para os u
 O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
 
---antes de enviar tem trocar o grupo='sqlite' pra 'ifrs'
+--testado no grupo sqlite ,alterado para envio
 --considera-se que apenas selos validos são guardados no banco e 
 --vai atualizando conforme a condição,caso o selo expire ele será deletado
 insert into seloperfil(perfil,selo,validatation_date,grupo)
@@ -274,7 +274,7 @@ select
                 selogrupo,grupo
                 where  
                 selogrupo.grupo=grupo.codigo 
-                and lower(grupo.nome)='sqlite' 
+                and lower(grupo.nome)='ifrs-campus rio grande' 
                 and selogrupo.nome='ultra-fa'
             )
         when 
@@ -287,7 +287,7 @@ select
                 selogrupo,grupo
                 where  
                 selogrupo.grupo=grupo.codigo 
-                and lower(grupo.nome)='sqlite' 
+                and lower(grupo.nome)='ifrs-campus rio grande' 
                 and selogrupo.nome='super-fa'
             )
         when 
@@ -300,7 +300,7 @@ select
                 selogrupo,grupo
                 where  
                 selogrupo.grupo=grupo.codigo 
-                and lower(grupo.nome)='sqlite' 
+                and lower(grupo.nome)='ifrs-campus rio grande' 
                 and selogrupo.nome='fa'
             )
         else  
@@ -311,12 +311,12 @@ select
                 selogrupo,grupo
                 where  
                 selogrupo.grupo=grupo.codigo 
-                and lower(grupo.nome)='sqlite' 
+                and lower(grupo.nome)='ifrs-campus rio grande' 
                 and selogrupo.nome='sem selo'
             )
     end as selo,
     (select datetime(date('now','weekday 0'))),
-    (select grupo.codigo from grupo where lower(grupo.nome)='sqlite')
+    (select grupo.codigo from grupo where lower(grupo.nome)='ifrs-campus rio grande')
  from
         (
             select 
@@ -335,7 +335,7 @@ select
                                         post 
                                             join grupo on grupo.codigo=post.grupo
                                         where 
-                                            lower(grupo.nome)='sqlite' and 
+                                            lower(grupo.nome)='ifrs-campus rio grande' and 
                                             post.postagem is null and
                                             datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                                     )
@@ -350,7 +350,7 @@ select
                                     post 
                                         join grupo on grupo.codigo=post.grupo
                                     where 
-                                        lower(grupo.nome)='sqlite' and 
+                                        lower(grupo.nome)='ifrs-campus rio grande' and 
                                         post.postagem is null and
                                         datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                                 )
@@ -368,7 +368,7 @@ select
                 post 
                     join grupo on grupo.codigo=post.grupo
                 where 
-                lower(grupo.nome)='sqlite' and 
+                lower(grupo.nome)='ifrs-campus rio grande' and 
                 post.postagem is not null and
                 post.postagem in (
                                     select 
@@ -377,7 +377,7 @@ select
                                     post 
                                         join grupo on grupo.codigo=post.grupo
                                     where 
-                                    lower(grupo.nome)='sqlite' and 
+                                    lower(grupo.nome)='ifrs-campus rio grande' and 
                                     post.postagem is null and
                                     datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                                 ) and
@@ -387,7 +387,7 @@ select
             post 
                 join grupo on grupo.codigo=post.grupo
             where 
-            lower(grupo.nome)='sqlite' and 
+            lower(grupo.nome)='ifrs-campus rio grande' and 
             post.postagem is not null and
             datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
             group by post.perfil
@@ -411,7 +411,7 @@ delete
                 selogrupo,grupo
                 where  
                 selogrupo.grupo=grupo.codigo 
-                and lower(grupo.nome)='sqlite' 
+                and lower(grupo.nome)='ifrs-campus rio grande' 
                 and selogrupo.nome='sem selo'
             ) 
     or 
@@ -438,7 +438,7 @@ Removido
     3) Explique detalhadamente porque não é possível várias pessoas distintas comprarem o mesmo
     lugar numerado no mesmo show utilizando controle de concorrência.
    
-    As pessoas não conseguem comprar o mesmo lugar numerado no mesmo show pois quando utilizado o controle de concorrência, nós temos o controle de quem fez a primeira ação, onde nesse caso é quem abriu aba de compra de ingresso primeiro.
+    As pessoas não conseguem comprar o mesmo lugar numerado no mesmo show pois quando utilizamos o controle de concorrência, nós temos o controle de quem fez a primeira ação, onde nesse caso é quem abriu aba de compra de ingresso primeiro.
     Sempre que alguem abre a aba de compra ela tem secretamente salva a data da última compra de ingressos, logo quando ela decide comprar nós comparamos se o horário que ela tinha armazenado como última compra é o mesmo de última compra no banco de dados, caso no banco tenha outra data, a compra será cancelada e a pessoa terá que fazer todo processo novamente, assim não teremos risco de 2 pessoas comprarem o mesmo lugar no mesmo tempo.
 
 */
