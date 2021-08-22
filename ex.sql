@@ -243,32 +243,47 @@ fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 */
 --select que pega as porcentagens
 select
-tmp.prf,
-tmp.porcentagem_reaction,
-tmp2.porcentagem_comment,
- case 
-        when 
-            tmp.porcentagem_reaction>=75.0 and
-            tmp2.porcentagem_comment>=30.0
-        then 'ultra-fa'
-        when 
-            tmp.porcentagem_reaction>=50.0 and
-            tmp2.porcentagem_comment>=20.0
-        then 'super-fa'
-        when 
-            tmp.porcentagem_reaction>=25.0 and
-            tmp2.porcentagem_comment>=10.0
-        then 'fa'
-        else 'sem selo'
-    end as selo
-from
-(
-select 
-reaction.perfil as prf,
-(cast(count(*) as real)/
-(
+    tmp.prf,
+    tmp.porcentagem_reaction,
+    tmp2.porcentagem_comment,
+    case 
+            when 
+                tmp.porcentagem_reaction>=75.0 and
+                tmp2.porcentagem_comment>=30.0
+            then 'ultra-fa'
+            when 
+                tmp.porcentagem_reaction>=50.0 and
+                tmp2.porcentagem_comment>=20.0
+            then 'super-fa'
+            when 
+                tmp.porcentagem_reaction>=25.0 and
+                tmp2.porcentagem_comment>=10.0
+            then 'fa'
+            else 'sem selo'
+        end as selo
+    from
+    (
     select 
-    count(*)
+    reaction.perfil as prf,
+    (cast(count(*) as real)/
+    (
+        select 
+        count(*)
+        from 
+        reaction
+        where
+        reaction.postagem in (
+                                select 
+                                post.codigo 
+                                from 
+                                post 
+                                    join grupo on grupo.codigo=post.grupo
+                                where 
+                                    lower(grupo.nome)='sqlite' and 
+                                    post.postagem is null and
+                                    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                            )
+    ))*100 as porcentagem_reaction
     from 
     reaction
     where
@@ -283,60 +298,45 @@ reaction.perfil as prf,
                                 post.postagem is null and
                                 datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
                         )
-))*100 as porcentagem_reaction
-from 
-reaction
-where
-reaction.postagem in (
-                        select 
-                        post.codigo 
-                        from 
-                        post 
-                            join grupo on grupo.codigo=post.grupo
-                        where 
+    group by reaction.perfil
+    )as tmp
+    join  
+    (
+    select 
+    post.perfil as prf,
+    (cast (count(*) as real)/
+    (
+        select 
+        count(*)
+        from 
+        post 
+            join grupo on grupo.codigo=post.grupo
+        where 
+        lower(grupo.nome)='sqlite' and 
+        post.postagem is not null and
+        post.postagem in (
+                            select 
+                            post.codigo
+                            from 
+                            post 
+                                join grupo on grupo.codigo=post.grupo
+                            where 
                             lower(grupo.nome)='sqlite' and 
                             post.postagem is null and
                             datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-                     )
-group by reaction.perfil
-)as tmp
-join  
-(
-select 
-post.perfil as prf,
-(cast (count(*) as real)/
-(
-    select 
-    count(*)
+                        ) and
+        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+    ))*100 as porcentagem_comment
     from 
     post 
         join grupo on grupo.codigo=post.grupo
     where 
     lower(grupo.nome)='sqlite' and 
     post.postagem is not null and
-    post.postagem in (
-                        select 
-                        post.codigo
-                        from 
-                        post 
-                            join grupo on grupo.codigo=post.grupo
-                        where 
-                        lower(grupo.nome)='sqlite' and 
-                        post.postagem is null and
-                        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-                    ) and
     datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-))*100 as porcentagem_comment
-from 
-post 
-    join grupo on grupo.codigo=post.grupo
-where 
-lower(grupo.nome)='sqlite' and 
-post.postagem is not null and
-datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
-group by post.perfil
-) as tmp2 on tmp.prf=tmp2.prf
-    
+    group by post.perfil
+    ) as tmp2 on tmp.prf=tmp2.prf
+        
 ;
 
 
@@ -345,9 +345,8 @@ group by post.perfil
 
 
 
-
-
-insert into seloperfil(perfil,selo,validatation_date)
+select * from seloperfil;--none
+insert into seloperfil(perfil,selo,validatation_date,grupo)
 select
     tmp.prf,
     case 
@@ -365,7 +364,8 @@ select
         then 3
         else 0
     end as selo,
-    (select datetime(date('now','weekday 0')))
+    (select datetime(date('now','weekday 0'))),
+    (select grupo.codigo from grupo where lower(grupo.nome)='sqlite')
  from
         (
             select 
@@ -441,8 +441,7 @@ select
             datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
             group by post.perfil
     ) as tmp2 on tmp.prf=tmp2.prf 
-where selo!=0
-on CONFLICT(selo,perfil) 
+on CONFLICT(perfil,grupo) 
 do 
 update 
 set 
@@ -540,11 +539,92 @@ select
             group by post.perfil
     ) as tmp2 on tmp.prf=tmp2.prf  
 )
-where selo!=0;
-select * from seloperfil;
-select * from selogrupo;
+where 
+grupo=2 and 
+perfil=(
+select
+    tmp.prf
+ from
+        (
+            select 
+            reaction.perfil as prf,
+            (cast(count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                reaction
+                where
+                reaction.postagem in (
+                                        select 
+                                        post.codigo 
+                                        from 
+                                        post 
+                                            join grupo on grupo.codigo=post.grupo
+                                        where 
+                                            lower(grupo.nome)='sqlite' and 
+                                            post.postagem is null and
+                                            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                    )
+            ))*100 as porcentagem_reaction
+            from 
+            reaction
+            where
+            reaction.postagem in (
+                                    select 
+                                    post.codigo 
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                        lower(grupo.nome)='sqlite' and 
+                                        post.postagem is null and
+                                        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                )
+            group by reaction.perfil
+            )as tmp
+            join  
+            (
+            select 
+            post.perfil as prf,
+            (cast (count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                post 
+                    join grupo on grupo.codigo=post.grupo
+                where 
+                lower(grupo.nome)='sqlite' and 
+                post.postagem is not null and
+                post.postagem in (
+                                    select 
+                                    post.codigo
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                    lower(grupo.nome)='sqlite' and 
+                                    post.postagem is null and
+                                    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                ) and
+                datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            ))*100 as porcentagem_comment
+            from 
+            post 
+                join grupo on grupo.codigo=post.grupo
+            where 
+            lower(grupo.nome)='sqlite' and 
+            post.postagem is not null and
+            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            group by post.perfil
+    ) as tmp2 on tmp.prf=tmp2.prf  
 
-
+)
+;
+delete from seloperfil where selo=0 and validatation_date<=(select datetime(date('now','weekday 0')))
+;
+select * from seloperfil;--resultado
 
 
 
