@@ -65,7 +65,7 @@ CREATE TABLE grupo (
         nome varchar(100) not null,
         primary key (codigo)
 );
-INSERT INTO grupo VALUES(1,'Banco de Dados-IFRS2021');
+INSERT INTO grupo VALUES(1,'Banco de Dados-IFRS2021'); 
 INSERT INTO grupo VALUES(2,'SQlite');
 INSERT INTO grupo VALUES(3,'IFRS-Campus Rio Grande'); --adicionado para e)
 CREATE TABLE pagina (
@@ -294,6 +294,7 @@ CREATE TABLE selogrupo (
 );
 
 INSERT INTO selogrupo values
+        (0,2,'sem selo'),
         (1,2,'ultra-fa'),
         (2,2,'super-fã'),
         (3,2,'fa');
@@ -304,3 +305,7 @@ CREATE TABLE seloperfil (
         validatation_date datetime,
         FOREIGN key (selo) REFERENCES selegrupo(cod)
 );
+INSERT INTO seloperfil values (1,'jorosamed@mymail.com', '2021-08-13 00:08:36');
+INSERT INTO seloperfil values (1,'professor@hotmail.com.com', '2021-08-13 00:09:36');
+INSERT INTO seloperfil values (2,'professor@hotmail.com', '2021-08-13 00:09:36');
+INSERT INTO seloperfil values (0,'pxramos@mymail.com', '2021-08-18 00:09:36');

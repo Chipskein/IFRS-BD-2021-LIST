@@ -1,5 +1,4 @@
 --1) Escreva comandos insert, update ou delete, utilizando as tabelas criadas para uma rede social nas listas de exercícios anteriores, para:
-
 --a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail
 --pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21
 --medalhas nas Olimpíadas 2020/2021 em Tóquio".
@@ -79,11 +78,12 @@ update
 --d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
 --testado com o grupo sqlite
 -- com a classificação 'verificado'
+
 delete  
     from 
-    post 
+    citacao
     where 
-    post.codigo in (
+    citacao.post in (
                         select 
                         post.codigo
                         from 
@@ -92,7 +92,7 @@ delete
                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                         where 
-                        lower(grupo.nome)='ifrs-campus rio grande' and
+                        lower(grupo.nome)='sqlite' and
                         lower(classificacao.nome)='verificado' and
                         post.data= (
                                         select 
@@ -103,12 +103,132 @@ delete
                                                 join classificacaoPost on post.codigo=classificacaoPost.post
                                                 join classificacao on classificacao.cod=classificacaoPost.classificacao
                                         where 
-                                        lower(grupo.nome)='ifrs-campus rio grande' and
+                                        lower(grupo.nome)='sqlite' and
                                         lower(classificacao.nome)='verificado'
                                         order by post.data desc 
                                         limit 1
                                     )
                 )
+;
+delete  
+    from 
+    assuntoPost
+    where 
+    assuntoPost.post in (
+                        select 
+                        post.codigo
+                        from 
+                            grupo 
+                                join post on post.grupo=grupo.codigo 
+                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                        where 
+                        lower(grupo.nome)='sqlite' and
+                        lower(classificacao.nome)='verificado' and
+                        post.data= (
+                                        select 
+                                        post.data
+                                        from 
+                                            grupo 
+                                                join post on post.grupo=grupo.codigo 
+                                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                                        where 
+                                        lower(grupo.nome)='sqlite' and
+                                        lower(classificacao.nome)='verificado'
+                                        order by post.data desc 
+                                        limit 1
+                                    )
+                )
+;
+delete  
+    from 
+    reaction
+    where 
+    reaction.postagem in (
+                        select 
+                        post.codigo
+                        from 
+                            grupo 
+                                join post on post.grupo=grupo.codigo 
+                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                        where 
+                        lower(grupo.nome)='sqlite' and
+                        lower(classificacao.nome)='verificado' and
+                        post.data= (
+                                        select 
+                                        post.data
+                                        from 
+                                            grupo 
+                                                join post on post.grupo=grupo.codigo 
+                                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                                        where 
+                                        lower(grupo.nome)='sqlite' and
+                                        lower(classificacao.nome)='verificado'
+                                        order by post.data desc 
+                                        limit 1
+                                    )
+                )
+;
+delete  
+    from 
+    post
+    where 
+    post.postagem in (
+                        select 
+                        post.codigo
+                        from 
+                            grupo 
+                                join post on post.grupo=grupo.codigo 
+                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                        where 
+                        lower(grupo.nome)='sqlite' and
+                        lower(classificacao.nome)='verificado' and
+                        post.data= (
+                                        select 
+                                        post.data
+                                        from 
+                                            grupo 
+                                                join post on post.grupo=grupo.codigo 
+                                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                                        where 
+                                        lower(grupo.nome)='sqlite' and
+                                        lower(classificacao.nome)='verificado'
+                                        order by post.data desc 
+                                        limit 1
+                                    )
+    )
+  or  post.codigo in (
+                        select 
+                        post.codigo
+                        from 
+                            grupo 
+                                join post on post.grupo=grupo.codigo 
+                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                        where 
+                        lower(grupo.nome)='sqlite' and
+                        lower(classificacao.nome)='verificado' and
+                        post.data= (
+                                        select 
+                                        post.data
+                                        from 
+                                            grupo 
+                                                join post on post.grupo=grupo.codigo 
+                                                join classificacaoPost on post.codigo=classificacaoPost.post
+                                                join classificacao on classificacao.cod=classificacaoPost.classificacao
+                                        where 
+                                        lower(grupo.nome)='sqlite' and
+                                        lower(classificacao.nome)='verificado'
+                                        order by post.data desc 
+                                        limit 1
+                                    )
+                )
+    
 ;
 
 --e) 
@@ -125,7 +245,22 @@ fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
 select
 tmp.prf,
 tmp.porcentagem_reaction,
-tmp2.porcentagem_comment
+tmp2.porcentagem_comment,
+ case 
+        when 
+            tmp.porcentagem_reaction>=75.0 and
+            tmp2.porcentagem_comment>=30.0
+        then 'ultra-fa'
+        when 
+            tmp.porcentagem_reaction>=50.0 and
+            tmp2.porcentagem_comment>=20.0
+        then 'super-fa'
+        when 
+            tmp.porcentagem_reaction>=25.0 and
+            tmp2.porcentagem_comment>=10.0
+        then 'fa'
+        else 'sem selo'
+    end as selo
 from
 (
 select 
@@ -202,14 +337,212 @@ datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and da
 group by post.perfil
 ) as tmp2 on tmp.prf=tmp2.prf
     
-;           
+;
 
+
+
+
+
+
+
+
+
+insert into seloperfil(perfil,selo,validatation_date)
+select
+    tmp.prf,
+    case 
+        when 
+            tmp.porcentagem_reaction>=75.0 and
+            tmp2.porcentagem_comment>=30.0
+        then 1
+        when 
+            tmp.porcentagem_reaction>=50.0 and
+            tmp2.porcentagem_comment>=20.0
+        then 2
+        when 
+            tmp.porcentagem_reaction>=25.0 and
+            tmp2.porcentagem_comment>=10.0
+        then 3
+        else 0
+    end as selo,
+    (select datetime(date('now','weekday 0')))
+ from
+        (
+            select 
+            reaction.perfil as prf,
+            (cast(count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                reaction
+                where
+                reaction.postagem in (
+                                        select 
+                                        post.codigo 
+                                        from 
+                                        post 
+                                            join grupo on grupo.codigo=post.grupo
+                                        where 
+                                            lower(grupo.nome)='sqlite' and 
+                                            post.postagem is null and
+                                            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                    )
+            ))*100 as porcentagem_reaction
+            from 
+            reaction
+            where
+            reaction.postagem in (
+                                    select 
+                                    post.codigo 
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                        lower(grupo.nome)='sqlite' and 
+                                        post.postagem is null and
+                                        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                )
+            group by reaction.perfil
+            )as tmp
+            join  
+            (
+            select 
+            post.perfil as prf,
+            (cast (count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                post 
+                    join grupo on grupo.codigo=post.grupo
+                where 
+                lower(grupo.nome)='sqlite' and 
+                post.postagem is not null and
+                post.postagem in (
+                                    select 
+                                    post.codigo
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                    lower(grupo.nome)='sqlite' and 
+                                    post.postagem is null and
+                                    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                ) and
+                datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            ))*100 as porcentagem_comment
+            from 
+            post 
+                join grupo on grupo.codigo=post.grupo
+            where 
+            lower(grupo.nome)='sqlite' and 
+            post.postagem is not null and
+            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            group by post.perfil
+    ) as tmp2 on tmp.prf=tmp2.prf 
+where selo!=0
+on CONFLICT(selo,perfil) 
+do 
+update 
+set 
+validatation_date=(select datetime(date('now','weekday 0'))),
+selo=(
+select
+    case 
+        when 
+            tmp.porcentagem_reaction>=75.0 and
+            tmp2.porcentagem_comment>=30.0
+        then 1
+        when 
+            tmp.porcentagem_reaction>=50.0 and
+            tmp2.porcentagem_comment>=20.0
+        then 2
+        when 
+            tmp.porcentagem_reaction>=25.0 and
+            tmp2.porcentagem_comment>=10.0
+        then 3
+        else 0
+    end as selo
+ from
+        (
+            select 
+            reaction.perfil as prf,
+            (cast(count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                reaction
+                where
+                reaction.postagem in (
+                                        select 
+                                        post.codigo 
+                                        from 
+                                        post 
+                                            join grupo on grupo.codigo=post.grupo
+                                        where 
+                                            lower(grupo.nome)='sqlite' and 
+                                            post.postagem is null and
+                                            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                    )
+            ))*100 as porcentagem_reaction
+            from 
+            reaction
+            where
+            reaction.postagem in (
+                                    select 
+                                    post.codigo 
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                        lower(grupo.nome)='sqlite' and 
+                                        post.postagem is null and
+                                        datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                )
+            group by reaction.perfil
+            )as tmp
+            join  
+            (
+            select 
+            post.perfil as prf,
+            (cast (count(*) as real)/
+            (
+                select 
+                count(*)
+                from 
+                post 
+                    join grupo on grupo.codigo=post.grupo
+                where 
+                lower(grupo.nome)='sqlite' and 
+                post.postagem is not null and
+                post.postagem in (
+                                    select 
+                                    post.codigo
+                                    from 
+                                    post 
+                                        join grupo on grupo.codigo=post.grupo
+                                    where 
+                                    lower(grupo.nome)='sqlite' and 
+                                    post.postagem is null and
+                                    datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+                                ) and
+                datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            ))*100 as porcentagem_comment
+            from 
+            post 
+                join grupo on grupo.codigo=post.grupo
+            where 
+            lower(grupo.nome)='sqlite' and 
+            post.postagem is not null and
+            datetime(post.data) between  datetime(date('now','weekday 0','-14 days')) and datetime(date('now','weekday 0','-7 days'))
+            group by post.perfil
+    ) as tmp2 on tmp.prf=tmp2.prf  
+)
+where selo!=0;
+select * from seloperfil;
 select * from selogrupo;
-
-
-
-
-
 
 
 
