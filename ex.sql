@@ -2,9 +2,13 @@
 --a) Alterar o texto da última postagem do usuário Edson Arantes do Nascimento, e-mail
 --pele@cbf.com.br, de "Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio" para "Brasil: 21
 --medalhas nas Olimpíadas 2020/2021 em Tóquio".
+
+--pega ultima postagem e verifica se o texto correto
 update 
     post 
-    set texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio' 
+    set 
+        texto= 'Brasil: 21 medalhas nas Olimpíadas 2020/2021 em Tóquio',
+        data=datetime('now')--ultima alteração
     where 
     codigo in (
         select 
@@ -17,16 +21,18 @@ update
                     order by post.data desc
                     limit 1
                 )
-        and post.texto='Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
     )
+    and post.texto='Brasil: 20 medalhas nas Olimpíadas 2020/2021 em Tóquio'
 ;
 
---b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma
---postagem no grupo SQLite de para .
---altera 3 reacts(11,21,22) tem a mesma data
+--b) Alterar a última reação do usuário Paulo Xavier Ramos, e-mail pxramos@mymail.com, à uma postagem no grupo SQLite de like para amei
+
+--pega a ultima reação depois verifica se é um gostei
 update 
     reaction 
-    set texto ='amei' 
+    set 
+        texto ='amei', 
+        data=datetime('now')
     where 
     codigo in (
         select 
@@ -36,7 +42,6 @@ update
             join reaction on post.codigo=reaction.postagem
         where 
             lower(grupo.nome)='sqlite' and
-            reaction.texto='gostei' and
             reaction.perfil='pxramos@mymail.com' and
             reaction.data = (
 
@@ -47,16 +52,16 @@ update
                                 join reaction on post.codigo=reaction.postagem
                                 where 
                                 lower(grupo.nome)='sqlite' and
-                                reaction.texto='gostei' and
                                 reaction.perfil='pxramos@mymail.com'
                                 order by reaction.data desc
                                 limit 1
                             )
     )
+     and reaction.texto='gostei'
 ;
---c) Desativar temporariamente as contas dos usuários do Brasil que não possuem qualquer atividade
---na rede social há mais de 5 anos.
---select usuarios sem nenhuma atividade (post,reacão,compartilhamento) nos ultimos 5 anos
+
+--c) Desativar temporariamente as contas dos usuários do Brasil que não possuem qualquer atividade na rede social há mais de 5 anos.
+
 update 
     perfil
     set status ='desativado'
@@ -75,11 +80,11 @@ update
                     )
     )
 ;
---d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
---testado com o grupo sqlite 
--- e com a classificação 'verificado'
---antes  de enviar trocar grupo para ifrs e classificação para odioso
 
+--d) Excluir a última postagem no grupo IFRS-Campus Rio Grande, classificada como postagem que incita ódio.
+
+--testado com o grupo 'sqlite' e com a classificação 'verificado'
+--remove citações
 delete  
     from 
     citacao
@@ -111,6 +116,7 @@ delete
                                     )
                 )
 ;
+--remove assuntos
 delete  
     from 
     assuntoPost
@@ -142,6 +148,7 @@ delete
                                     )
                 )
 ;
+--remove reações
 delete  
     from 
     reaction
@@ -173,6 +180,7 @@ delete
                                     )
                 )
 ;
+--remove commentarios e post
 delete  
     from 
     post
@@ -231,18 +239,24 @@ delete
                 )
     
 ;
-
+--remove classificação
+delete 
+    from 
+    classificacaoPost 
+    where 
+        classificacaoPost.post not in (select codigo from post)
+;
 
 --e) 
---Atribuir um selo de fã, com validade determinada para a semana atual, 
---para os usuários do grupo ifrs-campus rio grande que:
 /*
-Selo Condições considerando as postagens da semana passada no grupo
-ultra-fã reagiram a 75% ou mais e comentaram 30% ou mais das postagens
-super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
-fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
-* O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
+Atribuir um selo de fã, com validade determinada para a semana atual, para os usuários do grupo ifrs-campus rio grande que:
+    Selo Condições considerando as postagens da semana passada no grupo
+    ultra-fã reagiram a 75% ou mais e comentaram 30% ou mais das postagens
+    super-fã reagiram a 50% ou mais e comentaram 20% ou mais das postagens
+    fã reagiram a 25% ou mais e comentaram 10% ou mais das postagens
+O procedimento de atribuir selo de fã será executado automaticamente às 00:00 de cada domingo.
 */
+
 --antes de enviar tem trocar o grupo='sqlite' pra 'ifrs'
 --considera-se que apenas selos validos são guardados no banco e 
 --vai atualizando conforme a condição,caso o selo expire ele será deletado
@@ -404,7 +418,6 @@ delete
     validatation_date < (select datetime(date('now','weekday 0')))
 ;
 
-
 /*
 2) Descreva e justifique as adequações/alterações que foram realizadas nas tabelas criadas para
 uma rede social nas listas de exercícios anteriores para que o exercício 1 acima pudesse ser
@@ -416,11 +429,11 @@ Adicionado
     reaction(codigo)-->adicionado para resolver a letra b)
     classificacao(nome,cod) adicionado para resolver a letra d)
     classificacaoPost(post,classificacao) adicionado para resolver a letra d)
+    selogrupo(codigo,nome,grupo)  --> adicionado para letra e)
+    seloperfil(selo,perfil,data,grupo) -->adicionado para letra e)
 Removido
     reaction(comentario)-->deveria ter sido removido antes
 */
-
-
 /*
     3) Explique detalhadamente porque não é possível várias pessoas distintas comprarem o mesmo
     lugar numerado no mesmo show utilizando controle de concorrência.
