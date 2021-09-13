@@ -1,9 +1,9 @@
 <?php
     $cpf=$_POST["cpf"];
-    if(empty($cpf)){
-        echo "Seu cpf não foi cadastrado";
+    if(preg_match("#^[0-9]{9}-[0-9]{2}#",$cpf)){
+        echo "CPF ".$cpf." foi cadastrado com sucesso";
     }
     else{
-        echo "CPF ".$cpf." foi cadastrado com sucesso";
+        echo "Seu cpf não foi cadastrado com sucesso";
     }        
 ?>
