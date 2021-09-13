@@ -16,5 +16,12 @@ function validarcpf(){
     }
 } 
 function validardata(){
-  
-} 
+    document.getElementById('form2').submit()
+}
+function validarvalor(){
+    document.getElementById('form3').submit()
+}
+function validarcalc(){
+}
+function validarcalc(){
+}
