@@ -15,7 +15,22 @@
 <body>
 <?php
 function calculardata($data,$fimdata){
-    $feriados=[];
+    $ano=substr(date("Y/m/d",$data),0,4);
+    $feriados=[
+        "Confraternização Universal" => "{$ano}/01/01",
+        "Carnaval" => "{$ano}/03/01", 
+        "Sexta-feira Santa" => "{$ano}/04/02",  
+        "Páscoa"=>"{$ano}/04/17", 
+        "Tiradentes" => "{$ano}/04/21", 
+        "Dia Mundial do Trabalho" => "{$ano}/05/01", 
+        "Corpus Christi" => "{$ano}/16/06",
+        "Independência do Brasil" => "{$ano}/09/07", 
+        "Nossa Senhora Aparecida" => "{$ano}/10/12", 
+        "Finados" => "{$ano}/11/02", 
+        "Proclamação da República" => "{$ano}/09/15", 
+        "Natal" => "{$ano}/12/25"
+    ];
+    
 }
 ?>
 <?php
@@ -28,9 +43,6 @@ function calculardata($data,$fimdata){
     echo "<br>";
 
 
-
-
-
     echo "<h3>Exercicio 2</h3>";
     if(isset($_POST["data"])&&isset($_POST["dias"])){
         $data=$_POST["data"];
@@ -41,7 +53,7 @@ function calculardata($data,$fimdata){
             echo "<br>";
             if(preg_match("#^[1-9]{1}[0-9]*$#",$dias)){
                 echo "dias uteis ".$dias;
-                calculardata(strtotime($format_data),strtotime($format_data ."+{$dias} days"));
+                echo calculardata(strtotime($format_data),strtotime($format_data ."+{$dias} days"));
             }
             else echo "dias inválidos";
         }
