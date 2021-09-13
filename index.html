@@ -20,13 +20,13 @@
 <body>
     <div id='top'>
         <h3>Exercicio 1</h2>
-        <form action="backend.php" method="post">
+        <form action="backend.php" method="post" id='ex1'>
             <label for="cpf">
-                CPF:<input id="cpf" name="cpf" type="text" placeholder="000.000.000-00" required >
+                CPF:<input pattern="^[0-9]{9}-[0-9]{2}" id="cpf" name="cpf" type="text" placeholder="000000000-00" required >
             </label>
             <br>
-            <input type="submit" value="Enviar">
         </form>
+        <button type='button' id='enviar' onclick="validar()">Enviar</button>
     </div>
 <script src="validar.js"></script>
 </body>
