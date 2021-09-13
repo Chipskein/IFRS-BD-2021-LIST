@@ -1,4 +1,4 @@
-function validar(){
+function validarcpf(){
     const input=document.getElementById('cpf')
     const cpf=input.value
     console.log('validando')
@@ -12,6 +12,9 @@ function validar(){
         return;
     }
     else{
-        document.getElementById('ex1').submit()
+        document.getElementById('form1').submit()
     }
+} 
+function validardata(){
+  
 } 
