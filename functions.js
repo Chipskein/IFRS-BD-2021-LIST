@@ -16,13 +16,44 @@ function validarcpf(){
     }
 } 
 function validardata(){
-    //document.getElementById('form2').submit()
+    console.log("enviando data e dias uteis");
+    const input=document.getElementById('data');
+    const input2=document.getElementById('dias');
+    let regexp = new RegExp(input.pattern);
+    let regexp2 = new RegExp(input2.pattern);
+    if (!regexp.test(input.value) || !regexp2.test(input2.value)) {
+        if(!regexp.test(input.value)){
+            console.log("erro na data");
+            input.value = "";
+            input.focus();
+        }else return;//se tirar o return da pau :)
+        
+        if(!regexp2.test(input2.value)){
+            console.log("erro na dias");
+            input2.value = "";
+            input2.focus();
+        }else return;  
+    }
+    else{
+        const day=parseInt(input.value.slice(0,2));
+        const mounth=parseInt(input.value.slice(3,5));
+        const year=parseInt(input.value.slice(6));        
+        if(!verifydate(day,mounth,year)){
+            console.log("erro na data");
+            input.value = "";
+            input.focus();
+        }
+        else document.getElementById('form2').submit();
+    }
 }
 function validarvalor(){
     //document.getElementById('form3').submit()
 }
 function validarcalc(){
     //document.getElementById('form4').submit()
+}
+function validarcalcr(){
+    //document.getElementById('form5').submit()
 }
 function addr(){
     
@@ -56,6 +87,50 @@ function addr(){
         input.required=true;
     div.append(input);
 }
-function validarcalcr(){
-    //document.getElementById('form5').submit()
+function verifydate(day,month,year){
+
+        let day_qt //31,30,29,28
+        let bissexto = false;
+        if ((year % 4 == 0 && year % 100 !== 0) || (year % 400 == 0)) bissexto = true;//
+        switch (month) {
+          case 1:
+            day_qt = 31
+            break
+          case 2:
+            if (bissexto) day_qt = 29
+            else day_qt = 28
+            break
+          case 3:
+            day_qt = 31
+            break
+          case 4:
+            day_qt = 30
+            break
+          case 5:
+            day_qt = 31
+            break
+          case 6:
+            day_qt = 30
+            break
+          case 7:
+            day_qt = 31
+            break
+          case 8:
+            day_qt = 31
+            break
+          case 9:
+            day_qt = 30
+            break
+          case 10:
+            day_qt = 31
+            break
+          case 11:
+            day_qt = 30
+            break
+          case 12:
+            day_qt = 31
+            break
+        }
+        if (day <= day_qt) return true
+        else return false
 }
