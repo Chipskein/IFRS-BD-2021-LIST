@@ -17,8 +17,9 @@
             background-color: #454141;
         }
         div#ex5{
-            width: 50%;
+            width: 70%;
         }
+        
         div#main{
             border-top: solid 40px #296179;
             margin: 5%;
@@ -30,7 +31,10 @@
             color: white;
             background: #358FB6;
         }
-      
+        button:hover{
+            background: #296179;
+
+        }
     </style>
 </head>
 <body>
@@ -95,23 +99,25 @@
             <div id='ex5' class="exerc">
                 <h3>Exercicio 5</h2>
                 <form action="backend.php" method="post" id='form5'>
-                    <label for="numero1"><input type="text"></label>
-                    <label for="operation">
-                        <select name="operation" id="operation">
+                    <div id='form-div1'>
+                        <input type="text" name='numero0' size="10" required>
+                        <select name="operation1">
                             <option value="+">+</option>
                             <option value="/">/</option>
                             <option value="*">*</option>
                             <option value="-">-</option>
                         </select>
-                    </label>
-                    <label for="numero2"><input type="text"></label> 
-                    <button type='button' onclick="addr()">+</button>
-                    <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
+                        <input type="text" name='numero1' size="10" required> 
+                    </div>
+                    <div>
+                        <button type='button' onclick="addr()">+</button>
+                        <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
+                    </div>
                 </form>
             </div>
             <br>
         </div>
     </main>
-<script src="function.js"></script>
+<script src="functions.js"></script>
 </body>
 </html>
