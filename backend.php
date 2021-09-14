@@ -97,7 +97,6 @@ function calculardata($data,$dias){
         echo 'numero2:'.$numero2."<br>";
         //echo (preg_match("#^[0-9]{9}-[0-9]{2}#",$cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
     } else echo "operador e numeros nao foram enviados";
-    
     echo "<h3>Exercicio 5</h3>";
     if(isset($_POST['submited'])){
         var_dump($_POST);
