@@ -197,7 +197,7 @@ function transcrever_valor($valor){
     echo "<h3>Exercicio 3</h3>";
     if(isset($_POST["valor"])){
         $valor=$_POST["valor"];
-        if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)#",$valor)){
+        if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)#",$valor)){
             echo 'valor:'." R$ ".$valor."<br>";
             echo "valor transcrito:".transcrever_valor($valor);
         }
