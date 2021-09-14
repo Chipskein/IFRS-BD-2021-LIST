@@ -47,14 +47,34 @@ function validardata(){
     }
 }
 function validarvalor(){
-    document.getElementById('form3').submit()
+    
+    const input=document.getElementById("valor");
+    const valor=input.value;
+    console.log(input);
+    console.log(valor);
+    //se for valido
+      //document.getElementById('form3').submit()
+    //senão
+    /*
+        console.log("erro");
+        input.value = "";
+        input.focus();
+    */
 }
 function validarcalc(){
-    document.getElementById('form4').submit()
+    //se for valido
+      //document.getElementById('form4').submit()
+    //senão
+    /*
+        console.log("erro");
+        input.value = "";
+        input.focus();
+    */
 }
 function validarcalcr(){
     
-  
+    //se for valido
+    /*
     const form=document.getElementById('form5');
     const input=document.createElement("input")
       input.type='hidden';
@@ -62,6 +82,13 @@ function validarcalcr(){
       input.value=true;
     form.append(input);
     form.submit();
+  */
+ //senão
+    /*
+        console.log("erro");
+        input.value = "";
+        input.focus();
+    */
 }
 function addr(){
     
