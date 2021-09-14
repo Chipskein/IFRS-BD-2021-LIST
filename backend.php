@@ -54,29 +54,61 @@ function calculardata($data,$dias){
 function num_to_string($num){
     $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
     $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
-    $centena=[];//3
-    $milhar=[];//4
-    $milhares=[];//5
-    $bilhares=[];//6
+    $centena=["cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos"];//3
     //parte inteiro
     if(strpos($num,".")===false&&strpos($num,",")===false){
         $newstring="";
-        $test=1;
         for($c=0;$c<=strlen($num);$c++){
             //echo "testaas".$num."<br>";
             switch(strlen($num)){
                 case 1:
                     $newstring.=$unidade[((int)$num[$c]-1)]." ";
                     //echo $newstring."<br>";
-                    $num=str_replace($num[$c],"",$num,$test);
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $num=substr($num,$c+1);
+                    //echo $num;
                     $c--;
                     break;
                 case 2:
                     $newstring.=$dezena[((int)$num[$c])-1]." ";
                     //echo $newstring."<br>";
-                    $num=str_replace($num[$c],"",$num,$test);
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
                     $c--;
-                    break;          
+                    break;
+                case 3:
+                    $newstring.=$centena[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    break;
+                case 4:
+                    $newstring.=$unidade[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    break;
+                case 5:
+                    $newstring.=$dezena[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    break;
+                case 6:
+                    $newstring.=$centena[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    break;                  
             }
         }
         echo $newstring."<br>";
