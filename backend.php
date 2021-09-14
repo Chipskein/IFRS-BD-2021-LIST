@@ -53,7 +53,7 @@ function calculardata($data,$dias){
 }
 function num_to_string($num){
     $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
-    $dezena=["dez","vinte","trinta","quarente","cinquenta","sessenta","setenta","oitenta","noventa"];//2
+    $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
     $centena=[];//3
     $milhar=[];//4
     $milhares=[];//5
@@ -63,17 +63,19 @@ function num_to_string($num){
         $newstring="";
         $test=1;
         for($c=0;$c<=strlen($num);$c++){
-            echo "testaas".$num."<br>";
+            //echo "testaas".$num."<br>";
             switch(strlen($num)){
                 case 1:
-                    $newstring.=$unidade[((int)$num[$c])]." ";
-                    echo $newstring."<br>";
+                    $newstring.=$unidade[((int)$num[$c]-1)]." ";
+                    //echo $newstring."<br>";
                     $num=str_replace($num[$c],"",$num,$test);
+                    $c--;
                     break;
                 case 2:
                     $newstring.=$dezena[((int)$num[$c])-1]." ";
-                    echo $newstring."<br>";
+                    //echo $newstring."<br>";
                     $num=str_replace($num[$c],"",$num,$test);
+                    $c--;
                     break;          
             }
         }
