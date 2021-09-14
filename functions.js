@@ -59,11 +59,10 @@ function validarvalor(){
         return;
     }
     else{
-      console.log("é valido "+valor);
-      //if(isNaN(valor)){
-        //document.getElementById('form3').submit()
-      //}
-
+      if(valor.includes(',')){
+        input.value=valor.replace(",",".");
+      }
+      document.getElementById('form3').submit()
     }
 }
 function validarcalc(){
