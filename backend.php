@@ -14,41 +14,41 @@
 </style>
 <body>
 <?php
-function calculardata($data,$dias){
-    $ano=substr(date("Y/m/d",$data),0,4);
-    $ano_bug=$ano+1;
+function eh_feriados($data){
+    $ano=substr($data,0,4);
     $feriados=[
-        "Confraternização Universal" => "{$ano_bug}/01/01",
+        "Confraternização Universal" => "{$ano}/01/01",
         "Carnaval" => "{$ano}/03/01", 
         "Sexta-feira Santa" => "{$ano}/04/02",  
         "Páscoa"=>"{$ano}/04/17", 
         "Tiradentes" => "{$ano}/04/21", 
         "Dia Mundial do Trabalho" => "{$ano}/05/01", 
-        "Corpus Christi" => "{$ano}/16/06",
+        "Corpus Christi" => "{$ano}/06/16",
         "Independência do Brasil" => "{$ano}/09/07", 
         "Nossa Senhora Aparecida" => "{$ano}/10/12", 
         "Finados" => "{$ano}/11/02", 
-        "Proclamação da República" => "{$ano}/09/15", 
+        "Proclamação da República" => "{$ano}/11/15", 
         "Natal" => "{$ano}/12/25"
     ];
-
+    if(in_array($data,$feriados)) return true;
+    else return false;
+};
+function calculardata($data,$dias){
     $newdata=date('Y/m/d',$data);
-    echo "start"."<br>";
+    echo "loop start"."<br>";
     $c=0;
     while($c<$dias){
-        $weekday=date('N',strtotime($newdata));
         $newdata=date('Y/m/d',strtotime($newdata ."+1 day"));
-        if(in_array($newdata,$feriados)){
-            echo "é feriado ".$newdata."<br>";
-        }
-        else{
-             if($weekday!=6&&$weekday!=5){
-                 $c++;
+        if(!eh_feriados($newdata)){
+            $weekday=date('N',strtotime($newdata));
+            if($weekday!=6&&$weekday!=7){
+                $c++;
                 echo "não é feriado e é dia de semana ".$newdata."<br>";
             }
         }
+        else echo "é feriado ".$newdata."<br>";
     }
-    echo "end"."<br>";
+    echo "loop end"."<br>";
     return date("d/m/Y",strtotime($newdata));
 }
 ?>
@@ -72,7 +72,7 @@ function calculardata($data,$dias){
             echo "<br>";
             if(preg_match("#^[1-9]{1}[0-9]*$#",$dias)){
                 echo "dias uteis ".$dias."<br>";
-                echo "Data Final(Apartir do dia informado):".calculardata(strtotime($format_data),$dias)."<br>";
+                echo "Data Final(contado apartir do dia informado):".calculardata(strtotime($format_data),$dias)."<br>";
             }
             else echo "dias inválidos";
         }
