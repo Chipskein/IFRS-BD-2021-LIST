@@ -42,7 +42,6 @@ function calculardata($data,$dias){
             echo "é feriado ".$newdata."<br>";
         }
         else{
-             //senão for final de semana
              if($weekday!=6&&$weekday!=5){
                  $c++;
                 echo "não é feriado e é dia de semana ".$newdata."<br>";
@@ -73,7 +72,7 @@ function calculardata($data,$dias){
             echo "<br>";
             if(preg_match("#^[1-9]{1}[0-9]*$#",$dias)){
                 echo "dias uteis ".$dias."<br>";
-                echo "Data Final:".calculardata(strtotime($format_data),$dias)."<br>";
+                echo "Data Final(Apartir do dia informado):".calculardata(strtotime($format_data),$dias)."<br>";
             }
             else echo "dias inválidos";
         }
