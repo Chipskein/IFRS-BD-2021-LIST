@@ -108,7 +108,36 @@ function num_to_string($num){
                     //echo $num;
                     //$num=str_replace($num[$c],"",$num,$test);
                     $c--;
-                    break;                  
+                   
+                    break;
+                case 7:
+                    $newstring.=$unidade[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    
+                    break;  
+                case 8:
+                    $newstring.=$dezena[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    
+                    break;
+                case 9:
+                    $newstring.=$centena[((int)$num[$c])-1]." ";
+                    //echo $newstring."<br>";
+                    $num=substr($num,$c+1);
+                    //echo $num;
+                    //$num=str_replace($num[$c],"",$num,$test);
+                    $c--;
+                    
+                    break;
+                                        
             }
         }
         echo $newstring."<br>";
