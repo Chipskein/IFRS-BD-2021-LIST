@@ -14,7 +14,7 @@
 </style>
 <body>
 <?php
-function calculardata($data,$fimdata){
+function calculardata($data,$dias){
     $ano=substr(date("Y/m/d",$data),0,4);
     $ano_bug=$ano+1;
     $feriados=[
@@ -32,23 +32,25 @@ function calculardata($data,$fimdata){
         "Natal" => "{$ano}/12/25"
     ];
 
-    
     $newdata=date('Y/m/d',$data);
-    $dias_uteis=0;
     echo "start"."<br>";
-    while(date('Y/m/d',$fimdata)>=$newdata){
+    $c=0;
+    while($c<$dias){
+        $weekday=date('N',strtotime($newdata));
         $newdata=date('Y/m/d',strtotime($newdata ."+1 day"));
         if(in_array($newdata,$feriados)){
             echo "é feriado ".$newdata."<br>";
         }
         else{
-             echo "não é feriado ".$newdata."<br>";
-             $dias_uteis++;
+             //senão for final de semana
+             if($weekday!=6&&$weekday!=5){
+                 $c++;
+                echo "não é feriado e é dia de semana ".$newdata."<br>";
+            }
         }
-        
     }
-    echo "end";
-    //return date("d/m/Y",$newdata);
+    echo "end"."<br>";
+    return date("d/m/Y",strtotime($newdata));
 }
 ?>
 <?php
@@ -71,7 +73,7 @@ function calculardata($data,$fimdata){
             echo "<br>";
             if(preg_match("#^[1-9]{1}[0-9]*$#",$dias)){
                 echo "dias uteis ".$dias."<br>";
-                calculardata(strtotime($format_data),strtotime($format_data ."+{$dias} days"));
+                echo "Data Final:".calculardata(strtotime($format_data),$dias)."<br>";
             }
             else echo "dias inválidos";
         }
