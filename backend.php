@@ -51,6 +51,42 @@ function calculardata($data,$dias){
     echo "loop end"."<br>";
     return date("d/m/Y",strtotime($newdata));
 }
+function num_to_string($num){
+    $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
+    $dezena=["dez","vinte","trinta","quarente","cinquenta","sessenta","setenta","oitenta","noventa"];//2
+    $centena=[];//3
+    $milhar=[];//4
+    $milhares=[];//5
+    $bilhares=[];//6
+    //parte inteiro
+    if(strpos($num,".")===false&&strpos($num,",")===false){
+        $newstring="";
+        $test=1;
+        for($c=0;$c<=strlen($num);$c++){
+            echo "testaas".$num."<br>";
+            switch(strlen($num)){
+                case 1:
+                    $newstring.=$unidade[((int)$num[$c])]." ";
+                    echo $newstring."<br>";
+                    $num=str_replace($num[$c],"",$num,$test);
+                    break;
+                case 2:
+                    $newstring.=$dezena[((int)$num[$c])-1]." ";
+                    echo $newstring."<br>";
+                    $num=str_replace($num[$c],"",$num,$test);
+                    break;          
+            }
+        }
+        echo $newstring."<br>";
+
+    }
+    //parte decimal
+    else{
+    
+    }
+
+
+}
 function transcrever_valor($valor){
     $valor_int=$valor;
     $valor_decimal=0.0;
@@ -65,7 +101,7 @@ function transcrever_valor($valor){
     echo "parte inteira: ".$valor_int."<br>";
     echo "parte decimal: ".$valor_decimal."<br>";
     //converter parte inteira
-
+    num_to_string($valor_int);
 }
 ?>
 <?php
