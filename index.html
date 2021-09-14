@@ -69,7 +69,7 @@
                 <h3>Exercicio 3</h2>
                 <form action="backend.php" method="post" id='form3'>
                     <label for="valor">
-                        Valor:<input pattern=""type="text" id="valor" name="valor" required>
+                        Valor:<input pattern="(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)" type="text" id="valor" name="valor" required>
                     </label>
                 </form>
                 <button type='button' id='enviar3' onclick="validarvalor()">Enviar</button>

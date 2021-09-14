@@ -50,16 +50,21 @@ function validarvalor(){
     
     const input=document.getElementById("valor");
     const valor=input.value;
-    console.log(input);
-    console.log(valor);
-    //se for valido
-      //document.getElementById('form3').submit()
-    //senão
-    /*
+    let regexp = new RegExp(input.pattern);
+    console.log(regexp)
+    if (!regexp.test(valor)) {
         console.log("erro");
         input.value = "";
         input.focus();
-    */
+        return;
+    }
+    else{
+      console.log("é valido "+valor);
+      //if(isNaN(valor)){
+        //document.getElementById('form3').submit()
+      //}
+
+    }
 }
 function validarcalc(){
     //se for valido
