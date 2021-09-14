@@ -51,9 +51,24 @@ function calculardata($data,$dias){
     echo "loop end"."<br>";
     return date("d/m/Y",strtotime($newdata));
 }
+function transcrever_valor($valor){
+    $valor_int=$valor;
+    $valor_decimal=0.0;
+    //separa a parte inteira e decimal
+    for($c=0;$c<=strlen($valor);$c++){
+        $valor_int=substr($valor,0,$c);
+        if(strpos($valor,".")!==false&&$c==strpos($valor,".")||strpos($valor,",")!==false&&$c==strpos($valor,",")) break;  
+    }
+    if(strpos($valor,".")!==false) $valor_decimal="0.".substr($valor,strpos($valor,".")+1);
+    if(strpos($valor,",")!==false) $valor_decimal="0.".substr($valor,strpos($valor,",")+1);
+    
+    echo "parte inteira: ".$valor_int."<br>";
+    echo "parte decimal: ".$valor_decimal."<br>";
+    //converter parte inteira
+
+}
 ?>
 <?php
-    echo "<h3>Exercicio 1</h3>";
     echo "<br>";
     if(isset($_POST["cpf"])){
         $cpf=$_POST["cpf"];
@@ -83,8 +98,10 @@ function calculardata($data,$dias){
     echo "<h3>Exercicio 3</h3>";
     if(isset($_POST["valor"])){
         $valor=$_POST["valor"];
-        echo 'valor:'.$valor;
-        //echo (preg_match("#^[0-9]{9}-[0-9]{2}#",$cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
+        if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)#",$valor)){
+            echo 'valor:'." R$ ".$valor."<br>";
+            echo "valor transcrito:".transcrever_valor($valor);
+        }
     } else echo "valor não foi enviado";
     
     echo "<h3>Exercicio 4</h3>";

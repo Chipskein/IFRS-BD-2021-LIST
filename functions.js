@@ -63,6 +63,7 @@ function validarvalor(){
         input.value=valor.replace(",",".");
       }
       document.getElementById('form3').submit()
+
     }
 }
 function validarcalc(){
