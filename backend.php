@@ -70,7 +70,7 @@ function num_to_string($num){
                     $c--;
                     break;
                 case 2:
-                    $newstring.=$dezena[((int)$num[$c])-1]." ";
+                    $newstring.=$dezena[((int)$num[$c])-1]." e"." ";
                     //echo $newstring."<br>";
                     $num=substr($num,$c+1);
                     //echo $num;
@@ -78,7 +78,7 @@ function num_to_string($num){
                     $c--;
                     break;
                 case 3:
-                    $newstring.=$centena[((int)$num[$c])-1]." ";
+                    $newstring.=$centena[((int)$num[$c])-1]." e"." ";
                     //echo $newstring."<br>";
                     $num=substr($num,$c+1);
                     //echo $num;
@@ -86,7 +86,7 @@ function num_to_string($num){
                     $c--;
                     break;
                 case 4:
-                    $newstring.=$unidade[((int)$num[$c])-1]." ";
+                    $newstring.=$unidade[((int)$num[$c])-1]." mil"." ";
                     //echo $newstring."<br>";
                     $num=substr($num,$c+1);
                     //echo $num;
@@ -102,7 +102,7 @@ function num_to_string($num){
                     $c--;
                     break;
                 case 6:
-                    $newstring.=$centena[((int)$num[$c])-1]." ";
+                    $newstring.=$centena[((int)$num[$c])-1]." e"." ";
                     //echo $newstring."<br>";
                     $num=substr($num,$c+1);
                     //echo $num;
@@ -111,7 +111,7 @@ function num_to_string($num){
                    
                     break;
                 case 7:
-                    $newstring.=$unidade[((int)$num[$c])-1]." ";
+                    $newstring.=$unidade[((int)$num[$c])-1]." milhoes"." ";
                     //echo $newstring."<br>";
                     $num=substr($num,$c+1);
                     //echo $num;
@@ -140,8 +140,7 @@ function num_to_string($num){
                                         
             }
         }
-        echo $newstring."<br>";
-
+        echo $newstring."Reais"."<br>";
     }
     //parte decimal
     else{
