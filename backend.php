@@ -80,33 +80,30 @@ function calculardata($data,$dias){
     } else echo "a Data e os Dias uteis não foram enviados";
     echo "<br>";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     echo "<h3>Exercicio 3</h3>";
     if(isset($_POST["valor"])){
         $valor=$_POST["valor"];
         echo 'valor:'.$valor;
         //echo (preg_match("#^[0-9]{9}-[0-9]{2}#",$cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
     } else echo "valor não foi enviado";
+    
+    echo "<h3>Exercicio 4</h3>";
+    if(isset($_POST["numero1"])&&isset($_POST["operation"])&&isset($_POST["numero2"])){
+        $numero1=$_POST["numero1"];
+        $operacao=$_POST["operation"];
+        $numero2=$_POST["numero2"];        
+        echo 'numero1:'.$numero1."<br>";
+        echo 'operacao:'.$operacao."<br>";
+        echo 'numero2:'.$numero2."<br>";
+        //echo (preg_match("#^[0-9]{9}-[0-9]{2}#",$cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
+    } else echo "operador e numeros nao foram enviados";
+    
+    echo "<h3>Exercicio 5</h3>";
+    if(isset($_POST['submited'])){
+        var_dump($_POST);
+        //forech numero e operation;
+    }else echo "operador e numeros nao foram enviados";
+      
 ?>
 </body>
 </html>

@@ -78,7 +78,7 @@
                 <h3>Exercicio 4</h2>
                 <form action="backend.php" method="post" id='form4'>
                     <label for="numero1">
-                        N1: <input type="text">
+                        N1: <input type="text" name='numero1' id='numero1'>
                     </label>
                     <br>
                     <label for="operation">
@@ -91,7 +91,7 @@
                     </label>
                     <br>
                     <label for="numero2">
-                        N2: <input type="text">
+                        N2: <input type="text" name='numero2' id='numero2'>
                     </label> 
                 </form>
                 <button type='button' id='enviar4' onclick="validarcalc()">Enviar</button>
@@ -109,10 +109,8 @@
                         </select>
                         <input type="text" name='numero1' size="10" required> 
                     </div>
-                    <div>
-                        <button type='button' onclick="addr()">+</button>
-                        <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
-                    </div>
+                    <button type='button' onclick="addr()">+</button>
+                    <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
                 </form>
             </div>
             <br>

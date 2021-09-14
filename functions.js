@@ -47,13 +47,21 @@ function validardata(){
     }
 }
 function validarvalor(){
-    //document.getElementById('form3').submit()
+    document.getElementById('form3').submit()
 }
 function validarcalc(){
-    //document.getElementById('form4').submit()
+    document.getElementById('form4').submit()
 }
 function validarcalcr(){
-    //document.getElementById('form5').submit()
+    
+  
+    const form=document.getElementById('form5');
+    const input=document.createElement("input")
+      input.type='hidden';
+      input.name='submited'
+      input.value=true;
+    form.append(input);
+    form.submit();
 }
 function addr(){
     
