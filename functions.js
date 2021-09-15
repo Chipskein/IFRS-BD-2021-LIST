@@ -67,6 +67,21 @@ function validarvalor(){
     }
 }
 function validarcalc(){
+  const input=document.getElementById("numero1");
+  const n1=input.value;
+  const input2=document.getElementById("numero2");
+  const n2=input2.value;
+  console.log("numba1 "+n1);
+  console.log("numba2 "+n2);
+
+
+
+
+
+
+
+
+
     //se for valido
       //document.getElementById('form4').submit()
     //senão
