@@ -60,12 +60,11 @@ function num_to_string($num){
     //parte inteiro
     if(strpos($num,".")===false&&strpos($num,",")===false){
         $newstring="";
+        $test=$num;
         $deb_dezena=false;
         $deb_dezena2=false;
         $deb_dezena3=false;
-        $deb_centena=false;
         for($c=0;$c<=strlen($num);$c++){
-            
             switch(strlen($num)){
                 case 1:
                     if(!$deb_dezena){
@@ -183,14 +182,33 @@ function num_to_string($num){
                     break;                     
             }
         }
-        echo $newstring."<br>";
+        $newstring=trim($newstring);
+        //correções
+            $newstring=preg_replace("/ /"," e ",$newstring);
+            $newstring=preg_replace("/ e  e /"," e ",$newstring);
+            $newstring=preg_replace("/um e mil/"," Mil ",$newstring);
+            $newstring=preg_replace("/ e milhoes/"," Milhoes ",$newstring);
+            $newstring=preg_replace("/ e mil/"," Mil ",$newstring);
+            $newstring=preg_replace("/  e  e /"," e ",$newstring);
+            $newstring=preg_replace("/ e  Milhoes /"," Milhoes ",$newstring);
+            $newstring=preg_replace("/Mil hoes/"," Milhoes ",$newstring);
+            $newstring=preg_replace("/ Milhoes  e  Mil /"," Milhoes ",$newstring);
+            $newstring=preg_replace("/cento e  Mil/"," cento e um Mil ",$newstring);            
+
+        /*
+        $newstring=explode(" ",$newstring);
+        foreach ($newstring as $c => $char) {
+            echo "CHAR{$c}:".$char."<br>";
+        }
+        $newstring=implode(" ",$newstring);
+        echo "consertado:".$newstring."<br>";
+        */
+        echo "Test {$test}: ".$newstring."<br>";
     }
     //parte decimal
     else{
     
     }
-
-
 }
 function transcrever_valor($valor){
     $valor_int=$valor;
@@ -203,8 +221,8 @@ function transcrever_valor($valor){
     if(strpos($valor,".")!==false) $valor_decimal="0.".substr($valor,strpos($valor,".")+1);
     if(strpos($valor,",")!==false) $valor_decimal="0.".substr($valor,strpos($valor,",")+1);
     
-    echo "parte inteira: ".$valor_int."<br>";
-    echo "parte decimal: ".$valor_decimal."<br>";
+    //echo "parte inteira: ".$valor_int."<br>";
+    //echo "parte decimal: ".$valor_decimal."<br>";
     //converter parte inteira
     num_to_string($valor_int);
 }
@@ -242,7 +260,12 @@ function transcrever_valor($valor){
         if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)#",$valor)){
             echo 'valor:'." R$ ".$valor."<br>";
             error_reporting(0);//desabilar os warning
-            echo "valor transcrito:".transcrever_valor($valor);
+            //echo "valor transcrito:".transcrever_valor($valor);
+            for($c=1000;$c<=2000;$c++){
+                //echo "debug {$c}:".
+                transcrever_valor($c);
+                //."<br>";
+            }
         }
     } else echo "valor não foi enviado";
     
