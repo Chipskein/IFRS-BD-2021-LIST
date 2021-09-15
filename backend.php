@@ -269,6 +269,8 @@ function transcrever_valor($valor){
     $valor=preg_replace("/e  um Real /","e um Reais ",$valor);
     $valor=preg_replace("/ Reais  Reais/"," Reais ",$valor);
     $valor=preg_replace("/ Real  Reais/"," Real ",$valor);
+    $valor=preg_replace("/com    centavos/","com Zero centavos",$valor);
+    
     return $valor;
 }
 ?>
