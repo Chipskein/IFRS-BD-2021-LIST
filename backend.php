@@ -60,14 +60,15 @@ function num_to_string($num){
     //parte inteiro
     if(strpos($num,".")===false&&strpos($num,",")===false){
         $newstring="";
-        $teste=false;
-        $teste2=false;
-        $teste3=false;
+        $deb_dezena=false;
+        $deb_dezena2=false;
+        $deb_dezena3=false;
+        $deb_centena=false;
         for($c=0;$c<=strlen($num);$c++){
             
             switch(strlen($num)){
                 case 1:
-                    if(!$teste){
+                    if(!$deb_dezena){
                         $newstring.=$unidade[((int)$num[$c]-1)]." ";
                         $num=substr($num,$c+1);
                         $c--;
@@ -85,19 +86,26 @@ function num_to_string($num){
                         $c--;
                     }
                     else{
-                        $teste=true;
+                        $deb_dezena=true;
                         $num=substr($num,$c+1);
                         $c--;
                     }
 
                     break;
                 case 3:
-                    $newstring.=$centena[((int)$num[$c])-1]." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if($num[$c]=='1'&&$num[$c+1]=='0'&&$num[$c+2]=='0'){
+                        $newstring.='cem';
+                        $num=substr($num,$c+1);
+                        $c--;          
+                    }
+                    else{
+                        $newstring.=$centena[((int)$num[$c])-1]." ";
+                        $num=substr($num,$c+1);
+                        $c--;   
+                    }
                     break;
                 case 4:
-                    if(!$teste2){
+                    if(!$deb_dezena2){
                         $newstring.=$unidade[((int)$num[$c])-1]." mil"." ";
                         $num=substr($num,$c+1);
                         $c--;
@@ -115,7 +123,7 @@ function num_to_string($num){
                         $c--;
                     }
                     else{
-                        $teste2=true;
+                        $deb_dezena2=true;
                         $num=substr($num,$c+1);
                         $c--;
                     }
@@ -125,12 +133,19 @@ function num_to_string($num){
                 
                        
                 case 6:
-                    $newstring.=$centena[((int)$num[$c])-1]." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if($num[$c]=='1'&&$num[$c+1]=='0'&&$num[$c+2]=='0'){
+                        $newstring.='cem';
+                        $num=substr($num,$c+1);
+                        $c--;          
+                    }
+                    else{
+                        $newstring.=$centena[((int)$num[$c])-1]." ";
+                        $num=substr($num,$c+1);
+                        $c--;   
+                    }
                     break;
                 case 7:
-                    if(!$teste3){
+                    if(!$deb_dezena3){
                         $newstring.=$unidade[((int)$num[$c])-1]." milhoes"." ";
                         $num=substr($num,$c+1);
                         $c--;
@@ -148,16 +163,23 @@ function num_to_string($num){
                         $c--;
                     }
                     else{
-                        $teste3=true;
+                        $deb_dezena3=true;
                         $num=substr($num,$c+1);
                         $c--;
                     }
                     break;
 
                 case 9:
-                    $newstring.=$centena[((int)$num[$c])-1]." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if($num[$c]=='1'&&$num[$c+1]=='0'&&$num[$c+2]=='0'){
+                        $newstring.='cem';
+                        $num=substr($num,$c+1);
+                        $c--;          
+                    }
+                    else{
+                        $newstring.=$centena[((int)$num[$c])-1]." ";
+                        $num=substr($num,$c+1);
+                        $c--;   
+                    }
                     break;                     
             }
         }
