@@ -209,10 +209,11 @@ function num_to_string($num){
     //parte decimal
     else{
         $num=substr($num,+2);
+        if(strlen($num)==1){
+            $num.="0";
+        }
         $newstring="";
         $deb_dezena=false;
-        $deb_dezena2=false;
-        $deb_dezena3=false;
         for($c=0;$c<=strlen($num);$c++){
             switch(strlen($num)){
                 case 1:
@@ -256,18 +257,13 @@ function transcrever_valor($valor){
     if(strpos($valor,".")!==false) $valor_decimal="0.".substr($valor,strpos($valor,".")+1);
     if(strpos($valor,",")!==false) $valor_decimal="0.".substr($valor,strpos($valor,",")+1);
     
-    echo "parte inteira: ".$valor_int."<br>";
-    echo "parte decimal: ".$valor_decimal."<br>";
     //converter parte inteira
-    echo "parte inteira: ".num_to_string($valor_int)."<br>";
-    echo "parte decimal: ".num_to_string($valor_decimal)."<br>";
     if($valor_int!='0'){
         $valor=num_to_string($valor_int)." ".num_to_string($valor_decimal);
     }
     else{
         $valor="zero Reais ".num_to_string($valor_decimal);
     }
-    echo "valor final não corrigido: ".$valor."<br>";
     //correção
     $valor=preg_replace("/um Reais /"," um Real ",$valor);
     $valor=preg_replace("/e  um Real /","e um Reais ",$valor);
@@ -309,7 +305,7 @@ function transcrever_valor($valor){
         if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)#",$valor)){
             echo 'valor:'." R$ ".$valor."<br>";
             error_reporting(0);//desabilar os warning
-            echo "valor transcrito:".transcrever_valor($valor);
+            echo "valor transcrito:".transcrever_valor($valor)."<br>";
         }
     } else echo "valor não foi enviado";
     
