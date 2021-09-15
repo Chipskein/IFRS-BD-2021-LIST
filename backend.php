@@ -61,6 +61,8 @@ function num_to_string($num){
     if(strpos($num,".")===false&&strpos($num,",")===false){
         $newstring="";
         $teste=false;
+        $teste2=false;
+        $teste3=false;
         for($c=0;$c<=strlen($num);$c++){
             
             switch(strlen($num)){
@@ -95,30 +97,63 @@ function num_to_string($num){
                     $c--;
                     break;
                 case 4:
-                    $newstring.=$unidade[((int)$num[$c])-1]." mil"." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if(!$teste2){
+                        $newstring.=$unidade[((int)$num[$c])-1]." mil"." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
+                    else{
+                        $newstring.=$dezena_bug[((int)$num[$c])]." mil"." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
                     break;
                 case 5:
-                    $newstring.=$dezena[((int)$num[$c])-1]." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if($num[$c]!='1'){
+                        $newstring.=$dezena[((int)$num[$c])-1]." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
+                    else{
+                        $teste2=true;
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
                     break;
+                
+                
+                
+                       
                 case 6:
                     $newstring.=$centena[((int)$num[$c])-1]." ";
                     $num=substr($num,$c+1);
                     $c--;
                     break;
                 case 7:
-                    $newstring.=$unidade[((int)$num[$c])-1]." milhoes"." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if(!$teste3){
+                        $newstring.=$unidade[((int)$num[$c])-1]." milhoes"." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
+                    else{
+                        $newstring.=$dezena_bug[((int)$num[$c])]." milhoes"." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    };
                     break;  
                 case 8:
-                    $newstring.=$dezena[((int)$num[$c])-1]." ";
-                    $num=substr($num,$c+1);
-                    $c--;
+                    if($num[$c]!='1'){
+                        $newstring.=$dezena[((int)$num[$c])-1]." ";
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
+                    else{
+                        $teste3=true;
+                        $num=substr($num,$c+1);
+                        $c--;
+                    }
                     break;
+
                 case 9:
                     $newstring.=$centena[((int)$num[$c])-1]." ";
                     $num=substr($num,$c+1);
