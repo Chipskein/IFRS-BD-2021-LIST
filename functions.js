@@ -224,31 +224,30 @@ function verifynumba(numba){
   numba=numba.join(" ");
   //validar a orderm das palavras
   if(eh_palavra_valida){
-    const unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","desseseis","dessesete","dezoito","dezenove"];
+    const unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","desseseis","dessesete","dezoito","dezenove","cem"];
     const dezena=["vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]
-    const centena=["cem","cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
+    const centena=["cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
     just_numba=numba.split(" e ");
-    tamanho=just_numba.length-1;
+    tamanho=0;
     let valido=false;
     switch(just_numba.length){
         case 1:
           //dezena|unidade|centena :cem,duzentos,um,dois,treze
-          if(dezena.indexOf(just_numba[tamanho])||unidade.indexOf(just_numba[tamanho])||centena.indexOf(just_numba[tamanho])) valido=true;
+          if(dezena.indexOf(just_numba[tamanho])!=-1||unidade.indexOf(just_numba[tamanho])!=-1||centena.indexOf(just_numba[tamanho])!=-1) valido=true;
           break
         case 2:
           //centena+unidade || dezena+unidade
-          if(dezena.indexOf(just_numba[tamanho])&&unidade.indexOf(just_numba[tamanho+1])||centena.indexOf(just_numba[tamanho])&&dezena.indexOf(just_numba[tamanho+1])) valido=true;
+          console.log(just_numba[tamanho])
+          if(dezena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1) valido=true;
           break;
         case 3:
           //centena+dezena+unidade;
-          if(centena.indexOf(just_numba[tamanho])&&dezena.indexOf(just_numba[tamanho+1])&&unidade.indexOf(just_numba[tamanho+2])) valido=true;
+          if(centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1) valido=true;
           break;
     }
-    if(valido){
-      return true;
-    }
-    else{
-      return false;
-    }
+    console.log(valido);
+    //if(valido) return true;
+    //else return false;
+    
   }
 }
