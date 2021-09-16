@@ -291,7 +291,7 @@
     }
 ?>
 <?php
-    echo "<div id='main' align=center>";
+    echo "<div id='main' align=center>";        
         echo "<br>";
         echo "<div class='exerc'>";
             echo "<br>";

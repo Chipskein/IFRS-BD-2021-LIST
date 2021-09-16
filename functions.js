@@ -67,29 +67,39 @@ function validarvalor(){
     }
 }
 function validarcalc(){
-  const input=document.getElementById("numero1");
-  const n1=input.value;
-  const input2=document.getElementById("numero2");
-  const n2=input2.value;
-  console.log("numba1 "+n1);
-  console.log("numba2 "+n2);
-
-
-
-
-
-
-
-
-
-    //se for valido
-      //document.getElementById('form4').submit()
-    //senão
-    /*
-        console.log("erro");
-        input.value = "";
-        input.focus();
-    */
+  console.log("numba_one e numba_two");
+  const input=document.getElementById('numero1');
+  const input2=document.getElementById('numero2');
+  let regexp = new RegExp(input.pattern);
+  let regexp2 = new RegExp(input2.pattern);
+  if (!regexp.test(input.value) || !regexp2.test(input2.value)) {
+      if(!regexp.test(input.value)){
+          console.log("regex:erro na numba1");
+          input.value = "";
+          input.focus();
+      }
+      
+      else if(!regexp2.test(input2.value)){
+          console.log("regex:erro no numba2");
+          input2.value = "";
+          input2.focus();
+      } else return;  
+  }
+  else{
+      if(!verifynumba(input.value)&&!verifynumba(input2.value)){
+          if(!verifynumba(input.value)){
+            console.log("erro na numba1");
+            input.value = "";
+            input.focus();
+          }
+          else{
+            console.log("erro na numba2");
+            input2.value = "";
+            input2.focus();
+          }  
+      }
+      //else document.getElementById('form4').submit();
+  }
 }
 function validarcalcr(){
     
@@ -188,4 +198,18 @@ function verifydate(day,month,year){
         }
         if (day <= day_qt) return true
         else return false
+}
+function verifynumba(numba){
+const palavras_validas=[
+  "cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos",
+  "dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa","um","dois","tres"
+  ,"quatro","cinco","seis","sete","oito","nove","cem","onze","doze","treze","quatorze","quinze","desseseis","dessete","dezoito","dezenove"
+  ,"e","mil","milhoes"
+]
+//verificar se a as palavras da string são válidas 
+numba=numba.split(" ");
+if(palavras_validas.includes(numba)) console.log("palavra valida");
+else console.log("errou");
+//validar a orderm das palavras
+return true;
 }
