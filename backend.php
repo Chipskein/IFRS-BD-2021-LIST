@@ -31,16 +31,39 @@
 <body>
 <main>
 <?php
+    function calculatedatabypascoa($ano,$feriado_name){
+        $data="";
+        switch($feriado_name){
+            case "pascoa":
+                $data=date("Y/m/d",easter_date((int)$ano));
+                break;
+            case "carnaval":
+                $data=date("Y/m/d",strtotime("-47 days",easter_date((int)$ano)));
+                break;
+            case "corpos":
+                $data=date("Y/m/d",strtotime("+60 days",easter_date((int)$ano)));
+                break;
+            case "sexta":
+                $data=date("Y/m/d",strtotime("-2 days",easter_date((int)$ano)));
+            break;
+        }
+        //echo $feriado_name.": ".$data."<br>";
+        return $data;
+    }
     function eh_feriados($data){
         $ano=substr($data,0,4);
+        $pascoa=calculatedatabypascoa($ano,"pascoa");
+        $carnaval=calculatedatabypascoa($ano,"carnaval");
+        $corpos=calculatedatabypascoa($ano,"corpos");
+        $sexta=calculatedatabypascoa($ano,"sexta");
         $feriados=[
             "Confraternização Universal" => "{$ano}/01/01",
-            "Carnaval" => "{$ano}/03/01", 
-            "Sexta-feira Santa" => "{$ano}/04/02",  
-            "Páscoa"=>"{$ano}/04/17", 
+            "Carnaval" => "{$carnaval}", 
+            "Sexta-feira Santa" => "{$sexta}",  
+            "Páscoa"=>"{$pascoa}", 
             "Tiradentes" => "{$ano}/04/21", 
             "Dia Mundial do Trabalho" => "{$ano}/05/01", 
-            "Corpus Christi" => "{$ano}/06/16",
+            "Corpus Christi" => "{$corpos}",
             "Independência do Brasil" => "{$ano}/09/07", 
             "Nossa Senhora Aparecida" => "{$ano}/10/12", 
             "Finados" => "{$ano}/11/02", 
