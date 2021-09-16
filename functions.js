@@ -208,12 +208,7 @@ function verifydate(day,month,year){
 }
 function verifynumba(numba){
   let eh_palavra_valida=false;
-  const palavras_validas=[
-  "cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos",
-  "dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa","um","dois","tres"
-  ,"quatro","cinco","seis","sete","oito","nove","cem","onze","doze","treze","quatorze","quinze","desseseis","dessete","dezoito","dezenove"
-  ,"e","mil","milhoes"
-  ]
+  const palavras_validas=["cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos","dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa","um","dois","tres","quatro","cinco","seis","sete","oito","nove","cem","onze","doze","treze","quatorze","quinze","desseseis","dessete","dezoito","dezenove","e","mil","milhoes"]
   //verificar se a as palavras da string são válidas 
   numba=numba.split(" ");
   for(c=0;c<=numba.length-1;c++){
@@ -224,25 +219,59 @@ function verifynumba(numba){
   numba=numba.join(" ");
   //validar a orderm das palavras
   if(eh_palavra_valida){
+    //normal
     const unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","desseseis","dessesete","dezoito","dezenove","cem"];
     const dezena=["vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]
     const centena=["cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
+    //milhar
+    const unidadeM=["um mil","dois mil","tres mil","quatro mil","cinco mil","seis mil","sete mil","oito mil","nove mil","dez mil","onze mil","doze mil","treze mil","quatorze mil","quinze mil","desseseis mil","dessesete mil","dezoito mil","dezenove mil","cem mil"]
+    const dezenaM=["vinte mil","trinta mil","quarenta mil","cinquenta mil","sessenta mil","setenta mil","oitenta mil","noventa mil"];
+    const centenaM=["cento mil","duzentos mil",'trezentos',"quatrocentos mil","quinhentos mil","seiscentos mil","setecentos mil","oitocentos mil","novecentos mil"];
+    //milhoes
+    const unidadeMM=["um milhoes","dois milhoes","tres milhoes","quatro milhoes","cinco milhoes","seis milhoes","sete milhoes","oito milhoes","nove milhoes","dez milhoes","onze milhoes","doze milhoes","treze milhoes","quatorze milhoes","quinze milhoes","desseseis milhoes","dessesete milhoes","dezoito milhoes","dezenove milhoes","cem milhoes"]
+    const dezenaMM=["vinte milhoes","trinta milhoes","quarenta milhoes","cinquenta milhoes","sessenta milhoes","setenta milhoes","oitenta milhoes","noventa milhoes"];
+    const centenaMM=["cento milhoes","duzentos milhoes",'trezentos',"quatrocentos milhoes","quinhentos milhoes","seiscentos milhoes","setecentos milhoes","oitocentos milhoes","novecentos milhoes"];
     just_numba=numba.split(" e ");
+    console.log(just_numba);
     tamanho=0;
     let valido=false;
     switch(just_numba.length){
         case 1:
-          //dezena|unidade|centena :cem,duzentos,um,dois,treze
-          if(dezena.indexOf(just_numba[tamanho])!=-1||unidade.indexOf(just_numba[tamanho])!=-1||centena.indexOf(just_numba[tamanho])!=-1) valido=true;
-          break
+          //dezena|unidade|centena :cem,duzentos,um,dois,treze exceção cento
+          if(
+             dezena.indexOf(just_numba[tamanho])!=-1||unidade.indexOf(just_numba[tamanho])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento"||
+             unidadeM.indexOf(just_numba[tamanho])!=-1||dezenaM.indexOf(just_numba[tamanho])!=-1||centenaM.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento mil"||
+             unidadeMM.indexOf(just_numba[tamanho])!=-1||dezenaMM.indexOf(just_numba[tamanho])!=-1||centenaMM.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento milhoes"
+            ) 
+              valido=true;
+            break
         case 2:
           //centena+unidade || dezena+unidade
-          console.log(just_numba[tamanho])
-          if(dezena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1) valido=true;
+          if(
+              dezena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
+              centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
+              centena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
+              
+              dezenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
+              centenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
+              centenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1
+            ) valido=true;
           break;
         case 3:
           //centena+dezena+unidade;
           if(centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1) valido=true;
+          break;
+        case 4:
+          break;
+        case 5:
+          break;
+        case 6:
+          break;
+        case 7:
+          break;
+        case 8:
+          break;
+        case 9:
           break;
     }
     console.log(valido);
