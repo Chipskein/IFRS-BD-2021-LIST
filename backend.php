@@ -75,7 +75,6 @@
     };
     function calculardata($data,$dias){
         $newdata=date('Y/m/d',$data);
-        echo "loop start"."<br>";
         $c=0;
         while($c<$dias){
             $newdata=date('Y/m/d',strtotime($newdata ."+1 day"));
@@ -83,12 +82,11 @@
                 $weekday=date('N',strtotime($newdata));
                 if($weekday!=6&&$weekday!=7){
                     $c++;
-                    echo "não é feriado e é dia de semana ".$newdata."<br>";
+                    //echo "não é feriado e é dia de semana ".$newdata."<br>";
                 }
             }
-            else echo "é feriado ".$newdata."<br>";
+            //else echo "é feriado ".$newdata."<br>";
         }
-        echo "loop end"."<br>";
         return date("d/m/Y",strtotime($newdata));
     }
     function num_to_string($num){

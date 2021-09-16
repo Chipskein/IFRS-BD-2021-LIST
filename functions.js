@@ -17,34 +17,36 @@ function validarcpf(){
 } 
 function validardata(){
     console.log("enviando data e dias uteis");
+    let teste1=false;
+    let teste2=false;
     const input=document.getElementById('data');
     const input2=document.getElementById('dias');
     let regexp = new RegExp(input.pattern);
     let regexp2 = new RegExp(input2.pattern);
-    if (!regexp.test(input.value) || !regexp2.test(input2.value)) {
-        if(!regexp.test(input.value)){
-            console.log("erro na data");
-            input.value = "";
-            input.focus();
-        }else return;//se tirar o return da pau :)
-        
-        if(!regexp2.test(input2.value)){
-            console.log("erro na dias");
-            input2.value = "";
-            input2.focus();
-        }else return;  
+    if(!regexp.test(input.value)){
+        console.log("erro na data");
+        input.value = "";
+        input.focus();
     }
     else{
-        const day=parseInt(input.value.slice(0,2));
-        const mounth=parseInt(input.value.slice(3,5));
-        const year=parseInt(input.value.slice(6));        
-        if(!verifydate(day,mounth,year)){
-            console.log("erro na data");
-            input.value = "";
-            input.focus();
-        }
-        else document.getElementById('form2').submit();
+      const day=parseInt(input.value.slice(0,2));
+      const mounth=parseInt(input.value.slice(3,5));
+      const year=parseInt(input.value.slice(6));        
+      if(!verifydate(day,mounth,year)){
+          console.log("erro na data");
+          input.value = "";
+          input.focus();
+      }
+      else teste1=true;
     }
+    if(!regexp2.test(input2.value)){
+      console.log("erro nos dias");
+      input2.value = "";
+      input2.focus();
+    } else teste2=true;
+    if(teste1&&teste2){
+      document.getElementById('form2').submit();   
+    }   
 }
 function validarvalor(){
     
@@ -67,38 +69,43 @@ function validarvalor(){
     }
 }
 function validarcalc(){
-  console.log("numba_one e numba_two");
+  console.log("enviando numba_one  e numba_two");
+  let teste1=false;
+  let teste2=false;
   const input=document.getElementById('numero1');
   const input2=document.getElementById('numero2');
   let regexp = new RegExp(input.pattern);
   let regexp2 = new RegExp(input2.pattern);
-  if (!regexp.test(input.value) || !regexp2.test(input2.value)) {
-      if(!regexp.test(input.value)){
-          console.log("regex:erro na numba1");
-          input.value = "";
-          input.focus();
-      }
-      
-      else if(!regexp2.test(input2.value)){
-          console.log("regex:erro no numba2");
-          input2.value = "";
-          input2.focus();
-      } else return;  
+  if(!regexp.test(input.value)){
+      console.log("erro no numba one");
+      input.value = "";
+      input.focus();
   }
   else{
-      if(!verifynumba(input.value)&&!verifynumba(input2.value)){
-          if(!verifynumba(input.value)){
-            console.log("erro na numba1");
-            input.value = "";
-            input.focus();
-          }
-          else{
-            console.log("erro na numba2");
-            input2.value = "";
-            input2.focus();
-          }  
-      }
-      //else document.getElementById('form4').submit();
+    console.log("numba one passou");
+    if(verifynumba(input.value)) teste1=true;
+    else{
+      console.log("erro no numba one");
+      input.value = "";
+      input.focus();
+    }
+  }
+  if(!regexp2.test(input2.value)){
+    console.log("erro no numba two");
+    input2.value = "";
+    input2.focus();
+  }
+  else{
+    console.log("numba two passou");
+    if(verifynumba(input2.value)) teste2=true;
+    else{
+      console.log("erro no numba two");
+      input2.value = "";
+      input2.focus();
+    }
+  }
+  if(teste1&&teste2){
+      document.getElementById('form4').submit();   
   }
 }
 function validarcalcr(){
@@ -200,17 +207,48 @@ function verifydate(day,month,year){
         else return false
 }
 function verifynumba(numba){
-const palavras_validas=[
+  let eh_palavra_valida=false;
+  const palavras_validas=[
   "cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos",
   "dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa","um","dois","tres"
   ,"quatro","cinco","seis","sete","oito","nove","cem","onze","doze","treze","quatorze","quinze","desseseis","dessete","dezoito","dezenove"
   ,"e","mil","milhoes"
-]
-//verificar se a as palavras da string são válidas 
-//validar a orderm das palavras
-
-numba=numba.split(" ");
-if(palavras_validas.includes(numba)) console.log("palavra valida");
-else console.log("errou");
-return true;
+  ]
+  //verificar se a as palavras da string são válidas 
+  numba=numba.split(" ");
+  for(c=0;c<=numba.length-1;c++){
+    let palavra=numba[c];
+    if(palavras_validas.includes(palavra)) eh_palavra_valida=true;
+    else return false;
+  }
+  numba=numba.join(" ");
+  //validar a orderm das palavras
+  if(eh_palavra_valida){
+    const unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","desseseis","dessesete","dezoito","dezenove"];
+    const dezena=["vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]
+    const centena=["cem","cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
+    just_numba=numba.split(" e ");
+    tamanho=just_numba.length-1;
+    let valido=false;
+    switch(just_numba.length){
+        case 1:
+          //dezena|unidade|centena :cem,duzentos,um,dois,treze
+          if(dezena.indexOf(just_numba[tamanho])||unidade.indexOf(just_numba[tamanho])||centena.indexOf(just_numba[tamanho])) valido=true;
+          break
+        case 2:
+          //centena+unidade || dezena+unidade
+          if(dezena.indexOf(just_numba[tamanho])&&unidade.indexOf(just_numba[tamanho+1])||centena.indexOf(just_numba[tamanho])&&dezena.indexOf(just_numba[tamanho+1])) valido=true;
+          break;
+        case 3:
+          //centena+dezena+unidade;
+          if(centena.indexOf(just_numba[tamanho])&&dezena.indexOf(just_numba[tamanho+1])&&unidade.indexOf(just_numba[tamanho+2])) valido=true;
+          break;
+    }
+    if(valido){
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
 }
