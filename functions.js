@@ -224,7 +224,7 @@ function verifynumba(numba){
     const dezena=["vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]
     const centena=["cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
     //milhar
-    const unidadeM=["um mil","dois mil","tres mil","quatro mil","cinco mil","seis mil","sete mil","oito mil","nove mil","dez mil","onze mil","doze mil","treze mil","quatorze mil","quinze mil","desseseis mil","dessesete mil","dezoito mil","dezenove mil","cem mil"]
+    const unidadeM=["mil","dois mil","tres mil","quatro mil","cinco mil","seis mil","sete mil","oito mil","nove mil","dez mil","onze mil","doze mil","treze mil","quatorze mil","quinze mil","desseseis mil","dessesete mil","dezoito mil","dezenove mil","cem mil"]
     const dezenaM=["vinte mil","trinta mil","quarenta mil","cinquenta mil","sessenta mil","setenta mil","oitenta mil","noventa mil"];
     const centenaM=["cento mil","duzentos mil",'trezentos',"quatrocentos mil","quinhentos mil","seiscentos mil","setecentos mil","oitocentos mil","novecentos mil"];
     //milhoes
@@ -251,7 +251,7 @@ function verifynumba(numba){
               dezena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
               centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
               centena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
-              
+              //milhar exceção cem mil retorna cento mil
               dezenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
               centenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
               centenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1
@@ -259,20 +259,27 @@ function verifynumba(numba){
           break;
         case 3:
           //centena+dezena+unidade;
-          if(centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1) valido=true;
+          if(
+              centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
+              //milhar
+              centenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
+              dezenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
+              unidadeM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1
+            ) valido=true;
           break;
         case 4:
+            if(
+                unidadeM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
+                dezenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
+                centenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1
+              )
+            {
+              valido=true;
+            }
           break;
         case 5:
           break;
-        case 6:
-          break;
-        case 7:
-          break;
-        case 8:
-          break;
-        case 9:
-          break;
+        
     }
     console.log(valido);
     //if(valido) return true;
