@@ -14,6 +14,7 @@ function validarcpf(){
     else{
         document.getElementById('form1').submit()
     }
+    //algoritmo para validar cpf;
 } 
 function validardata(){
     console.log("enviando data e dias uteis");
