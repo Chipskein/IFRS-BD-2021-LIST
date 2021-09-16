@@ -207,9 +207,10 @@ const palavras_validas=[
   ,"e","mil","milhoes"
 ]
 //verificar se a as palavras da string são válidas 
+//validar a orderm das palavras
+
 numba=numba.split(" ");
 if(palavras_validas.includes(numba)) console.log("palavra valida");
 else console.log("errou");
-//validar a orderm das palavras
 return true;
 }
