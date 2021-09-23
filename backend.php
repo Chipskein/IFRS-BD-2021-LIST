@@ -224,8 +224,8 @@
                 $newstring=preg_replace("/ /"," e ",$newstring);
                 $newstring=preg_replace("/ e  e /"," e ",$newstring);
                 $newstring=preg_replace("/um e mil/"," Mil ",$newstring);
-                $newstring=preg_replace("/ e milhoes/"," Milhoes ",$newstring);
-                $newstring=preg_replace("/ e mil/"," Mil ",$newstring);
+                $newstring=preg_replace("/ e milhoes e /"," Milhoes ",$newstring);
+                $newstring=preg_replace("/ e mil e /"," Mil ",$newstring);
                 $newstring=preg_replace("/  e  e /"," e ",$newstring);
                 $newstring=preg_replace("/ e  Milhoes /"," Milhoes ",$newstring);
                 $newstring=preg_replace("/Mil hoes/"," Milhoes ",$newstring);
@@ -280,7 +280,7 @@
                         break;                    
                 }
             }
-            return "com ".$newstring." centavos";
+            return "e ".$newstring." centavos";
         }
     }
     function transcrever_valor($valor){
@@ -299,14 +299,15 @@
             $valor=num_to_string($valor_int)." ".num_to_string($valor_decimal);
         }
         else{
-            $valor="zero Reais ".num_to_string($valor_decimal);
+            $valor="zero".num_to_string($valor_decimal)." de real";
         }
         //correção
         $valor=preg_replace("/um Reais /"," um Real ",$valor);
         $valor=preg_replace("/e  um Real /","e um Reais ",$valor);
         $valor=preg_replace("/ Reais  Reais/"," Reais ",$valor);
         $valor=preg_replace("/ Real  Reais/"," Real ",$valor);
-        $valor=preg_replace("/com    centavos/","com Zero centavos",$valor);
+        $valor=preg_replace("/e    centavos/","e zero centavos",$valor);
+        $valor=preg_replace("/zeroe /","",$valor);
         
         return $valor;
     }
