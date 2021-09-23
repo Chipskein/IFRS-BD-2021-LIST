@@ -311,6 +311,70 @@
         
         return $valor;
     }
+    function validar_cpf($cpf){
+        if($cpf!=="000000000-00"){
+            $digitos=$cpf;
+            $validata_numba1=(($digitos[0]*10+$digitos[1]*9+$digitos[2]*8+$digitos[3]*7+$digitos[4]*6+$digitos[5]*5+$digitos[6]*4+$digitos[7]*3+$digitos[8]*2)*10)%11;
+            $validata_numba2=(($digitos[0]*11+$digitos[1]*10+$digitos[2]*9+$digitos[3]*8+$digitos[4]*7+$digitos[5]*6+$digitos[6]*5+$digitos[7]*4+$digitos[8]*3+$validata_numba1*2)*10)%11;
+            if($validata_numba1==10) $validata_numba1=0;
+            if($validata_numba2==10) $validata_numba2=0;
+            if($validata_numba1==$digitos[10]&&$validata_numba2==$digitos[11]) return true;
+            else false;
+        }
+        else return false;
+    };
+    function validar_data($data){
+        $day=substr($data,0,2);
+        $month=substr($data,3,2);
+        $year=substr($data,6);    
+        $day_qt=0; //31,30,29,28
+        $bissexto = false;
+        if (($year % 4 == 0 && $year % 100 !== 0) || ($year % 400 == 0)) $bissexto = true;//
+        switch ($month) {
+          case 1:
+            $day_qt = 31;
+            break;
+          case 2:
+            if ($bissexto) $day_qt = 29;
+            else $day_qt = 28;
+            break;
+          case 3:
+            $day_qt = 31;
+            break;
+          case 4:
+            $day_qt = 30;
+            break;
+          case 5:
+            $day_qt = 31;
+            break;
+          case 6:
+            $day_qt = 30;
+            break;
+          case 7:
+            $day_qt = 31;
+            break;
+          case 8:
+            $day_qt = 31;
+            break;
+          case 9:
+            $day_qt = 30;
+            break;
+          case 10:
+            $day_qt = 31;
+            break;
+          case 11:
+            $day_qt = 30;
+            break;
+          case 12:
+            $day_qt = 31;
+            break;
+        }
+        if ($day <= $day_qt) return true;
+        else return false;
+    };
+    function verify_numba($numba){
+
+    };
 ?>
 <?php
     echo "<div id='main' align=center>";        
@@ -320,7 +384,7 @@
             echo "<h3>Exercicio 1</h3>";
             if(isset($_POST["cpf"])){
                 $cpf=$_POST["cpf"];
-                echo (preg_match("#^[0-9]{9}-[0-9]{2}$#",$cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
+                echo (preg_match("#^[0-9]{9}-[0-9]{2}$#",$cpf)&&validar_cpf($cpf)) ?  "CPF ".$cpf." foi cadastrado com sucesso":"Seu cpf não foi cadastrado com sucesso";
             } else echo "CPF não foi enviado";
             echo "<br>";
         echo "</div>";
@@ -329,7 +393,7 @@
             if(isset($_POST["data"])&&isset($_POST["dias"])){
                 $data=$_POST["data"];
                 $dias=$_POST["dias"];
-                if(preg_match("#^(0[1-9]|1[1-9]|2[1-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$#",$data)){
+                if(preg_match("#^(0[1-9]|1[1-9]|2[1-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$#",$data)&&validar_data($data)){
                     $format_data=substr($data,6)."/".substr($data,3,-5)."/".substr($data,0,2);
                     echo 'começo data:'.$data;
                     echo "<br>";
