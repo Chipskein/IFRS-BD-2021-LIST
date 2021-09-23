@@ -119,7 +119,6 @@ function validarcalc(){
 function validarcalcr(){
     
     //se for valido
-    /*
     const form=document.getElementById('form5');
     const input=document.createElement("input")
       input.type='hidden';
@@ -127,7 +126,6 @@ function validarcalcr(){
       input.value=true;
     form.append(input);
     form.submit();
-  */
  //senão
     /*
         console.log("erro");

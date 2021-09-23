@@ -433,7 +433,19 @@
         echo "<div class='exerc'>";
             echo "<h3>Exercicio 5</h3>";
             if(isset($_POST['submited'])){
-                var_dump($_POST);
+                $numeros=[];
+                $operations=[];
+
+                foreach ($_POST as $key => $value){
+                    if(preg_match('/numero/',$key))array_push($numeros,$value);
+                    if(preg_match('/operation/',$key))array_push($operations,$value);
+                }
+                foreach($numeros as $key => $value){
+                    echo "numeros[{$key}]:".$value."<br>";                    
+                };
+                foreach($operations as $key => $value){
+                    echo "operations[{$key}]:".$value."<br>";                    
+                };
                 //forech numero e operation;
             }else echo "operador e numeros nao foram enviados";
         echo "</div>";
