@@ -93,7 +93,7 @@
         $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
         $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','desseseis','dessesete','dezoito','dezenove'];
         $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
-        $centena=["cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos"];//3
+        $centena=["cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];//3
         //parte inteiro
         if(strpos($num,".")===false&&strpos($num,",")===false){
             $newstring="";
@@ -223,7 +223,11 @@
             //correções
                 $newstring=preg_replace("/ /"," e ",$newstring);
                 $newstring=preg_replace("/ e  e /"," e ",$newstring);
+                $newstring=preg_replace("/um e mil e/"," Mil ",$newstring);
                 $newstring=preg_replace("/um e mil/"," Mil ",$newstring);
+                $newstring=preg_replace("/e mil e/"," Mil ",$newstring);
+            /*
+
                 $newstring=preg_replace("/ e milhoes e /"," Milhoes ",$newstring);
                 $newstring=preg_replace("/ e mil e /"," Mil ",$newstring);
                 $newstring=preg_replace("/  e  e /"," e ",$newstring);
@@ -231,7 +235,7 @@
                 $newstring=preg_replace("/Mil hoes/"," Milhoes ",$newstring);
                 $newstring=preg_replace("/ Milhoes  e  Mil /"," Milhoes ",$newstring);
                 $newstring=preg_replace("/cento e  Mil/"," cento e um Mil ",$newstring);            
-
+            */
             /*
             $newstring=explode(" ",$newstring);
             foreach ($newstring as $c => $char) {
@@ -414,7 +418,9 @@
                 if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)#",$valor)){
                     echo 'valor:'." R$ ".$valor."<br>";
                     error_reporting(0);//desabilar os warning
-                    echo "valor transcrito:".transcrever_valor($valor)."<br>";
+                    for($c=999;$c<=10000;$c++){
+                        echo "valor transcrito:".transcrever_valor($c)."<br>";
+                    }
                 }
             } else echo "valor não foi enviado";
         echo "</div>";
