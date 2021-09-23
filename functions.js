@@ -12,7 +12,7 @@ function validarcpf(){
         return;
     }
     else{
-      if(cpf_eh_valido(cpf)){
+      if(cpf_eh_valido(cpf)&&cpf!="000000000-00"){
         document.getElementById('form1').submit()
       }
       else{
@@ -280,10 +280,7 @@ function verifynumba(numba){
                 unidadeM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
                 dezenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
                 centenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1
-              )
-            {
-              valido=true;
-            }
+              ) valido=true;
           break;
         case 5:
           break;
@@ -297,8 +294,8 @@ function verifynumba(numba){
 }
 function cpf_eh_valido(cpf){
   const digitos=cpf.split("");
-  const validata_numba1=((digitos[0]*10+digitos[1]*9+digitos[2]*8+digitos[3]*7+digitos[4]*6+digitos[5]*5+digitos[6]*4+digitos[7]*3+digitos[8]*2)*10)%11
-  const validata_numba2=((digitos[0]*11+digitos[1]*10+digitos[2]*9+digitos[3]*8+digitos[4]*7+digitos[5]*6+digitos[6]*5+digitos[7]*4+digitos[8]*3+validata_numba1*2)*10)%11
+  let validata_numba1=((digitos[0]*10+digitos[1]*9+digitos[2]*8+digitos[3]*7+digitos[4]*6+digitos[5]*5+digitos[6]*4+digitos[7]*3+digitos[8]*2)*10)%11
+  let validata_numba2=((digitos[0]*11+digitos[1]*10+digitos[2]*9+digitos[3]*8+digitos[4]*7+digitos[5]*6+digitos[6]*5+digitos[7]*4+digitos[8]*3+validata_numba1*2)*10)%11
   if(validata_numba1==10){
     validata_numba1=0
   }
