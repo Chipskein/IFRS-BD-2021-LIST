@@ -117,7 +117,6 @@ function validarcalc(){
   }
 }
 function validarcalcr(){
-    
     //se for valido
     const form=document.getElementById('form5');
     const input=document.createElement("input")
@@ -138,32 +137,35 @@ function addr(){
     const div=document.getElementById('form-div1');
     const div_count=document.querySelectorAll('select').length
     const input_count=document.querySelectorAll('input').length-6
+    console.log( input_count)
     //numero
-    const select=document.createElement('select');
-        option=document.createElement("option")
-            option.value="+";
-            option.innerHTML='+';
-            select.append(option)
-        option=document.createElement("option")
-            option.value="/";
-            option.innerHTML='/';
-            select.append(option)
-        option=document.createElement("option")
-            option.value="*";
-            option.innerHTML='*';
-            select.append(option)
-        option=document.createElement("option")
-            option.value="-";
-            option.innerHTML='-';
-            select.append(option)
-        select.name=`operation${div_count}`
-        div.append(select)
-    const input=document.createElement('input');
-        input.type='text';
-        input.size=10;
-        input.name=`numero${input_count}`
-        input.required=true;
-    div.append(input);
+    if(input_count < 10 ){
+      const select=document.createElement('select');
+          option=document.createElement("option")
+              option.value="+";
+              option.innerHTML='+';
+              select.append(option)
+          option=document.createElement("option")
+              option.value="/";
+              option.innerHTML='/';
+              select.append(option)
+          option=document.createElement("option")
+              option.value="*";
+              option.innerHTML='*';
+              select.append(option)
+          option=document.createElement("option")
+              option.value="-";
+              option.innerHTML='-';
+              select.append(option)
+          select.name=`operation${div_count}`
+          div.append(select)
+          const input=document.createElement('input');
+              input.type='text';
+              input.size=10;
+              input.name=`numero${input_count}`
+              input.required=true;
+          div.append(input);
+    }
 }
 function verifydate(day,month,year){
 
