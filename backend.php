@@ -404,6 +404,17 @@
         }
         return $result;
     };
+    function calcular_roman($numeros,$operations){
+        $string_num="";
+        $c=0;
+        foreach($numeros as $index=>$numero){
+            if($c<count($numeros)-1)$string_num.=converteToRoman($numero).$operations[$c];
+            else $string_num.=converteToRoman($numero);
+            $c++;
+        };
+        echo "Conta: ".$string_num."<br>";
+
+    };
 ?>
 <?php
     echo "<div id='main' align=center>";        
@@ -467,18 +478,31 @@
             if(isset($_POST['submited'])){
                 $numeros=[];
                 $operations=[];
-
+                $pass=false;
                 foreach ($_POST as $key => $value){
-                    if(preg_match('/numero/',$key))array_push($numeros,$value);
-                    if(preg_match('/operation/',$key))array_push($operations,$value);
+                    if(preg_match('/numero/',$key)){
+                        if(preg_match("#^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$#",$value)) {
+                            $pass=true;
+                            array_push($numeros,$value);
+                        }
+                        else{ 
+                            $pass=false;
+                            break;
+                        }
+                    }
+                    if(preg_match('/operation/',$key)){
+                        if($value=="+"||$value=="-"||$value=="*"||$value=="/"){
+                            $pass=true;
+                            array_push($operations,$value);
+                        }
+                        else{
+                            $pass=false;
+                            break;
+                        } 
+                    }
                 }
-                foreach($numeros as $key => $value){
-                    echo "numeros[{$key}=>{$value}]:".converteToRoman($value)."<br>";                    
-                };
-                foreach($operations as $key => $value){
-                    echo "operations[{$key}]:".$value."<br>";                    
-                };
-                //forech numero e operation;
+                if($pass) calcular_roman($numeros,$operations);
+                else echo "Numeros ou operações inválidas";
             }else echo "operador e numeros nao foram enviados";
         echo "</div>";
         echo "<br>";
