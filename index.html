@@ -100,14 +100,14 @@
                 <h3>Exercicio 5</h2>
                 <form action="backend.php" method="post" id='form5'>
                     <div id='form-div1'>
-                        <input type="text" name='numero0' size="10" required>
+                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero0' size="10" required>
                         <select name="operation1">
                             <option value="+">+</option>
                             <option value="/">/</option>
                             <option value="*">*</option>
                             <option value="-">-</option>
                         </select>
-                        <input type="text" name='numero1' size="10" required> 
+                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero1' size="10" required> 
                     </div>
                     <button type='button' onclick="addr()">+</button>
                     <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
