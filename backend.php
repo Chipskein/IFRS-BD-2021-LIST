@@ -222,21 +222,22 @@
             $newstring=trim($newstring);
             //correções
                 $newstring=preg_replace("/ /"," e ",$newstring);
+                $newstring=preg_replace("/ e milhoes e /"," milhoes ",$newstring);
+                $newstring=preg_replace("/ e mil e /"," mil ",$newstring);
                 $newstring=preg_replace("/ e  e /"," e ",$newstring);
-                $newstring=preg_replace("/um e mil e/"," Mil ",$newstring);
-                $newstring=preg_replace("/um e mil/"," Mil ",$newstring);
-                $newstring=preg_replace("/e mil e/"," Mil ",$newstring);
-            /*
-
-                $newstring=preg_replace("/ e milhoes e /"," Milhoes ",$newstring);
-                $newstring=preg_replace("/ e mil e /"," Mil ",$newstring);
-                $newstring=preg_replace("/  e  e /"," e ",$newstring);
-                $newstring=preg_replace("/ e  Milhoes /"," Milhoes ",$newstring);
-                $newstring=preg_replace("/Mil hoes/"," Milhoes ",$newstring);
-                $newstring=preg_replace("/ Milhoes  e  Mil /"," Milhoes ",$newstring);
-                $newstring=preg_replace("/cento e  Mil/"," cento e um Mil ",$newstring);            
-            */
-            /*
+                $newstring=preg_replace("/ e  milhoes /"," milhoes ",$newstring);
+                $newstring=preg_replace("/mil hoes/"," milhoes ",$newstring);
+                $newstring=preg_replace("/ milhoes  e  mil /"," milhoes ",$newstring);
+                $newstring=preg_replace("/cento e  mil/"," cento e um mil ",$newstring);            
+                $newstring=preg_replace("/ e mil/"," mil ",$newstring);            
+                $newstring=preg_replace("/ e  mil /"," mil ",$newstring);  
+                $newstring=preg_replace("/um milhoes /"," um milhao ",$newstring);  
+                $newstring=preg_replace("/ milhao  mil/"," milhao ",$newstring);  
+                $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
+                $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);  
+                          
+                
+                /*
             $newstring=explode(" ",$newstring);
             foreach ($newstring as $c => $char) {
                 echo "CHAR{$c}:".$char."<br>";
@@ -333,7 +334,7 @@
         $year=substr($data,6);    
         $day_qt=0; //31,30,29,28
         $bissexto = false;
-        if (($year % 4 == 0 && $year % 100 !== 0) || ($year % 400 == 0)) $bissexto = true;//
+        if (($year % 4 == 0 && $year % 100 !== 0) || ($year % 400 == 0)) $bissexto = true;
         switch ($month) {
           case 1:
             $day_qt = 31;
@@ -376,9 +377,6 @@
         if ($day <= $day_qt) return true;
         else return false;
     };
-    function verify_numba($numba){
-
-    };
     function converteToRoman($roman){
         $romans = array(
             'M' => 1000,
@@ -404,7 +402,7 @@
                 $roman = substr($roman, strlen($key));
             }
         }
-        echo $result;
+        return $result;
     };
 ?>
 <?php
@@ -445,9 +443,10 @@
                 if(preg_match("#(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)#",$valor)){
                     echo 'valor:'." R$ ".$valor."<br>";
                     error_reporting(0);//desabilar os warning
-                    for($c=999;$c<=10000;$c++){
-                        echo "valor transcrito:".transcrever_valor($c)."<br>";
-                    }
+                    echo "valor transcrito:  ".transcrever_valor($valor)."<br>";
+                    /*
+                    for($c=900000000;$c<=9000001000;$c++) echo "valor transcrito:  ".transcrever_valor($c)."<br>";
+                    */
                 }
             } else echo "valor não foi enviado";
         echo "</div>";
@@ -474,7 +473,7 @@
                     if(preg_match('/operation/',$key))array_push($operations,$value);
                 }
                 foreach($numeros as $key => $value){
-                    echo "numeros[{$key}]:".$value."<br>";                    
+                    echo "numeros[{$key}=>{$value}]:".converteToRoman($value)."<br>";                    
                 };
                 foreach($operations as $key => $value){
                     echo "operations[{$key}]:".$value."<br>";                    

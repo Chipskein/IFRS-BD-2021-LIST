@@ -139,7 +139,7 @@ function addr(){
     const input_count=document.querySelectorAll('input').length-6
     console.log( input_count)
     //numero
-    if(input_count < 10 ){
+    if(input_count <= 10 ){
       const select=document.createElement('select');
           option=document.createElement("option")
               option.value="+";
