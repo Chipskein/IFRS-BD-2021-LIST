@@ -234,7 +234,8 @@
                 $newstring=preg_replace("/um milhoes /"," um milhao ",$newstring);  
                 $newstring=preg_replace("/ milhao  mil/"," milhao ",$newstring);  
                 $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
-                $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);  
+                $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
+                $newstring=preg_replace("/e um mil/","e mil",$newstring);
                           
                 
                 /*
