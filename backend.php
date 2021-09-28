@@ -439,9 +439,6 @@
         //calcula o resto se tiver
         for($c=2;$c<=count($cal_params)-1;$c++){
             if($c%2!=0){
-            echo "numba1 ".$result."<br>";
-            echo "op ".$cal_params[$c]."<br>";
-            echo "numba ".$cal_params[$c+1]."<br>";
             switch($cal_params[$c]){
                 case "+":
                     $result+=$cal_params[$c+1];
