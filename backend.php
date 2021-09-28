@@ -407,12 +407,57 @@
     function calcular_roman($numeros,$operations){
         $string_num="";
         $c=0;
+        $cal_params=[];
         foreach($numeros as $index=>$numero){
-            if($c<count($numeros)-1)$string_num.=converteToRoman($numero).$operations[$c];
-            else $string_num.=converteToRoman($numero);
+            if($c<count($numeros)-1){
+                $string_num.=converteToRoman($numero).$operations[$c];
+                array_push($cal_params,converteToRoman($numero),$operations[$c]);
+            }
+            else{ 
+                $string_num.=converteToRoman($numero);
+                array_push($cal_params,converteToRoman($numero));
+            }
             $c++;
         };
-        echo "Conta: ".$string_num."<br>";
+        $result=0;
+        //calcula os 2 primeiros
+        switch($cal_params[1]){
+            case "+":
+                $result=$cal_params[0]+$cal_params[2];
+            break;
+            case "*":
+                $result=$cal_params[0]+$cal_params[2];
+            break;
+            case "-":
+                $result=$cal_params[0]+$cal_params[2];
+            break;
+            case "/":
+                $result=$cal_params[0]+$cal_params[2];
+            break;
+        }
+        //calcula o resto se tiver
+        for($c=2;$c<=count($cal_params)-1;$c++){
+            if($c%2!=0){
+            echo "numba1 ".$result."<br>";
+            echo "op ".$cal_params[$c]."<br>";
+            echo "numba ".$cal_params[$c+1]."<br>";
+            switch($cal_params[$c]){
+                case "+":
+                    $result+=$cal_params[$c+1];
+                break;
+                case "*":
+                    $result*=$cal_params[$c+1];
+                break;
+                case "-":
+                    $result-=$cal_params[$c+1];
+                break;
+                case "/":
+                    $result/=$cal_params[$c+1];
+                break;
+                }
+            }   
+            }
+        echo "Conta: ".$string_num."=".$result."<br>";
 
     };
 ?>
