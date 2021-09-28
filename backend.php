@@ -427,13 +427,13 @@
                 $result=$cal_params[0]+$cal_params[2];
             break;
             case "*":
-                $result=$cal_params[0]+$cal_params[2];
+                $result=$cal_params[0]*$cal_params[2];
             break;
             case "-":
-                $result=$cal_params[0]+$cal_params[2];
+                $result=$cal_params[0]-$cal_params[2];
             break;
             case "/":
-                $result=$cal_params[0]+$cal_params[2];
+                $result=$cal_params[0]/$cal_params[2];
             break;
         }
         //calcula o resto se tiver
