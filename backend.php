@@ -273,7 +273,7 @@
                         break;
                     case 2:
                         if($num[$c]!='1'){
-                            $newstring.=$dezena[((int)$num[$c])-1]." ";
+                            $newstring.=$dezena[((int)$num[$c])-1]." e ";
                             $num=substr($num,$c+1);
                             $c--;
                         }
@@ -310,11 +310,11 @@
         //correção
         $valor=preg_replace("/um Reais /"," um Real ",$valor);
         $valor=preg_replace("/e  um Real /","e um Reais ",$valor);
+        $valor=preg_replace("/e   centavos/"," centavos",$valor);
         $valor=preg_replace("/ Reais  Reais/"," Reais ",$valor);
         $valor=preg_replace("/ Real  Reais/"," Real ",$valor);
         $valor=preg_replace("/e    centavos/","e zero centavos",$valor);
         $valor=preg_replace("/zeroe /","",$valor);
-        
         return $valor;
     }
     function validar_cpf($cpf){
