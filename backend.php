@@ -380,7 +380,7 @@
     };
 
     function convertToNumber($name){
-        $name = "um milhão e dez mil cento e trinta";
+        $name = "tres mil cento e trinta e dois";
         $mil = strpos($name, ' mil ');
         $numeros = array(
             "um" => 1,
@@ -422,7 +422,7 @@
             "novecentos" => 900,
             "mil" => 1000,
             "milhão" => $mil == null ? 1000000 : 1000,
-            "milhões" => 1000000
+            "milhões" => $mil == null ? 1000000 : 1000
         );
         $value = 0;
 
@@ -431,13 +431,8 @@
                 if(strcmp($name[$i],'e')==0){ echo ' caiu no e ';}
                 else{
                     if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0 || strcmp($name[$i],'mil') == 0 ){
-                        if($value>=1000000){
-                            echo ' devia dividir por 1000 '; 
-                            $value *= $numeros[$name[$i]];
-                        }else{
                             echo ' devia multiplicar ';
                             $value *= $numeros[$name[$i]];
-                        }
                 }
                 else{
                     echo ' devia somar ';
