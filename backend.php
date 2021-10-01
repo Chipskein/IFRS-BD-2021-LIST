@@ -380,7 +380,7 @@
     };
 
     function convertToNumber($name){
-        $name = "tres mil cento e trinta e dois";
+        $name = "trinta milhões e duzentos mil cento e trinta e dois";
         $mil = strpos($name, ' mil ');
         $numeros = array(
             "um" => 1,
