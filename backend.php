@@ -380,6 +380,8 @@
     };
 
     function convertToNumber($name){
+        $name = "um milhão e dez mil cento e trinta";
+        $mil = strpos($name, ' mil ');
         $numeros = array(
             "um" => 1,
             "dois" => 2,
@@ -419,25 +421,32 @@
             "oitocentos" => 800,
             "novecentos" => 900,
             "mil" => 1000,
-            "milhão" => 1000000,
+            "milhão" => $mil == null ? 1000000 : 1000,
             "milhões" => 1000000
         );
-        // $name = 'noventa milhõess';
-        $name = explode(" ",$name);
-        for($i=0;$i<count($name);$i++){
-            if($strcmp($name[$i],'e')==null){
-                if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0){
-                    echo 'devia multiplicar';
-                     $value *= $numeros[$name[$i]];
-                }else{
-                    echo 'devia somar';
+        $value = 0;
+
+    $name = explode(" ",$name);
+            for($i=0;$i<count($name);$i++){
+                if(strcmp($name[$i],'e')==0){ echo ' caiu no e ';}
+                else{
+                    if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0 || strcmp($name[$i],'mil') == 0 ){
+                        if($value>=1000000){
+                            echo ' devia dividir por 1000 '; 
+                            $value *= $numeros[$name[$i]];
+                        }else{
+                            echo ' devia multiplicar ';
+                            $value *= $numeros[$name[$i]];
+                        }
+                }
+                else{
+                    echo ' devia somar ';
                     $value += $numeros[$name[$i]];
                 }
             }
         }
-        echo $value;
+    echo $value;
     }
-
     function converteToRoman($roman){
         $romans = array(
             'M' => 1000,
