@@ -77,6 +77,7 @@ function validarvalor(){
     }
 }
 function validarcalc(){
+  /*
   console.log("enviando numba_one  e numba_two");
   let teste1=false;
   let teste2=false;
@@ -113,8 +114,11 @@ function validarcalc(){
     }
   }
   if(teste1&&teste2){
-      document.getElementById('form4').submit();   
+    document.getElementById('form4').submit();   
   }
+  */
+  document.getElementById('form4').submit();   
+
 }
 function validarcalcr(){
     //se for valido

@@ -97,7 +97,6 @@
         //parte inteiro
         if(strpos($num,".")===false&&strpos($num,",")===false){
             $newstring="";
-            $test=$num;
             $deb_dezena=false;
             $deb_dezena2=false;
             $deb_dezena3=false;
@@ -228,7 +227,6 @@
                 $newstring=preg_replace("/ e  milhoes /"," milhoes ",$newstring);
                 $newstring=preg_replace("/mil hoes/"," milhoes ",$newstring);
                 $newstring=preg_replace("/ milhoes  e  mil /"," milhoes ",$newstring);
-                $newstring=preg_replace("/cento e  mil/"," cento e um mil ",$newstring);            
                 $newstring=preg_replace("/ e mil/"," mil ",$newstring);            
                 $newstring=preg_replace("/ e  mil /"," mil ",$newstring);  
                 $newstring=preg_replace("/um milhoes /"," um milhao ",$newstring);  
@@ -236,7 +234,8 @@
                 $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
                 $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
                 $newstring=preg_replace("/e um mil/","e mil",$newstring);
-                          
+                $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring);           
+
                 
                 /*
             $newstring=explode(" ",$newstring);
@@ -246,8 +245,7 @@
             $newstring=implode(" ",$newstring);
             echo "consertado:".$newstring."<br>";
             */
-            return $newstring ." Reais";
-            //echo "Test {$test}: ".$newstring."<br>";
+            return $newstring ." reais";
         }
         //parte decimal
         else{
@@ -301,20 +299,26 @@
         if(strpos($valor,",")!==false) $valor_decimal="0.".substr($valor,strpos($valor,",")+1);
         
         //converter parte inteira
-        if($valor_int!='0'){
-            $valor=num_to_string($valor_int)." ".num_to_string($valor_decimal);
-        }
-        else{
-            $valor="zero".num_to_string($valor_decimal)." de real";
-        }
-        //correção
-        $valor=preg_replace("/um Reais /"," um Real ",$valor);
-        $valor=preg_replace("/e  um Real /","e um Reais ",$valor);
-        $valor=preg_replace("/e   centavos/"," centavos",$valor);
-        $valor=preg_replace("/ Reais  Reais/"," Reais ",$valor);
-        $valor=preg_replace("/ Real  Reais/"," Real ",$valor);
-        $valor=preg_replace("/e    centavos/","e zero centavos",$valor);
-        $valor=preg_replace("/zeroe /","",$valor);
+        if($valor_int!='0') $valor=num_to_string($valor_int)." ".num_to_string($valor_decimal);
+        else $valor="0".num_to_string($valor_decimal)." de real";
+        //correções
+            $valor=preg_replace("/um reais /"," um real ",$valor);
+            $valor=preg_replace("/e  um real /","e um reais ",$valor);
+            $valor=preg_replace("/e   centavos/"," centavos",$valor);
+            $valor=preg_replace("/ reais  reais/"," reais ",$valor);
+            $valor=preg_replace("/ real  reais/"," real ",$valor);
+            $valor=preg_replace("/0e  e /","",$valor);
+            $valor=preg_replace("/e  e /","",$valor);
+            $valor=preg_replace("/0e /","",$valor);
+            $valor=preg_replace("/ reais um /"," reais e um ",$valor);
+            $valor=preg_replace("/ reais dois /"," reais e dois ",$valor);
+            $valor=preg_replace("/ reais três /"," reais e tres ",$valor);
+            $valor=preg_replace("/ reais quatro /"," reais e quatro ",$valor);
+            $valor=preg_replace("/ reais cinco /"," reais e cinco ",$valor);
+            $valor=preg_replace("/ reais seis /"," reais e seis ",$valor);
+            $valor=preg_replace("/ reais sete /"," reais e sete ",$valor);
+            $valor=preg_replace("/ reais oito /"," reais e oito ",$valor);
+            $valor=preg_replace("/ reais nove /"," reais e nove ",$valor);
         return $valor;
     }
     function validar_cpf($cpf){
@@ -378,7 +382,6 @@
         if ($day <= $day_qt) return true;
         else return false;
     };
-
     function convertToNumber($name){
         $name = "trinta milhões e duzentos mil cento e trinta e dois";
         $mil = strpos($name, ' mil ');
@@ -426,23 +429,23 @@
         );
         $value = 0;
 
-    $name = explode(" ",$name);
-            for($i=0;$i<count($name);$i++){
-                if(strcmp($name[$i],'e')==0){ echo ' caiu no e ';}
-                else{
-                    if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0 || strcmp($name[$i],'mil') == 0 ){
-                            echo ' devia multiplicar ';
-                            $value *= $numeros[$name[$i]];
-                }
-                else{
-                    echo ' devia somar ';
-                    $value += $numeros[$name[$i]];
+        $name = explode(" ",$name);
+                for($i=0;$i<count($name);$i++){
+                    if(strcmp($name[$i],'e')==0){ echo ' caiu no e ';}
+                    else{
+                        if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0 || strcmp($name[$i],'mil') == 0 ){
+                                echo ' devia multiplicar ';
+                                $value *= $numeros[$name[$i]];
+                    }
+                    else{
+                        echo ' devia somar ';
+                        $value += $numeros[$name[$i]];
+                    }
                 }
             }
-        }
-    echo $value;
-    }
-    // function calcular_numbers($numeros,$operations){
+        echo $value;
+    };
+    //function calcular_numbers($numeros,$operations){
     //     $string_num="";
     //     $c=0;
     //     $cal_params=[];
@@ -616,8 +619,11 @@
                     error_reporting(0);//desabilar os warning
                     echo "valor transcrito:  ".transcrever_valor($valor)."<br>";
                     /*
-                    for($c=900000000;$c<=9000001000;$c++) echo "valor transcrito:  ".transcrever_valor($c)."<br>";
-                    */
+                    for($c=0.01;$c<900000000;$c+=0.01){
+                        $c1=round($c,2);
+                        $val=transcrever_valor($c1);
+                        echo "{$c1}=> ".$val."<br>";
+                    }*/
                 }
             } else echo "valor não foi enviado";
         echo "</div>";
