@@ -473,25 +473,6 @@
     //             $result=$cal_params[0]/$cal_params[2];
     //         break;
     //     }
-    //     //calcula o resto se tiver
-    //     for($c=2;$c<=count($cal_params)-1;$c++){
-    //         if($c%2!=0){
-    //         switch($cal_params[$c]){
-    //             case "+":
-    //                 $result+=$cal_params[$c+1];
-    //             break;
-    //             case "*":
-    //                 $result*=$cal_params[$c+1];
-    //             break;
-    //             case "-":
-    //                 $result-=$cal_params[$c+1];
-    //             break;
-    //             case "/":
-    //                 $result/=$cal_params[$c+1];
-    //             break;
-    //             }
-    //         }   
-    //         }
     //     echo "Conta: ".$string_num."=".$result."<br>";
 
     // };
