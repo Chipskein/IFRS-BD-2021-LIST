@@ -455,11 +455,11 @@
                     }
                 }
             }
-            if(array_search('mil',$name)===false){
+            if(array_search('mil',$name)===false&&array_search('milhoes',$name)===false&&array_search('milhao',$name)===false){
                 $value3+=$numeros["{$name[$c]}"];
             }
             else{
-                if($c>=array_search('mil',$name)){
+                if($c>array_search('mil',$name)&&$c>array_search('milhoes',$name)&&$c>array_search('milhao',$name)){
                     $value3+=$numeros["{$name[$c]}"];
                 }
             }
