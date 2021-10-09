@@ -41,82 +41,14 @@
     <main>
         <div id='main' align=center>
             <br>
-            <div  class="exerc">
-                <h3>Exercicio 1</h2>
-                    <form action="backend.php" method="post" id='form1'>
-                    <label for="cpf">
-                        CPF:<input pattern="^[0-9]{9}-[0-9]{2}$" id="cpf" name="cpf" type="text" placeholder="ex:000000000-00" size=13 required >
-                    </label>
-                    <br>
-                </form>
-                <button type='button' id='enviar' onclick="validarcpf()">Enviar</button>
-            </div>
-            <div  class="exerc">
-                <h3>Exercicio 2</h2>
-                <form action="backend.php" method="post" id='form2'>
-                    <label for="data">
-                        Data:<input pattern="^(0[1-9]|1[1-9]|2[1-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$"type="text" id="data" name="data" required placeholder="dd/mm/aaaa">
-                    </label>
-                    <br>
-                    <label for="dias">
-                        Dias Uteis:<input type="text" pattern="^[1-9]{1}[0-9]*$" id="dias" name="dias" required>
-                    </label>
-                    <br>
-                </form>
-                <button type='button' id='enviar2' onclick="validardata()">Enviar</button>
-            </div>
-            <div  class="exerc">
-                <h3>Exercicio 3</h2>
-                <form action="backend.php" method="post" id='form3'>
-                    <label for="valor">
-                        Valor:<input placeholder="min:0,01 max:99999999,99" pattern="(^[0](,|\.)([0-9]{1,2})$)|(^[1-9]{1}[0-9]{1,8}(,|\.)[0-9]{1,2}$)|(^[1-9]{1}[0-9]{1,8}$)|(^[1-9]$)|(^[1-9](,|\.)[0-9]{1,2}$)" type="text" id="valor" name="valor"  required>
-                    </label>
-                </form>
-                <button type='button' id='enviar3' onclick="validarvalor()">Enviar</button>
-            </div>
-            <div  class="exerc">
-                <h3>Exercicio 4</h2>
-                <form action="backend.php" method="post" id='form4'>
-                    <label for="numero1">
-                        N1: <input pattern="^[A-Z-a-z]\w+( \w+)*$" type="text" name='numero1' id='numero1' placeholder="numeros separados 1 espaço">
-                    </label>
-                    <br>
-                    <label for="operation">
-                        <select name="operation" id="operation">
-                            <option value="+">+</option>
-                            <option value="/">/</option>
-                            <option value="*">*</option>
-                            <option value="-">-</option>
-                        </select>
-                    </label>
-                    <br>
-                    <label for="numero2">
-                        N2: <input pattern="^[A-Z-a-z]\w+( \w+)*$" type="text" name='numero2' id='numero2' placeholder="numeros separados 1 espaço">
-                    </label> 
-                </form>
-                <button type='button' id='enviar4' onclick="validarcalc()">Enviar</button>
-            </div>
-            <div id='ex5' class="exerc">
-                <h3>Exercicio 5</h2>
-                <form action="backend.php" method="post" id='form5'>
-                    <div id='form-div1'>
-                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero0' size="10" required>
-                        <select name="operation1">
-                            <option value="+">+</option>
-                            <option value="/">/</option>
-                            <option value="*">*</option>
-                            <option value="-">-</option>
-                        </select>
-                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero1' size="10" required> 
-                    </div>
-                    <button type='button' onclick="addr()">+</button>
-                    <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
-                </form>
-            </div>
+            <a href="Exer1/exer1.html"> Exercicio 1</a>
+            <a href="Exer2/exer2.html"> Exercicio 2</a>
+            <a href="Exer3/exer3.html"> Exercicio 3</a>
+            <a href="Exer4/exer4.html"> Exercicio 4</a>
+            <a href="Exer5/exer5.html"> Exercicio 5</a>
             <br>
         </div>
     </main>
-<script src="functions.js"></script>
 </body>
 </html>
 
