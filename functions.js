@@ -104,13 +104,37 @@ function validarcalc(){
   const input2=document.getElementById('numero2');
   let regexp = new RegExp(input.pattern);
   let regexp2 = new RegExp(input2.pattern);
-  if(regexp.test(input.value)) teste1=true;
+  //remove os espaços entre as palavras e compara com o padrão
+  let numba1=input.value.trim();
+  let numba2=input2.value.trim();
+  let numba1_corrigido=[];
+  let numba2_corrigido=[];
+  numba1_array=numba1.split(" ");
+  numba1_array.forEach(palavra => {
+    if(palavra.trim()!=""){
+      numba1_corrigido.push(palavra);
+    }
+  });
+  numba2_array=numba2.split(" ");
+  numba2_array.forEach(palavra => {
+    if(palavra.trim()!=""){
+      numba2_corrigido.push(palavra);
+    }
+  });
+  //correçẽos
+  if(numba1_corrigido[0]=='um'&&numba1_corrigido[1]=='milhoes') numba1_corrigido[1]='bloqueado';
+  if(numba2_corrigido[0]=='um'&&numba1_corrigido[1]=='milhoes') numba2_corrigido[1]='bloqueado'; 
+  if(numba1_corrigido[0]=='um'&&numba1_corrigido[1]=='milhao') numba1_corrigido[1]='milhoes';
+  if(numba2_corrigido[0]=='um'&&numba2_corrigido[1]=='milhao') numba2_corrigido[1]='milhoes'; 
+  numba1=numba1_corrigido.join(" ");
+  numba2=numba2_corrigido.join(" ");
+  if(regexp.test(numba1)) teste1=true;
   else{
     console.log("erro no numba one");
     input.value = "";
     input.focus();
   }
-  if(regexp2.test(input2.value)) teste2=true;
+  if(regexp2.test(numba2)) teste2=true;
   else{
     console.log("erro no numba twuuu");
     input2.value = "";
@@ -227,8 +251,6 @@ function verifydate(day,month,year){
         }
         if (day <= day_qt) return true
         else return false
-}
-function verifynumba(numba){
 }
 function cpf_eh_valido(cpf){
   const digitos=cpf.split("");
