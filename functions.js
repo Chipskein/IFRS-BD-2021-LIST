@@ -78,6 +78,25 @@ function validarvalor(){
 }
 function validarcalc(){
   /*
+
+//qualquer numero milhão sem mil sem unidade
+(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um) milhoes$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)) milhoes$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem) milhoes$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um) milhoes$)|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze) milhoes$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um) milhoes$)
+//(qualquer numero) mil sem unidade
+//qualquer numero menor q mil
+(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um) mil$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)) mil$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem) mil$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um) mil$)|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze) mil$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um) mil$)
+(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem)$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)
+((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) mil$
+((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((mil|mil (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))))$
+//milhoes com centenas de milhar e unidade
+((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((milhoes|milhoes (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))))$)
+//milhoes
+((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((milhoes|milhoes (((((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((mil|mil (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))))$)|((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem)$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$))))$
+//999999 pra baixo
+(((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((mil|mil (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))))$)|((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem)$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)
+
+//regex
+"((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((milhoes|milhoes (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))))$)|((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((milhoes|milhoes (((((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((mil|mil (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))))$)|((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem)$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$))))$|(((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))) ((mil|mil (((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))|((novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem))|(((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um))|(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze))|((dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um)))))$)|((^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e (noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dez) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cento) e ((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)|(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)|(^(novecentos|oitocentos|setecentos|seiscentos|quinhentos|quatrocentos|trezentos|duzentos|cem)$)|(^((noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte) e (nove|oito|sete|seis|cinco|quatro|tres|dois|um)$)|^(noventa|oitenta|setenta|sessenta|cinquenta|quarenta|trinta|vinte|dezenove|dezoito|dezessete|dezesseis|quinze|quatorze|treze|doze|onze)$)|(^(dez|nove|oito|sete|seis|cinco|quatro|tres|dois|um))$)"
+  */
   console.log("enviando numba_one  e numba_two");
   let teste1=false;
   let teste2=false;
@@ -85,40 +104,19 @@ function validarcalc(){
   const input2=document.getElementById('numero2');
   let regexp = new RegExp(input.pattern);
   let regexp2 = new RegExp(input2.pattern);
-  if(!regexp.test(input.value)){
-      console.log("erro no numba one");
-      input.value = "";
-      input.focus();
-  }
+  if(regexp.test(input.value)) teste1=true;
   else{
-    console.log("numba one passou");
-    if(verifynumba(input.value)) teste1=true;
-    else{
-      console.log("erro no numba one");
-      input.value = "";
-      input.focus();
-    }
+    console.log("erro no numba one");
+    input.value = "";
+    input.focus();
   }
-  if(!regexp2.test(input2.value)){
-    console.log("erro no numba two");
+  if(regexp2.test(input2.value)) teste2=true;
+  else{
+    console.log("erro no numba twuuu");
     input2.value = "";
     input2.focus();
   }
-  else{
-    console.log("numba two passou");
-    if(verifynumba(input2.value)) teste2=true;
-    else{
-      console.log("erro no numba two");
-      input2.value = "";
-      input2.focus();
-    }
-  }
-  if(teste1&&teste2){
-    document.getElementById('form4').submit();   
-  }
-  */
-  document.getElementById('form4').submit();   
-
+  if(teste1&&teste2) document.getElementById('form4').submit();
 }
 function validarcalcr(){
     //se for valido
@@ -231,82 +229,6 @@ function verifydate(day,month,year){
         else return false
 }
 function verifynumba(numba){
-  let eh_palavra_valida=false;
-  const palavras_validas=["cento","duzentos","trezentos","quatrocentos","quinhentos","seissentos","setecentos","oitocentus","novecentos","dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa","um","dois","tres","quatro","cinco","seis","sete","oito","nove","cem","onze","doze","treze","quatorze","quinze","desseseis","dessete","dezoito","dezenove","e","mil","milhoes"]
-  //verificar se a as palavras da string são válidas 
-  numba=numba.split(" ");
-  for(c=0;c<=numba.length-1;c++){
-    let palavra=numba[c];
-    if(palavras_validas.includes(palavra)) eh_palavra_valida=true;
-    else return false;
-  }
-  numba=numba.join(" ");
-  //validar a orderm das palavras
-  if(eh_palavra_valida){
-    //normal
-    const unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove","dez","onze","doze","treze","quatorze","quinze","desseseis","dessesete","dezoito","dezenove","cem"];
-    const dezena=["vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"]
-    const centena=["cento","duzentos",'trezentos',"quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"]
-    //milhar
-    const unidadeM=["mil","dois mil","tres mil","quatro mil","cinco mil","seis mil","sete mil","oito mil","nove mil","dez mil","onze mil","doze mil","treze mil","quatorze mil","quinze mil","desseseis mil","dessesete mil","dezoito mil","dezenove mil","cem mil"]
-    const dezenaM=["vinte mil","trinta mil","quarenta mil","cinquenta mil","sessenta mil","setenta mil","oitenta mil","noventa mil"];
-    const centenaM=["cento mil","duzentos mil",'trezentos',"quatrocentos mil","quinhentos mil","seiscentos mil","setecentos mil","oitocentos mil","novecentos mil"];
-    //milhoes
-    const unidadeMM=["um milhoes","dois milhoes","tres milhoes","quatro milhoes","cinco milhoes","seis milhoes","sete milhoes","oito milhoes","nove milhoes","dez milhoes","onze milhoes","doze milhoes","treze milhoes","quatorze milhoes","quinze milhoes","desseseis milhoes","dessesete milhoes","dezoito milhoes","dezenove milhoes","cem milhoes"]
-    const dezenaMM=["vinte milhoes","trinta milhoes","quarenta milhoes","cinquenta milhoes","sessenta milhoes","setenta milhoes","oitenta milhoes","noventa milhoes"];
-    const centenaMM=["cento milhoes","duzentos milhoes",'trezentos',"quatrocentos milhoes","quinhentos milhoes","seiscentos milhoes","setecentos milhoes","oitocentos milhoes","novecentos milhoes"];
-    just_numba=numba.split(" e ");
-    console.log(just_numba);
-    tamanho=0;
-    let valido=false;
-    switch(just_numba.length){
-        case 1:
-          //dezena|unidade|centena :cem,duzentos,um,dois,treze exceção cento
-          if(
-             dezena.indexOf(just_numba[tamanho])!=-1||unidade.indexOf(just_numba[tamanho])!=-1||centena.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento"||
-             unidadeM.indexOf(just_numba[tamanho])!=-1||dezenaM.indexOf(just_numba[tamanho])!=-1||centenaM.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento mil"||
-             unidadeMM.indexOf(just_numba[tamanho])!=-1||dezenaMM.indexOf(just_numba[tamanho])!=-1||centenaMM.indexOf(just_numba[tamanho])!=-1&&just_numba[tamanho]!="cento milhoes"
-            ) 
-              valido=true;
-            break
-        case 2:
-          //centena+unidade || dezena+unidade
-          if(
-              dezena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
-              centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
-              centena.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
-              //milhar exceção cem mil retorna cento mil
-              dezenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1||
-              centenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1||
-              centenaM.indexOf(just_numba[tamanho])!=-1&&unidade.indexOf(just_numba[tamanho+1])!=-1
-            ) valido=true;
-          break;
-        case 3:
-          //centena+dezena+unidade;
-          if(
-              centena.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
-              //milhar
-              centenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
-              dezenaM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1||
-              unidadeM.indexOf(just_numba[tamanho])!=-1&&dezena.indexOf(just_numba[tamanho+1])!=-1&&unidade.indexOf(just_numba[tamanho+2])!=-1
-            ) valido=true;
-          break;
-        case 4:
-            if(
-                unidadeM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
-                dezenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1||
-                centenaM.indexOf(just_numba[tamanho])!=-1&&centena.indexOf(just_numba[tamanho+1])!=-1&&dezena.indexOf(just_numba[tamanho+2])!=-1&&unidade.indexOf(just_numba[tamanho+3])!=-1
-              ) valido=true;
-          break;
-        case 5:
-          break;
-        
-    }
-    console.log(valido);
-    //if(valido) return true;
-    //else return false;
-    
-  }
 }
 function cpf_eh_valido(cpf){
   const digitos=cpf.split("");
