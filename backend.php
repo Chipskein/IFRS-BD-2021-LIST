@@ -383,7 +383,6 @@
         else return false;
     };
     function convertToNumber($name){
-        $mil = strpos($name, ' mil ');
         $numeros = array(
             "um" => 1,
             "dois" => 2,
@@ -422,81 +421,52 @@
             "setecentos" => 700,
             "oitocentos" => 800,
             "novecentos" => 900,
-            "mil" => 1000,
-            "milhão" => $mil == null ? 1000000 : 1000,
-            "milhões" => $mil == null ? 1000000 : 1000
         );
-        $value = 0;
-
+        $value1=0;
+        $value2=0;
+        $value3=0;
         $name = explode(" ",$name);
-                for($i=0;$i<count($name);$i++){
-                    if(strcmp($name[$i],'e')==0){ echo ' caiu no e ';}
-                    else{
-                        if(strcmp($name[$i],'milhões') == 0 || strcmp($name[$i],'milhão') == 0 || strcmp($name[$i],'mil') == 0 ){
-                                echo ' devia multiplicar ';
-                                $value *= $numeros[$name[$i]];
-                    }
-                    else{
-                        echo ' devia somar ';
-                        $value += $numeros[$name[$i]];
+        for($c=0;$c<=count($name)-1;$c++){            
+            if($name[$c]=='milhao'|$name[$c]=='milhoes'){
+                for($c1=$c;$c1>=0;$c1--){
+                    $value1+=$numeros["{$name[$c1]}"];
+                };
+                $value1*=1000000;
+            }
+            if($name[$c]=='mil'){
+                if(array_search('milhao',$name)===false&&array_search('milhoes',$name)===false){
+                    for($c1=$c;$c1>=0;$c1--){
+                        $value2+=$numeros["{$name[$c1]}"];
+                    };
+                    $value2*=1000;
+                }
+                else{
+                    if(array_search('milhao',$name)){
+                        for($c1=$c;$c1>array_search('milhao',$name);$c1--){
+                            $value2+=$numeros["{$name[$c1]}"];
+                        };
+                        $value2*=1000;
+                    };
+                    if(array_search('milhoes',$name)){
+                        for($c1=$c;$c1>array_search('milhoes',$name);$c1--){
+                            $value2+=$numeros["{$name[$c1]}"];
+                        };
+                        $value2*=1000;
                     }
                 }
             }
-        echo $value;
+            if(array_search('mil',$name)===false){
+                $value3+=$numeros["{$name[$c]}"];
+            }
+            else{
+                if($c>=array_search('mil',$name)){
+                    $value3+=$numeros["{$name[$c]}"];
+                }
+            }
+        };
+        $value=$value1+$value2+$value3;
+        return $value;
     };
-    //function calcular_numbers($numeros,$operations){
-    //     $string_num="";
-    //     $c=0;
-    //     $cal_params=[];
-    //     foreach($numeros as $index=>$numero){
-    //         if($c<count($numeros)-1){
-    //             $string_num.=converteToRoman($numero).$operations[$c];
-    //             array_push($cal_params,converteToRoman($numero),$operations[$c]);
-    //         }
-    //         else{ 
-    //             $string_num.=converteToRoman($numero);
-    //             array_push($cal_params,converteToRoman($numero));
-    //         }
-    //         $c++;
-    //     };
-    //     $result=0;
-    //     //calcula os 2 primeiros
-    //     switch($cal_params[1]){
-    //         case "+":
-    //             $result=$cal_params[0]+$cal_params[2];
-    //         break;
-    //         case "*":
-    //             $result=$cal_params[0]*$cal_params[2];
-    //         break;
-    //         case "-":
-    //             $result=$cal_params[0]-$cal_params[2];
-    //         break;
-    //         case "/":
-    //             $result=$cal_params[0]/$cal_params[2];
-    //         break;
-    //     }
-    //     //calcula o resto se tiver
-    //     for($c=2;$c<=count($cal_params)-1;$c++){
-    //         if($c%2!=0){
-    //         switch($cal_params[$c]){
-    //             case "+":
-    //                 $result+=$cal_params[$c+1];
-    //             break;
-    //             case "*":
-    //                 $result*=$cal_params[$c+1];
-    //             break;
-    //             case "-":
-    //                 $result-=$cal_params[$c+1];
-    //             break;
-    //             case "/":
-    //                 $result/=$cal_params[$c+1];
-    //             break;
-    //             }
-    //         }   
-    //         }
-    //     echo "Conta: ".$string_num."=".$result."<br>";
-
-    // };
     function converteToRoman($roman){
         $romans = array(
             'M' => 1000,
@@ -607,7 +577,25 @@
         //regex
         if(preg_match("#$regexp#",$numba1)&&preg_match("#$regexp#",$numba2)) return true;
         else false;
-};
+    };
+    function calcular_number($n1,$n2,$operacao){
+        $result=0;
+        switch($operacao){
+            case "+":
+                $result=$n1+$n2;
+            break;
+            case "*":
+                $result=$n1*$n2;
+            break;
+            case "-":
+                $result=$n1-$n2;
+            break;
+            case "/":
+                $result=$n1/$n2;
+            break;
+        }
+        return $result;
+    };
 ?>
 <?php
     echo "<div id='main' align=center>";        
@@ -667,6 +655,11 @@
                     echo $numero1."<br>";
                     echo $operacao."<br>";
                     echo $numero2."<br>";
+                    error_reporting(0);//desabilar os warning
+                    $n1=convertToNumber($numero1);
+                    $n2=convertToNumber($numero2);
+                    $calculo=calcular_number($n1,$n2,$operacao);
+                    echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}";
                 }
                 else echo "Valores inválidos";        
 
