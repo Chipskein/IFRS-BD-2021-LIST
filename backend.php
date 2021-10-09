@@ -664,7 +664,7 @@
                 $numero1=$_POST["numero1"];
                 $operacao=$_POST["operation"];
                 $numero2=$_POST["numero2"];
-                if(validar_number($numero1,$numero2)){
+                if(validar_number($numero1,$numero2)&&($operacao=='+'|$operacao=='-'|$operacao=='*'|$operacao=='/')){
                     echo $numero1."<br>";
                     echo $operacao."<br>";
                     echo $numero2."<br>";
