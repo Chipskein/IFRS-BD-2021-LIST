@@ -123,7 +123,7 @@ function validarcalc(){
   });
   //correçẽos
   if(numba1_corrigido[0]=='um'&&numba1_corrigido[1]=='milhoes') numba1_corrigido[1]='bloqueado';
-  if(numba2_corrigido[0]=='um'&&numba1_corrigido[1]=='milhoes') numba2_corrigido[1]='bloqueado'; 
+  if(numba2_corrigido[0]=='um'&&numba2_corrigido[1]=='milhoes') numba2_corrigido[1]='bloqueado'; 
   if(numba1_corrigido[0]=='um'&&numba1_corrigido[1]=='milhao') numba1_corrigido[1]='milhoes';
   if(numba2_corrigido[0]=='um'&&numba2_corrigido[1]=='milhao') numba2_corrigido[1]='milhoes'; 
   numba1=numba1_corrigido.join(" ");

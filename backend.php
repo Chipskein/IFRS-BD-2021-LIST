@@ -383,7 +383,6 @@
         else return false;
     };
     function convertToNumber($name){
-        $name = "trinta milhões e duzentos mil cento e trinta e dois";
         $mil = strpos($name, ' mil ');
         $numeros = array(
             "um" => 1,
@@ -600,7 +599,7 @@
         };
         //correçẽos
         if($numba1_corrigido[0]=='um'&&$numba1_corrigido[1]=='milhoes') $numba1_corrigido[1]='bloqueado';
-        if($numba2_corrigido[0]=='um'&&$numba1_corrigido[1]=='milhoes') $numba2_corrigido[1]='bloqueado'; 
+        if($numba2_corrigido[0]=='um'&&$numba2_corrigido[1]=='milhoes') $numba2_corrigido[1]='bloqueado'; 
         if($numba1_corrigido[0]=='um'&&$numba1_corrigido[1]=='milhao') $numba1_corrigido[1]='milhoes';
         if($numba2_corrigido[0]=='um'&&$numba2_corrigido[1]=='milhao') $numba2_corrigido[1]='milhoes'; 
         $numba1=implode(" ",$numba1_corrigido);
