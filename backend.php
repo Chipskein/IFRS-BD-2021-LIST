@@ -651,11 +651,11 @@
                 $numero1=$_POST["numero1"];
                 $operacao=$_POST["operation"];
                 $numero2=$_POST["numero2"];
+                error_reporting(0);//desabilar os warning
                 if(validar_number($numero1,$numero2)&&($operacao=='+'|$operacao=='-'|$operacao=='*'|$operacao=='/')){
                     echo $numero1."<br>";
                     echo $operacao."<br>";
                     echo $numero2."<br>";
-                    error_reporting(0);//desabilar os warning
                     $n1=convertToNumber($numero1);
                     $n2=convertToNumber($numero2);
                     $calculo=calcular_number($n1,$n2,$operacao);
