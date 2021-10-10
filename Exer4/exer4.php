@@ -182,7 +182,7 @@ function calcular_number($n1,$n2,$operacao){
                     $n1=convertToNumber($numero1);
                     $n2=convertToNumber($numero2);
                     $calculo=calcular_number($n1,$n2,$operacao);
-                    echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}";
+                    echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}<br>";
                 }
                 else echo "Valores inválidos";        
 
