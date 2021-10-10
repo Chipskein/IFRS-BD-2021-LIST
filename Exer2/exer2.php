@@ -146,7 +146,7 @@ function validar_data($data){
             if(isset($_POST["data"])&&isset($_POST["dias"])){
                 $data=$_POST["data"];
                 $dias=$_POST["dias"];
-                if(preg_match("#^(0[1-9]|1[1-9]|2[1-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$#",$data)&&validar_data($data)){
+                if(preg_match("#^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$#",$data)&&validar_data($data)){
                     $format_data=substr($data,6)."/".substr($data,3,-5)."/".substr($data,0,2);
                     echo 'começo data:'.$data;
                     echo "<br>";
