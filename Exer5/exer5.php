@@ -122,6 +122,7 @@
         $pass=false;
         foreach ($_POST as $key => $value){
             if(preg_match('/numero/',$key)){
+                $value=strtoupper($value);
                 if(preg_match("#^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$#",$value)) {
                     $pass=true;
                     array_push($numeros,$value);

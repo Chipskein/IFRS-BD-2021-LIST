@@ -1,13 +1,10 @@
 
 function validarcalcr(){
-    //se for valido
-    //^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$ regex 1
-    //^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$ regex2
     const inputs=document.querySelectorAll("div#form-div1>input");
     for(let c=0;c<=inputs.length-1;c++){
       let input=inputs[c];
       let regexp = new RegExp(input.pattern);
-      if(!regexp.test(input.value)){
+      if(!regexp.test(input.value.toUpperCase())){
         console.log("erro");
         input.value = "";
         input.focus();

@@ -595,6 +595,20 @@
         }
         return $result;
     };
+    function numberToRoman($number) {
+        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+        $returnValue = '';
+        while ($number > 0) {
+            foreach ($map as $roman => $int) {
+                if($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                }
+            }
+        }
+        return $returnValue;
+    }
 ?>
 <?php
     echo "<div id='main' align=center>";        
@@ -671,6 +685,14 @@
             } else echo "operador e numeros nao foram enviados";
         echo "</div>";
         echo "<div class='exerc'>";
+            for($c=1;$c<=9999;$c++){
+                $roman=numberToRoman($c);
+                if(preg_match("#^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$#",$roman)){
+                    $number=converteToRoman($roman);
+                    echo "{$roman}=>{$number}<br>";
+                }
+                else echo "Deu ruim<br>";
+            }
             echo "<h3>Exercicio 5</h3>";
             if(isset($_POST['submited'])){
                 $numeros=[];
