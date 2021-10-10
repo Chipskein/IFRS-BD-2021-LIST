@@ -161,7 +161,8 @@ function calcular_number($n1,$n2,$operacao){
         break;
         case "/":
             $result=$n1/$n2;
-        break;
+            $result=round($result);
+            break;
     }
     return $result;
 };
@@ -182,6 +183,7 @@ function calcular_number($n1,$n2,$operacao){
                     $n1=convertToNumber($numero1);
                     $n2=convertToNumber($numero2);
                     $calculo=calcular_number($n1,$n2,$operacao);
+                    echo "*Resultados apenas em números inteiros(4.5==>5 e 4.4==>4)<br>";
                     echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}<br>";
                 }
                 else echo "Valores inválidos";        
