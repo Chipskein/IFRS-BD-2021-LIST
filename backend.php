@@ -647,7 +647,7 @@
         echo "<div class='exerc'>";
             echo "<h3>Exercicio 4</h3>";
             error_reporting(0);//desabilar os warning
-            for($c=1;$c<=10000;$c++){
+            for($c=99000;$c<=110000;$c++){
                 $val=transcrever_valor($c);
                 $val=preg_replace("/( reais| real)/","",$val);
                 $convert=convertToNumber($val);
