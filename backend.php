@@ -91,7 +91,7 @@
     }
     function num_to_string($num){
         $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
-        $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','desseseis','dessesete','dezoito','dezenove'];
+        $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
         $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
         $centena=["cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];//3
         //parte inteiro
@@ -233,7 +233,7 @@
                 $newstring=preg_replace("/ milhao  mil/"," milhao ",$newstring);  
                 $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
                 $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
-                $newstring=preg_replace("/e um mil/","e mil",$newstring);
+                //$newstring=preg_replace("/e um mil/","e mil",$newstring);
                 $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring);           
 
                 
@@ -659,9 +659,15 @@
                     $n1=convertToNumber($numero1);
                     $n2=convertToNumber($numero2);
                     $calculo=calcular_number($n1,$n2,$operacao);
-                    echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}";
+                    echo "Resultado de {$n1}{$operacao}{$n2}={$calculo}<br>";
                 }
-                else echo "Valores inválidos";        
+                else echo "Valores inválidos";    
+                for($c=1000;$c<=2000;$c++){
+                    $val=transcrever_valor($c);
+                    $val=preg_replace("/( reais| real)/","",$val);
+                    $convert=convertToNumber($val);
+                    echo "{$val} => {$convert}<br>";
+                }    
 
             } else echo "operador e numeros nao foram enviados";
         echo "</div>";
