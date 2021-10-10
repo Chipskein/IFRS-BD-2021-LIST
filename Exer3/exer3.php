@@ -105,10 +105,6 @@
                         $c--;
                     }
                     break;
-                
-                
-                
-                    
                 case 6:
                     if($num[$c]=='1'&&$num[$c+1]=='0'&&$num[$c+2]=='0'){
                         $newstring.='cem';
