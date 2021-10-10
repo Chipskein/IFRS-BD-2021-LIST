@@ -87,6 +87,7 @@
             break;
             case "/":
                 $result=$cal_params[0]/$cal_params[2];
+                $result=floor($result);
             break;
         }
         //calcula o resto se tiver
@@ -104,12 +105,14 @@
                 break;
                 case "/":
                     $result/=$cal_params[$c+1];
+                    $result=floor($result);
                 break;
                 }
             }   
             }
-        echo "Conta: ".$string_num."=".$result."<br>";
-
+        
+            echo "Números arredondados para baixo<br>";
+            echo "Conta: ".$string_num."=".$result."<br>";
     };
 ?>
 <?php
