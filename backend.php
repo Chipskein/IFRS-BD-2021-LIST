@@ -399,8 +399,8 @@
             'treze' => 13,
             'quatorze' => 14,
             'quinze' => 15,
-            'desseseis' => 16,
-            'dessesete' => 17,
+            'dezesseis' => 16,
+            'dezessete' => 17,
             'dezoito' => 18,
             'dezenove' => 19,
             "vinte" => 20,
@@ -647,7 +647,7 @@
         echo "<div class='exerc'>";
             echo "<h3>Exercicio 4</h3>";
             error_reporting(0);//desabilar os warning
-            for($c=10090000;$c<=10092000;$c++){
+            for($c=1;$c<=10000;$c++){
                 $val=transcrever_valor($c);
                 $val=preg_replace("/( reais| real)/","",$val);
                 $convert=convertToNumber($val);
