@@ -33,7 +33,7 @@
 <?php
  function num_to_string($num){
     $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
-    $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','desseseis','dessesete','dezoito','dezenove'];
+    $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
     $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
     $centena=["cento","duzentos","trezentos","quatrocentos","quinhentos","seiscentos","setecentos","oitocentos","novecentos"];//3
     //parte inteiro
@@ -175,7 +175,7 @@
             $newstring=preg_replace("/ milhao  mil/"," milhao ",$newstring);  
             $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
             $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
-            $newstring=preg_replace("/e um mil/","e mil",$newstring);
+            //$newstring=preg_replace("/e um mil/","e mil",$newstring);
             $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring);           
 
             
@@ -261,6 +261,8 @@ function transcrever_valor($valor){
         $valor=preg_replace("/ reais sete /"," reais e sete ",$valor);
         $valor=preg_replace("/ reais oito /"," reais e oito ",$valor);
         $valor=preg_replace("/ reais nove /"," reais e nove ",$valor);
+        $valor=preg_replace("/ e   centavos/","",$valor);
+        
     return $valor;
 }
 ?>
