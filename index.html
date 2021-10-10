@@ -24,28 +24,43 @@
             border-top: solid 40px #296179;
             margin: 5%;
             background-color:#504E4E;
-            width: 90%;
+            grid-column: 2;
+            grid-row: 2;
         }
         button{
+            margin-top: 2%;
+            margin-bottom: 2%;
             border: none;
             color: white;
             background: #358FB6;
         }
         button:hover{
             background: #296179;
-
+        }
+        a{
+            text-decoration: none;
+            color: white;
+        }
+        .container{
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
         }
     </style>
 </head>
 <body>
-    <main>
+    <main class="container">
         <div id='main' align=center>
             <br>
-            <a href="Exer1/exer1.html"> Exercicio 1</a>
-            <a href="Exer2/exer2.html"> Exercicio 2</a>
-            <a href="Exer3/exer3.html"> Exercicio 3</a>
-            <a href="Exer4/exer4.html"> Exercicio 4</a>
-            <a href="Exer5/exer5.html"> Exercicio 5</a>
+            <button><a href="Exer1/exer1.html"> Exercicio 1</a></button>
+            <br>
+            <button><a href="Exer2/exer2.html"> Exercicio 2</a></button>
+            <br>
+            <button><a href="Exer3/exer3.html"> Exercicio 3</a></button>
+            <br>
+            <button><a href="Exer4/exer4.html"> Exercicio 4</a></button>
+            <br>
+            <button><a href="Exer5/exer5.html"> Exercicio 5</a></button>
             <br>
         </div>
     </main>
