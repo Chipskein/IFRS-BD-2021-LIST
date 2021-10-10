@@ -1,5 +1,4 @@
 function validardata(){
-    console.log("enviando data e dias uteis");
     let teste1=false;
     let teste2=false;
     const input=document.getElementById('data');
@@ -7,7 +6,6 @@ function validardata(){
     let regexp = new RegExp(input.pattern);
     let regexp2 = new RegExp(input2.pattern);
     if(!regexp.test(input.value)){
-        console.log("erro na data");
         input.value = "";
         input.focus();
     }
@@ -16,14 +14,12 @@ function validardata(){
       const mounth=parseInt(input.value.slice(3,5));
       const year=parseInt(input.value.slice(6));        
       if(!verifydate(day,mounth,year)){
-          console.log("erro na data");
           input.value = "";
           input.focus();
       }
       else teste1=true;
     }
     if(!regexp2.test(input2.value)){
-      console.log("erro nos dias");
       input2.value = "";
       input2.focus();
     } else teste2=true;

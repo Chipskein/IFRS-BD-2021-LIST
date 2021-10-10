@@ -172,17 +172,7 @@
             $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
             $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
             //$newstring=preg_replace("/e um mil/","e mil",$newstring);
-            $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring);           
-
-            
-            /*
-        $newstring=explode(" ",$newstring);
-        foreach ($newstring as $c => $char) {
-            echo "CHAR{$c}:".$char."<br>";
-        }
-        $newstring=implode(" ",$newstring);
-        echo "consertado:".$newstring."<br>";
-        */
+            $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring); 
         return $newstring ." reais";
     }
     //parte decimal

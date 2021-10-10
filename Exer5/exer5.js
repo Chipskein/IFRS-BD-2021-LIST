@@ -5,7 +5,6 @@ function validarcalcr(){
       let input=inputs[c];
       let regexp = new RegExp(input.pattern);
       if(!regexp.test(input.value.toUpperCase())){
-        console.log("erro");
         input.value = "";
         input.focus();
         teste=false;
@@ -28,7 +27,6 @@ function addr(){
     const div=document.getElementById('form-div1');
     const div_count=document.querySelectorAll('select').length
     const input_count=document.querySelectorAll('input').length
-    console.log( input_count)
     //numero
     if(input_count < 10 ){
       const select=document.createElement('select');

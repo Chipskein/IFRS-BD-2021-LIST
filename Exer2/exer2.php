@@ -47,7 +47,6 @@
             $data=date("Y/m/d",strtotime("-2 days",easter_date((int)$ano)));
         break;
     }
-    //echo $feriado_name.": ".$data."<br>";
     return $data;
 }
 function eh_feriados($data){
@@ -82,10 +81,8 @@ function calculardata($data,$dias){
             $weekday=date('N',strtotime($newdata));
             if($weekday!=6&&$weekday!=7){
                 $c++;
-                //echo "não é feriado e é dia de semana ".$newdata."<br>";
             }
         }
-        //else echo "é feriado ".$newdata."<br>";
     }
     return date("d/m/Y",strtotime($newdata));
 }
@@ -93,7 +90,7 @@ function validar_data($data){
     $day=substr($data,0,2);
     $month=substr($data,3,2);
     $year=substr($data,6);    
-    $day_qt=0; //31,30,29,28
+    $day_qt=0;
     $bissexto = false;
     if (($year % 4 == 0 && $year % 100 !== 0) || ($year % 400 == 0)) $bissexto = true;
     switch ($month) {
