@@ -32,7 +32,8 @@
 <main>
 <?php
 function convertToNumber($name){
-    $mil = strpos($name, ' mil');
+    $name = $name." ";
+    $mil = strpos($name, ' mil ');
     $numeros = array(
         "um" => 1,
         "dois" => 2,
@@ -49,8 +50,8 @@ function convertToNumber($name){
         'treze' => 13,
         'quatorze' => 14,
         'quinze' => 15,
-        'desseseis' => 16,
-        'dessesete' => 17,
+        'dezesseis' => 16,
+        'dezessete' => 17,
         'dezoito' => 18,
         'dezenove' => 19,
         "vinte" => 20,
@@ -77,14 +78,14 @@ function convertToNumber($name){
     );
     $value = 0;
 $name = explode(" ",$name);
-        for($i=0;$i<count($name);$i++){
-                if(strcmp($name[$i],'milhoes') == 0 || strcmp($name[$i],'milhao') == 0 || strcmp($name[$i],'mil') == 0 ){
+for($i=0;$i<count($name);$i++){
+    if(strcmp($name[$i],'milhoes') == 0 || strcmp($name[$i],'milhao') == 0 || strcmp($name[$i],'mil') == 0 ){
                         $value *= $numeros[$name[$i]];
-            }
+                    }
             else{
-                 $value += $numeros[$name[$i]];
+                $value += $numeros[$name[$i]];
+            }
         }
-    }
 return $value;
 }
 // function convertToNumber($name){
