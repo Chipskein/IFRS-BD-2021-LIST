@@ -8,7 +8,7 @@ function validarcpf(){
         return;
     }
     else{
-      if(cpf_eh_valido(cpf)&&cpf!="000000000-00"){
+      if(cpf_eh_valido(cpf)&&(cpf!="000000000-00"&&cpf!="111111111-11"&&cpf!="222222222-22"&&cpf!="333333333-33"&&cpf!="444444444-44"&&cpf!="555555555-55"&&cpf!="666666666-66"&&cpf!="777777777-77"&&cpf!="888888888-88"&&cpf!="999999999-99")){
         document.getElementById('form1').submit()
       }
       else{

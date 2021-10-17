@@ -30,7 +30,7 @@
 <main>
 <?php
     function validar_cpf($cpf){
-        if($cpf!=="000000000-00"){
+        if($cpf!=="000000000-00"&&$cpf!=="111111111-11"&&$cpf!=="222222222-22"&&$cpf!=="333333333-33"&&$cpf!=="444444444-44"&&$cpf!=="555555555-55"&&$cpf!=="666666666-66"&&$cpf!=="777777777-77"&&$cpf!=="888888888-88"&&$cpf!=="999999999-99"){
             $digitos=$cpf;
             $validata_numba1=(($digitos[0]*10+$digitos[1]*9+$digitos[2]*8+$digitos[3]*7+$digitos[4]*6+$digitos[5]*5+$digitos[6]*4+$digitos[7]*3+$digitos[8]*2)*10)%11;
             $validata_numba2=(($digitos[0]*11+$digitos[1]*10+$digitos[2]*9+$digitos[3]*8+$digitos[4]*7+$digitos[5]*6+$digitos[6]*5+$digitos[7]*4+$digitos[8]*3+$validata_numba1*2)*10)%11;

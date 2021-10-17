@@ -31,7 +31,7 @@
 <body>
 <main>
 <?php
- function num_to_string($num){
+function num_to_string($num){
     $unidade=["um","dois","tres","quatro","cinco","seis","sete","oito","nove"];//1
     $dezena_bug=['dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
     $dezena=["dez","vinte","trinta","quarenta","cinquenta","sessenta","setenta","oitenta","noventa"];//2
@@ -172,7 +172,8 @@
             $newstring=preg_replace("/ milhoes  mil/"," milhoes ",$newstring);  
             $newstring=preg_replace("/ e  um milhao /"," e um milhoes ",$newstring);
             //$newstring=preg_replace("/e um mil/","e mil",$newstring);
-            $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring); 
+            $newstring=preg_replace("/cento e mil/"," cento e um mil ",$newstring);
+
         return $newstring ." reais";
     }
     //parte decimal
@@ -240,14 +241,74 @@ function transcrever_valor($valor){
         $valor=preg_replace("/0e /","",$valor);
         $valor=preg_replace("/ reais um /"," reais e um ",$valor);
         $valor=preg_replace("/ reais dois /"," reais e dois ",$valor);
-        $valor=preg_replace("/ reais três /"," reais e tres ",$valor);
+        $valor=preg_replace("/ reais tres /"," reais e tres ",$valor);
         $valor=preg_replace("/ reais quatro /"," reais e quatro ",$valor);
         $valor=preg_replace("/ reais cinco /"," reais e cinco ",$valor);
         $valor=preg_replace("/ reais seis /"," reais e seis ",$valor);
         $valor=preg_replace("/ reais sete /"," reais e sete ",$valor);
         $valor=preg_replace("/ reais oito /"," reais e oito ",$valor);
         $valor=preg_replace("/ reais nove /"," reais e nove ",$valor);
+        
+        $valor=preg_replace("/ real um /"," real e um ",$valor);
+        $valor=preg_replace("/ real dois /"," real e dois ",$valor);
+        $valor=preg_replace("/ real tres /"," real e tres ",$valor);
+        $valor=preg_replace("/ real quatro /"," real e quatro ",$valor);
+        $valor=preg_replace("/ real cinco /"," real e cinco ",$valor);
+        $valor=preg_replace("/ real seis /"," real e seis ",$valor);
+        $valor=preg_replace("/ real sete /"," real e sete ",$valor);
+        $valor=preg_replace("/ real oito /"," real e oito ",$valor);
+        $valor=preg_replace("/ real nove /"," reais e nove ",$valor);
         $valor=preg_replace("/ e   centavos/","",$valor);
+            
+        $valor=preg_replace("/ mil cem reais/ "," mil e cem reais",$valor);
+        $valor=preg_replace("/ mil duzentos reais/ "," mil e duzentos reais",$valor);
+        $valor=preg_replace("/ mil trezentos reais/ "," mil e trezentos reais",$valor);
+        $valor=preg_replace("/ mil quatrocentos reais/ "," mil e quatrocentos reais",$valor);
+        $valor=preg_replace("/ mil quinhentos reais/ "," mil e quinhentos reais",$valor);
+        $valor=preg_replace("/ mil seiscentos reais/ "," mil e seiscentos reais",$valor);
+        $valor=preg_replace("/ mil setecentos reais/ "," mil e setecentos reais",$valor);            
+        $valor=preg_replace("/ mil oitocentos reais/ "," mil e oitocentos reais",$valor);
+        $valor=preg_replace("/ mil novecentos reais/ "," mil e novecentos reais",$valor);
+
+        $valor=preg_replace("/ milhao cem reais/ "," milhao e cem reais",$valor);
+        $valor=preg_replace("/ milhao duzentos reais/ "," milhao e duzentos reais",$valor);
+        $valor=preg_replace("/ milhao trezentos reais/ "," milhao e trezentos reais",$valor);
+        $valor=preg_replace("/ milhao quatrocentos reais/ "," milhao e quatrocentos reais",$valor);
+        $valor=preg_replace("/ milhao quinhentos reais/ "," milhao e quinhentos reais",$valor);
+        $valor=preg_replace("/ milhao seiscentos reais/ "," milhao e seiscentos reais",$valor);
+        $valor=preg_replace("/ milhao setecentos reais/ "," milhao e setecentos reais",$valor);            
+        $valor=preg_replace("/ milhao oitocentos reais/ "," milhao e oitocentos reais",$valor);
+        $valor=preg_replace("/ milhao novecentos reais/ "," milhao e novecentos reais",$valor);
+       
+        $valor=preg_replace("/ milhoes cem reais/ "," milhoes e cem reais",$valor);
+        $valor=preg_replace("/ milhoes duzentos reais/ "," milhoes e duzentos reais",$valor);
+        $valor=preg_replace("/ milhoes trezentos reais/ "," milhoes e trezentos reais",$valor);
+        $valor=preg_replace("/ milhoes quatrocentos reais/ "," milhoes e quatrocentos reais",$valor);
+        $valor=preg_replace("/ milhoes quinhentos reais/ "," milhoes e quinhentos reais",$valor);
+        $valor=preg_replace("/ milhoes seiscentos reais/ "," milhoes e seiscentos reais",$valor);
+        $valor=preg_replace("/ milhoes setecentos reais/ "," milhoes e setecentos reais",$valor);            
+        $valor=preg_replace("/ milhoes oitocentos reais/ "," milhoes e oitocentos reais",$valor);
+        $valor=preg_replace("/ milhoes novecentos reais/ "," milhoes e novecentos reais",$valor);
+
+        $valor=preg_replace("/ milhao cem mil / "," milhao e cem mil ",$valor);
+        $valor=preg_replace("/ milhao duzentos mil / "," milhao e duzentos mil ",$valor);
+        $valor=preg_replace("/ milhao trezentos mil / "," milhao e trezentos mil ",$valor);
+        $valor=preg_replace("/ milhao quatrocentos mil / "," milhao e quatrocentos mil ",$valor);
+        $valor=preg_replace("/ milhao quinhentos mil / "," milhao e quinhentos mil ",$valor);
+        $valor=preg_replace("/ milhao seiscentos mil / "," milhao e seiscentos mil ",$valor);
+        $valor=preg_replace("/ milhao setecentos mil / "," milhao e setecentos mil ",$valor);
+        $valor=preg_replace("/ milhao oitocentos mil / "," milhao e oitocentos mil ",$valor);
+        $valor=preg_replace("/ milhao novecentos mil / "," milhao e novecentos mil ",$valor);
+
+        $valor=preg_replace("/ milhoes cem mil / "," milhoes e cem mil ",$valor);
+        $valor=preg_replace("/ milhoes duzentos mil / "," milhoes e duzentos mil ",$valor);
+        $valor=preg_replace("/ milhoes trezentos mil / "," milhoes e trezentos mil ",$valor);
+        $valor=preg_replace("/ milhoes quatrocentos mil / "," milhoes e quatrocentos mil ",$valor);
+        $valor=preg_replace("/ milhoes quinhentos mil / "," milhoes e quinhentos mil ",$valor);
+        $valor=preg_replace("/ milhoes seiscentos mil / "," milhoes e seiscentos mil ",$valor);
+        $valor=preg_replace("/ milhoes setecentos mil / "," milhoes e setecentos mil ",$valor);
+        $valor=preg_replace("/ milhoes oitocentos mil / "," milhoes e oitocentos mil ",$valor);
+        $valor=preg_replace("/ milhoes novecentos mil / "," milhoes e novecentos mil ",$valor);
         
     return $valor;
 }
@@ -262,12 +323,11 @@ function transcrever_valor($valor){
                     echo 'valor:'." R$ ".$valor."<br>";
                     error_reporting(0);//desabilar os warning
                     echo "valor transcrito:  ".transcrever_valor($valor)."<br>";
-                    /*
-                    for($c=0;$c<900000000;$c++){
-                        $c1=round($c,2);
-                        $val=transcrever_valor($c);
-                        echo $val."<br>";
-                    }*/
+                }
+                else{
+                    echo "<h3>Valor Inválido</h3>";
+                    echo "Valor máximo=999999999.99<br>";
+                    echo "Valor Mínimo=0.01<br>";
                 }
             } else echo "valor não foi enviado";
         echo "</div>";
