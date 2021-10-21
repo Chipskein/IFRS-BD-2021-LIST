@@ -17,18 +17,17 @@
         foreach($_POST as $key => $value){
             if(preg_match("/input_ingrediente/",$key)) array_push($ingredientes,$value);
         };
-        //update sabor set nome=$nome,tipo=$tipo where codigo=$codigo;
         $db=new SQLite3('pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
         $update_query=$db->query("update sabor set nome=\"$nome\",tipo=$tipo where codigo=$codigo");
         echo "Nome e Tipo alterados<br>";
-        $query_ingredientes=$db->query("select ingrediente from saboringrediente where saboringrediente.sabor=$codigo");
-        $ingredientes=[];
-        while ($row = $query_ingredientes->fetchArray()) {
-            array_push($ingredientes,$row["ingrediente"]);
-        }
-        //header( "refresh:1;url=index.php" );
-        //die();
+        $query_ingredientes=$db->query("delete from saboringrediente where saboringrediente.sabor=$codigo");
+        foreach($ingredientes as $index => $ingrediente){
+            $db->query("insert into saboringrediente(sabor,ingrediente) values($codigo,$ingrediente)");
+        };
+        echo "Ingredientes Alterado<br>";
+        header( "refresh:1;url=index.php" );
+        die();
         $db->close();
     }
    else{
