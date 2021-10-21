@@ -27,3 +27,9 @@ select
     join tipo on sabor.tipo=tipo.codigo
     where sabor.codigo=1
 ;
+insert into saboringrediente(sabor,ingrediente)
+values(29,1),
+      (30,2),
+      (31,3),
+      (32,4);
+select * from sabor;

@@ -103,6 +103,7 @@
         const tr=table[c];
         //add values to input hidden
         const input=tr.children[0];
+            input.name=`input_ingrediente${c}`;
         const txt=tr.children[1].innerHTML;
         for(c1=0;c1<select_add.children.length;c1++){
             if(select_add.children[c1].innerHTML===txt) input.value=select_add.children[c1].value;
@@ -126,6 +127,7 @@
         let input=document.createElement("input");
             input.type='hidden';
             input.value=select_add.options[select_add.selectedIndex].value;
+            input.name=`input_ingrediente${last_index}`;
         tr.appendChild(input);
         let td=document.createElement("td");
         td.innerHTML=select_add.options[select_add.selectedIndex].innerHTML;
