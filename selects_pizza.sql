@@ -30,7 +30,7 @@ select
 insert into saboringrediente(sabor,ingrediente)
 values(29,1),(30,2),(31,3),(32,4);
 
-select * from sabor;
+select * from saboringrediente where sabor=28;
 
 
 update sabor set nome=$nome,tipo=$tipo where codigo=$codigo;
@@ -41,3 +41,4 @@ delete from saboringrediente where ingrediente=$ingrediente;
 
 select ingrediente from saboringrediente where saboringrediente.sabor=1;
 delete from sabor where sabor.codigo not in (select sabor from saboringrediente group by sabor);
+delete from saboringrediente where saboringrediente.sabor not in (select sabor.codigo from sabor group by sabor.codigo);
