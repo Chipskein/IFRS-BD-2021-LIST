@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div align="center">
+        <h1>Alterando...</h1>
+    </div>
 <?php
    if(isset($_POST["codigo"])&&isset($_POST["name_sabor"])&&isset($_POST["tipo"])){
         $codigo=$_POST["codigo"];
@@ -20,12 +23,10 @@
         $db=new SQLite3('pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
         $update_query=$db->query("update sabor set nome=\"$nome\",tipo=$tipo where codigo=$codigo");
-        echo "Nome e Tipo alterados<br>";
         $query_ingredientes=$db->query("delete from saboringrediente where saboringrediente.sabor=$codigo");
         foreach($ingredientes as $index => $ingrediente){
             $db->query("insert into saboringrediente(sabor,ingrediente) values($codigo,$ingrediente)");
         };
-        echo "Ingredientes Alterado<br>";
         header( "refresh:1;url=index.php" );
         die();
         $db->close();
