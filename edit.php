@@ -53,7 +53,7 @@
                 echo "<br>";
                 echo "Ingrediente<br>";
                     echo "<select id=\"select_add\">";
-                        echo "<option hidden selected>Selecione um ingrediente </option>";
+                        echo "<option hidden selected value=null>Selecione um ingrediente </option>";
                         while($row=$ingredientes->fetchArray()){
                             $nome=$row['nome'];
                             $codigo=$row['codigo'];
@@ -130,6 +130,7 @@
             vals.push(td);
         }
         */
+       if(select_add.options[select_add.selectedIndex].value!=="null"){
         table.length==0 ? last_index=0:last_index=parseInt(table[table.length-1].id.substr(2))+1;
         const tr=document.createElement("tr");
         tr.id=`tr${last_index}`;
@@ -149,9 +150,8 @@
         td.appendChild(input);
         tr.appendChild(td);
         select_add.options[select_add.selectedIndex].remove();
-        //if(vals.indexOf(select_add.options[select_add.selectedIndex].innerHTML)==-1){
         table2.appendChild(tr);
-        //}
+        }
     });
     send.addEventListener("click",()=>{
         table.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();
