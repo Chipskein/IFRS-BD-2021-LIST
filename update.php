@@ -27,7 +27,7 @@
         foreach($ingredientes as $index => $ingrediente){
             $db->query("insert into saboringrediente(sabor,ingrediente) values($codigo,$ingrediente)");
         };
-        header( "refresh:1;url=index.php" );
+        header( "refresh:1;url=sabor_index.php" );
         die();
         $db->close();
     }

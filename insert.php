@@ -26,7 +26,7 @@
             $db->query("insert into saboringrediente(sabor,ingrediente) values($codigo,$value)");
         };
         $db->close();
-        header( "refresh:1;url=index.php" );
+        header( "refresh:1;url=sabor_index.php" );
         die();
     }
    else{

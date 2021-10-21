@@ -13,7 +13,7 @@
     else{
         echo "Erro retornando";
     }
-    header( "refresh:1;url=index.php" );
+    header( "refresh:1;url=sabor_index.php" );
     die();
        
 ?>

@@ -78,14 +78,14 @@
             }
             else{
                 echo "Codigo inválido...Retornando";
-                header( "refresh:1;url=index.php" );
+                header( "refresh:1;url=sabor_index.php" );
                 die();
             }
             $db->close();
         }
         else{
             echo "Erro Retornando";
-            header( "refresh:1;url=index.php" );
+            header( "refresh:1;url=sabor_index.php" );
             die();
         }
     echo "</main>";
