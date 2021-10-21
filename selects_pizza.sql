@@ -1,5 +1,6 @@
 /*a)Listar Sabores*/
 select 
+    sabor.codigo as codigo,
     sabor.nome as sabor,
     tipo.nome as tipo,
     group_concat(ingrediente.nome,",") as ingredientes

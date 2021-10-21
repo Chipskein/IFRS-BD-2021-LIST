@@ -30,6 +30,7 @@
 
         $results=$db->query("
             select 
+                sabor.codigo as codigo,
                 sabor.nome as sabor,
                 tipo.nome as tipo,
                 group_concat(ingrediente.nome,',') as ingredientes
@@ -64,11 +65,11 @@
                     echo "</tr>\n";
                     while ($row = $results->fetchArray()) {
                         echo "<tr>";
-                            echo "<td>📝</td>";
+                            echo "<td><a href=\"edit.php?codigo_s={$row['codigo']}\">📝</a></td>";
                             echo "<td>".$row["sabor"]."</td>";
                             echo "<td>".$row["tipo"]."</td>";
                             echo "<td>".$row["ingredientes"]."</td>";
-                            echo "<td><a href=`delete.php?sabor={$row['sabor']}` onclick=\"return(confirm('Excluir o Sabor".$row["sabor"]."?'));\">❌</a></td>";
+                            echo "<td><a href=\"delete.php?codigo_s={$row['codigo']}\" onclick=\"return(confirm('Excluir o Sabor".$row["sabor"]."?'));\">❌</a></td>";
                         echo "</tr>";
                     }
                 
