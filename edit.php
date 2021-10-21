@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -33,13 +33,16 @@
             if($results['codigo']&&$results['sabor']&&$results['tipo']&&$results['ingredientes']){
                 $name_sabor=$results["sabor"];
                 $tipo_name=$results['tipo'];
+                $sabor_codigo=$results['codigo'];
                 $ingredientes_sabor=explode(',',$results['ingredientes']);
+                echo "<form method=POST action=update.php>";
+                echo "<input name=codigo type='hidden' value=\"$sabor_codigo\">";
                 echo "<label>Nome do Sabor<br>";               
                     echo "<input name=\"name_sabor\" type='text'"."value=\"$name_sabor\"".">";
-                echo "</label>";    
+                echo "</label>"; 
                 echo "<br>";           
                 echo "Tipo<br>";
-                    echo "<select>";
+                    echo "<select name=tipo>";
                         while($row=$types->fetchArray()){
                             $nome=$row['nome'];
                             $codigo=$row['codigo'];
@@ -68,7 +71,8 @@
                     }
                     echo "</table>";
                 echo "<div>";
-                echo "<br><input type='button' value=\"Alterar\" >";
+                echo "<br><input id=\"send\" type='button' value=\"Alterar\" >";
+                echo "</form>";
             }
             else{
                 echo "Codigo inválido...Retornando";
@@ -94,6 +98,7 @@
     const table2=document.querySelector("tbody");
     const input_add=document.querySelector("#add");
     const select_add=document.querySelector("#select_add");
+    const send=document.querySelector("#send");
     for(c=0;c<table.length;c++){
         const tr=table[c];
         //add values to input hidden
@@ -135,6 +140,9 @@
         if(vals.indexOf(select_add.options[select_add.selectedIndex].innerHTML)==-1){
             table2.appendChild(tr);
         }
+    });
+    send.addEventListener("click",()=>{
+        document.querySelector("form").submit();
     });
 </script>   
 </body>
