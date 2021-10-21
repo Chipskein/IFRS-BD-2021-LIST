@@ -57,7 +57,7 @@
                 echo "</div>";                      
                 echo "<table>";
                     echo "<tr>\n";
-                    echo "<td>➕</td>";
+                    echo "<td><a href=\"add.php\">➕</a></td>";
                     echo "<td><b>Sabor</b> <a href=\"".url("orderby", "sabor+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "sabor+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Tipo</b> <a href=\"".url("orderby", "tipo+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "tipo+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Ingredientes</b> <a href=\"".url("orderby", "ingredientes+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "ingredientes+desc")."\">&#x25B4;</a></td>\n";
@@ -69,7 +69,7 @@
                             echo "<td>".$row["sabor"]."</td>";
                             echo "<td>".$row["tipo"]."</td>";
                             echo "<td>".$row["ingredientes"]."</td>";
-                            echo "<td><a href=\"delete.php?codigo_s={$row['codigo']}\" onclick=\"return(confirm('Excluir o Sabor".$row["sabor"]."?'));\">❌</a></td>";
+                            echo "<td><a href=\"delete.php?codigo_s={$row['codigo']}\" onclick=\"return(confirm('Excluir o Sabor ".$row["sabor"]."?'));\">❌</a></td>";
                         echo "</tr>";
                     }
                 
