@@ -40,3 +40,4 @@ delete from saboringrediente where ingrediente=$ingrediente;
 
 
 select ingrediente from saboringrediente where saboringrediente.sabor=1;
+delete from sabor where sabor.codigo not in (select sabor from saboringrediente group by sabor);
