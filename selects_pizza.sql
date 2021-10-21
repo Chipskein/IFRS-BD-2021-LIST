@@ -11,5 +11,5 @@ select
     join tipo on sabor.tipo=tipo.codigo
     group by sabor.codigo
 ;
-/*b)*/
- 
+/*delete*/
+delete from sabor where sabor.codigo=15;
