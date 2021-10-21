@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>index</title>
+    <title>🍕</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -44,7 +44,8 @@
             limit $limit
             offset $offset
         ");
-        echo "<div align='center'>";
+        
+        echo "<br><div align='center'>";
             echo "<h2>Pizzaria</h2>";
             echo "<div id='div_table'>";             
                 echo "<div id='div_select'>";
@@ -53,8 +54,8 @@
                         echo "<option>Tipo</option>";
                         echo "<option>Ingrediente</option>";
                     echo "</select>   ";
-                    echo "<input name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a>🔎</a>";
-                echo "</div>";                      
+                    echo "<input name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a href=\"index.php\">🔎</a>";
+                echo "</div><br>";                      
                 echo "<table>";
                     echo "<tr>\n";
                     echo "<td><a href=\"add.php\">➕</a></td>";
@@ -81,5 +82,6 @@
             echo "</div>";
         echo "</div>";
     ?>
+    
 </body>
 </html>
