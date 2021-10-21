@@ -144,7 +144,7 @@
         }
     });
     send.addEventListener("click",()=>{
-        document.querySelector("form").submit();
+        table.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();
     });
 </script>   
 </body>
