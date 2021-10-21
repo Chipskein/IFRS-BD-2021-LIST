@@ -28,8 +28,15 @@ select
     where sabor.codigo=1
 ;
 insert into saboringrediente(sabor,ingrediente)
-values(29,1),
-      (30,2),
-      (31,3),
-      (32,4);
+values(29,1),(30,2),(31,3),(32,4);
+
 select * from sabor;
+
+
+update sabor set nome=$nome,tipo=$tipo where codigo=$codigo;
+
+
+delete from saboringrediente where ingrediente=$ingrediente;
+
+
+select ingrediente from saboringrediente where saboringrediente.sabor=1;
