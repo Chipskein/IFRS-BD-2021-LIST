@@ -53,10 +53,12 @@
                 echo "<br>";
                 echo "Ingrediente<br>";
                     echo "<select id=\"select_add\">";
+                        echo "<option hidden selected>Selecione um ingrediente </option>";
                         while($row=$ingredientes->fetchArray()){
                             $nome=$row['nome'];
                             $codigo=$row['codigo'];
-                            echo "<option "."value=\"$codigo\"".">".$row['nome']."</option><br>";                        
+                            if(!in_array($nome,$ingredientes_sabor)) echo "<option "."value=\"$codigo\"".">".$row['nome']."</option><br>";                        
+                            else echo "<option hidden "."value=\"$codigo\"".">".$row['nome']."</option><br>";
                         }
                     echo "</select><input id=\"add\" type='button' value=\"➕\"><br>";
                 echo "Ingredientes:";
@@ -91,6 +93,11 @@
 <script>
     function remove_flist(id){
         const tr=document.getElementById(`${id}`);
+        const option=document.createElement("option");
+        option.value=tr.children[0].value;
+        option.innerHTML=tr.children[1].innerHTML;
+        option.selected=true;
+        select_add.append(option);
         tr.remove();
     }
     const main=document.querySelector("main");
@@ -115,12 +122,14 @@
         input2.addEventListener("click",()=>{remove_flist(tr.id)})
     }
     input_add.addEventListener("click",()=>{
+        /*
         let vals=[]
         for(c=0;c<table.length;c++){
             const tr=table[c];
             const td=tr.children[1].innerHTML;
             vals.push(td);
         }
+        */
         table.length==0 ? last_index=0:last_index=parseInt(table[table.length-1].id.substr(2))+1;
         const tr=document.createElement("tr");
         tr.id=`tr${last_index}`;
@@ -139,9 +148,10 @@
             input.addEventListener("click",()=>{remove_flist(tr.id)})
         td.appendChild(input);
         tr.appendChild(td);
-        if(vals.indexOf(select_add.options[select_add.selectedIndex].innerHTML)==-1){
-            table2.appendChild(tr);
-        }
+        select_add.options[select_add.selectedIndex].remove();
+        //if(vals.indexOf(select_add.options[select_add.selectedIndex].innerHTML)==-1){
+        table2.appendChild(tr);
+        //}
     });
     send.addEventListener("click",()=>{
         table.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();
