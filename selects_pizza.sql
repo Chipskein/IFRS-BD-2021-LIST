@@ -65,7 +65,6 @@ from
             group by comanda.numero
         ) as tmp on comanda.numero=tmp.comanda
 ;
-
 select 
     comanda.numero,
     pizza.codigo,
