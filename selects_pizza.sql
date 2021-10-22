@@ -42,3 +42,41 @@ delete from saboringrediente where ingrediente=$ingrediente;
 select ingrediente from saboringrediente where saboringrediente.sabor=1;
 delete from sabor where sabor.codigo not in (select sabor from saboringrediente group by sabor);
 delete from saboringrediente where saboringrediente.sabor not in (select sabor.codigo from sabor group by sabor.codigo);
+
+
+
+select 
+    comanda.numero as numero,
+    comanda.data as data,
+    mesa.nome as mesa,
+    tmp.count as pizzas,
+    case 
+        when comanda.pago=1 then "SIM"
+        when comanda.pago=0 then "NAO"
+    end as pago 
+from 
+    comanda
+    join mesa on mesa.codigo=comanda.mesa
+    join (select 
+            comanda.numero as comanda,count(*) as count
+            from 
+            comanda 
+            join pizza on pizza.comanda=comanda.numero
+            group by comanda.numero
+        ) as tmp on comanda.numero=tmp.comanda
+;
+
+select 
+    comanda.numero,
+    pizza.codigo,
+    pizza.tamanho,
+    pizzasabor.sabor,
+    sabor.tipo
+
+from comanda 
+    join pizza on pizza.comanda=comanda.numero
+    join pizzasabor on pizza.codigo=pizzasabor.pizza
+    join sabor on sabor.codigo=pizzasabor.sabor
+    join precoportamanho on precoportamanho.tipo=sabor.tipo and precoportamanho.tamanho=pizza.tamanho
+;
+
