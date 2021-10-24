@@ -109,7 +109,7 @@
                             echo "<td>".$row["pizzas"]."<a href=\"\">📖</a>"."</td>";
                             echo "<td>R$ ".$row["preco"]."</td>";
                             echo  $row["pago"]=="NAO" ? "<td>".$row["pago"]."<a href=\"\">💸</a><a href=\"\">💳</a></td>":"<td>".$row["pago"]."</td>";
-                            echo "<td><a href=\"\" onclick=\"return(confirm('Excluir a comanda ".$row["numero"]."?'));\">❌</a></td>";
+                            echo  $row["pizzas"]==0 ?"<td><a href=\"\" onclick=\"return(confirm('Excluir a comanda ".$row["numero"]."?'));\">❌</a></td>":"<td></td>";
                         echo "</tr>";
                     }
                 

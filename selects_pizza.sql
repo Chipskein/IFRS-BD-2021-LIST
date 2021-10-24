@@ -131,7 +131,7 @@ group by pizza.codigo
 group by tmp.comanda 
 
 
-
+select * from mesa
 
 
 
