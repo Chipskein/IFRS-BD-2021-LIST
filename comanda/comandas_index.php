@@ -104,7 +104,7 @@
                     while ($row = $results->fetchArray()) {
                         echo "<tr>";
                             $comanda=$row["numero"];
-                            echo $row["pago"]=="NAO" ? "<td><a>📝</a></td>":"<td></td>";
+                            echo $row["pago"]=="NAO" ? "<td><a href=\"add_pizza.php?comanda=$comanda\">📝</a></td>":"<td></td>";
                             echo "<td>".$row["numero"]."</td>";
                             echo "<td>".$row["data"]."</td>";
                             echo "<td>".$row["mesa"]."</td>";
