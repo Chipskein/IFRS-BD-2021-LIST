@@ -103,11 +103,12 @@
                     echo "</tr>\n";
                     while ($row = $results->fetchArray()) {
                         echo "<tr>";
-                            echo $row["pago"]=="NAO" ? "<td><a href=\"\">📝</a></td>":"<td></td>";
+                            $comanda=$row["numero"];
+                            echo $row["pago"]=="NAO" ? "<td><a>📝</a></td>":"<td></td>";
                             echo "<td>".$row["numero"]."</td>";
                             echo "<td>".$row["data"]."</td>";
                             echo "<td>".$row["mesa"]."</td>";
-                            echo "<td>".$row["pizzas"]."<a href=\"\">📖</a>"."</td>";
+                            echo "<td>".$row["pizzas"]."<a href=\"list_pizzas.php?comanda=$comanda\">📖</a>"."</td>";
                             echo "<td>R$ ".$row["preco"]."</td>";
                             echo  $row["pago"]=="NAO" ? "<td>".$row["pago"]."<a href=\"\">💸</a><a href=\"\">💳</a></td>":"<td>".$row["pago"]."</td>";
                             echo  $row["pizzas"]==0 ?"<td><a href=\"\" onclick=\"return(confirm('Excluir a comanda ".$row["numero"]."?'));\">❌</a></td>":"<td></td>";

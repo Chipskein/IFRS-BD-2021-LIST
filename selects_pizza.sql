@@ -136,11 +136,111 @@ select * from mesa
 
 
 
+select 
+    pizza.comanda as comanda,
+    pizza.codigo as pizza,
+    tamanho.nome as tamanho,
+    case
+        when borda.nome==='NULL' then 'S/BORDA' 
+        when borda.nome!='NULL' then borda.nome  
+    end as borda
+from 
+    pizza
+    join tamanho on tamanho.codigo=pizza.tamanho
+    left join borda on pizza.borda=borda.codigo 
+;
 
+select 
+    pizza.comanda as comanda,
+    pizza.codigo as pizza,
+    tamanho.nome as tamanho,
+    case
+        when borda.codigo is null then 'S/BORDA' 
+        when borda.codigo is not null then borda.nome  
+    end as borda,
+    group_concat(sabor.nome,",") as sabor,
+    preco.preco as preco
+from 
+    pizza
+    join tamanho on tamanho.codigo=pizza.tamanho
+    left join borda on pizza.borda=borda.codigo 
+    join pizzasabor on pizza.codigo=pizzasabor.pizza
+    join sabor on sabor.codigo=pizzasabor.sabor
+    join (
+        select 
+            pizza.codigo as pizza,
+            sum(case 
+                when borda.preco is null then 0
+                else borda.preco
+            end+precoportamanho.preco) as preco
+            from 
+            comanda 
+                join pizza on pizza.comanda=comanda.numero
+                join pizzasabor on pizza.codigo=pizzasabor.pizza
+                join sabor on pizzasabor.sabor=sabor.codigo
+                join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                left join borda on pizza.borda=borda.codigo
+            group by pizza.codigo
+        ) as preco on preco.pizza=pizza.codigo
+    group by pizza.codigo
+;
+select 
+    pizza.comanda as comanda,
+    pizza.codigo as pizza,
+    tamanho.nome as tamanho,
+    case
+        when borda.codigo is null then 'S/BORDA' 
+        when borda.codigo is not null then borda.nome  
+    end as borda,
+    group_concat(sabor.nome,\",\") as sabor,
+    preco.preco as preco
+from 
+    pizza
+    join tamanho on tamanho.codigo=pizza.tamanho
+    left join borda on pizza.borda=borda.codigo 
+    join pizzasabor on pizza.codigo=pizzasabor.pizza
+    join sabor on sabor.codigo=pizzasabor.sabor
+    join (
+        select 
+            pizza.codigo as pizza,
+            sum(case 
+                when borda.preco is null then 0
+                else borda.preco
+            end+precoportamanho.preco) as preco
+            from 
+            comanda 
+                join pizza on pizza.comanda=comanda.numero
+                join pizzasabor on pizza.codigo=pizzasabor.pizza
+                join sabor on pizzasabor.sabor=sabor.codigo
+                join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                left join borda on pizza.borda=borda.codigo
+            group by pizza.codigo
+        ) as preco on preco.pizza=pizza.codigo
+    where pizza.comanda=$comanda
+    group by pizza.codigo
+;
 
-
-
-
+select 
+sum(preco)
+from
+(
+select 
+pizza.codigo as pizza,
+sum(case 
+    when borda.preco is null then 0
+    else borda.preco
+end+precoportamanho.preco) as preco
+from 
+comanda 
+    join pizza on pizza.comanda=comanda.numero
+    join pizzasabor on pizza.codigo=pizzasabor.pizza
+    join sabor on pizzasabor.sabor=sabor.codigo
+    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+    left join borda on pizza.borda=borda.codigo
+where pizza.comanda=1
+group by pizza.codigo
+)
+;
 
 
 
