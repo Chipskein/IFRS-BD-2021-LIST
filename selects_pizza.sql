@@ -241,15 +241,63 @@ select
     )
 ;
 
+select 
+    comanda.numero as numero,
+    comanda.data as data,
+    mesa.nome as mesa,
+    case
+        when tmp.count is null then 0
+        else tmp.count 
+    end as pizzas,
+    case
+        when tmp2.preco is null then 0
+        else tmp2.preco 
+    end as preco,
+    case 
+        when comanda.pago=1 then "SIM"
+        when comanda.pago=0 then "NAO"
+    end as pago 
+    from 
+    comanda
+    join mesa on mesa.codigo=comanda.mesa
+     left join (select 
+            comanda.numero as comanda,count(*) as count
+            from 
+            comanda 
+            join pizza on pizza.comanda=comanda.numero
+            group by comanda.numero
+        ) as tmp on comanda.numero=tmp.comanda
+     left join (
+            select 
+                tmp.comanda as comanda,
+                sum(tmp.preco) as preco
+            from
+            (
+            select 
+                comanda.numero as comanda, 
+                pizza.codigo as pizza,
+                sum(case 
+                    when borda.preco is null then 0
+                    when borda.preco is not null then borda.preco
+                end+precoportamanho.preco) as preco
+            from 
+                comanda 
+                    join pizza on pizza.comanda=comanda.numero
+                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                    join sabor on pizzasabor.sabor=sabor.codigo
+                    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                    left join borda on pizza.borda=borda.codigo
+            group by pizza.codigo
+            ) as tmp
+            group by tmp.comanda 
+        ) as tmp2 on comanda.numero=tmp2.comanda
+;
 
 
 
 
 
 
-
-
-
-
+insert into comanda(mesa,data,pago) values(2,CURRENT_DATE,0),(4,CURRENT_DATE,0)
 
 
