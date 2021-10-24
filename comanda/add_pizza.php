@@ -32,6 +32,15 @@
                     echo "<option value=\"$codigo\">$nome</option>";
                 }
                 echo "</select><br>";
+                $borda=$db->query("select codigo,nome from borda");
+                echo "borda:<select>";
+                echo "<option value=\"no\">S/BORDA</option>";
+                while($row=$borda->fetchArray()){
+                    $nome=$row["nome"];
+                    $codigo=$row["codigo"];
+                    echo "<option value=\"$codigo\">$nome</option>";
+                }
+                echo "</select><br>";
                 $tipo=$db->query("select codigo,nome from tipo");
                 echo "Sabores:<select>";
                 while($row=$tipo->fetchArray()){
