@@ -40,26 +40,51 @@
 
         $results=$db->query("
             select 
-                comanda.numero as numero,
-                comanda.data as data,
-                mesa.nome as mesa,
-                tmp.count as pizzas,
-                case 
-                    when comanda.pago=1 then \"SIM\"
-                    when comanda.pago=0 then \"NAO\"
-                end as pago 
+            comanda.numero as numero,
+            comanda.data as data,
+            mesa.nome as mesa,
+            tmp.count as pizzas,
+            tmp2.preco as preco,
+            case 
+                when comanda.pago=1 then \"SIM\"
+                when comanda.pago=0 then \"NAO\"
+            end as pago 
             from 
             comanda
-                join mesa on mesa.codigo=comanda.mesa
-                join (select 
-                        comanda.numero as comanda,count(*) as count
-                        from 
+            join mesa on mesa.codigo=comanda.mesa
+            join (select 
+                    comanda.numero as comanda,count(*) as count
+                    from 
+                    comanda 
+                    join pizza on pizza.comanda=comanda.numero
+                    group by comanda.numero
+                ) as tmp on comanda.numero=tmp.comanda
+            join (
+                    select 
+                        tmp.comanda as comanda,
+                        sum(tmp.preco) as preco
+                    from
+                    (
+                    select 
+                        comanda.numero as comanda, 
+                        pizza.codigo as pizza,
+                        sum(case 
+                            when borda.preco is null then 0
+                            else borda.preco
+                        end+precoportamanho.preco) as preco
+                    from 
                         comanda 
-                        join pizza on pizza.comanda=comanda.numero
-                        group by comanda.numero
-                    ) as tmp on comanda.numero=tmp.comanda
-            limit $limit
-            offset $offset
+                            join pizza on pizza.comanda=comanda.numero
+                            join pizzasabor on pizza.codigo=pizzasabor.pizza
+                            join sabor on pizzasabor.sabor=sabor.codigo
+                            join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                            left join borda on pizza.borda=borda.codigo
+                    group by pizza.codigo
+                    ) as tmp
+                    group by tmp.comanda 
+                ) as tmp2 on comanda.numero=tmp2.comanda
+                limit $limit
+                offset $offset
         ");
         
         echo "<br><div align='center'>";
@@ -91,7 +116,7 @@
                             echo "<td>".$row["data"]."</td>";
                             echo "<td>".$row["mesa"]."</td>";
                             echo "<td>".$row["pizzas"]."<a href=\"\">📖</a>"."</td>";
-                            echo "<td>R$10,00</td>";
+                            echo "<td>R$ ".$row["preco"]."</td>";
                             echo  $row["pago"]=="NAO" ? "<td>".$row["pago"]."<a href=\"\">💸</a><a href=\"\">💳</a></td>":"<td>".$row["pago"]."</td>";
                             echo "<td><a href=\"\" onclick=\"return(confirm('Excluir a comanda ".$row["numero"]."?'));\">❌</a></td>";
                         echo "</tr>";

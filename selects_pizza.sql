@@ -50,6 +50,7 @@ select
     comanda.data as data,
     mesa.nome as mesa,
     tmp.count as pizzas,
+    tmp2.preco as preco,
     case 
         when comanda.pago=1 then "SIM"
         when comanda.pago=0 then "NAO"
@@ -64,7 +65,32 @@ select
             join pizza on pizza.comanda=comanda.numero
             group by comanda.numero
         ) as tmp on comanda.numero=tmp.comanda
+    join (
+            select 
+                tmp.comanda as comanda,
+                sum(tmp.preco) as preco
+            from
+            (
+            select 
+                comanda.numero as comanda, 
+                pizza.codigo as pizza,
+                sum(case 
+                    when borda.preco is null then 0
+                    else borda.preco
+                end+precoportamanho.preco) as preco
+            from 
+                comanda 
+                    join pizza on pizza.comanda=comanda.numero
+                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                    join sabor on pizzasabor.sabor=sabor.codigo
+                    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                    left join borda on pizza.borda=borda.codigo
+            group by pizza.codigo
+            ) as tmp
+            group by tmp.comanda 
+        ) as tmp2 on comanda.numero=tmp2.comanda
 ;
+
 select 
     comanda.numero,
     pizza.codigo,
@@ -78,4 +104,53 @@ select
     join sabor on sabor.codigo=pizzasabor.sabor
     join precoportamanho on precoportamanho.tipo=sabor.tipo and precoportamanho.tamanho=pizza.tamanho
 ;
+
+
+select 
+    tmp.comanda as comanda,
+    sum(tmp.preco) as preco
+from
+(
+select 
+    comanda.numero as comanda, 
+    pizza.codigo as pizza,
+    sum(case 
+        when borda.preco is null then 0
+        else borda.preco
+    end+precoportamanho.preco) as preco
+from 
+    comanda 
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on pizzasabor.sabor=sabor.codigo
+        join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+        left join borda on pizza.borda=borda.codigo
+group by pizza.codigo
+
+) as tmp
+group by tmp.comanda 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
