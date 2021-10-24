@@ -92,7 +92,7 @@
                 echo "</div><br>";                      
                 echo "<table>";
                     echo "<tr>\n";
-                    echo "<td><a href=\"add.php\">➕</a></td>";
+                    echo "<td><a href=\"add_comanda.php\">➕</a></td>";
                     echo "<td><b>Número</b> <a href=\"".url("orderby", "numero+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "numero+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Data</b> <a href=\"".url("orderby", "data+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "data+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Mesa</b> <a href=\"".url("orderby", "mesa+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "mesa+desc")."\">&#x25B4;</a></td>\n";
