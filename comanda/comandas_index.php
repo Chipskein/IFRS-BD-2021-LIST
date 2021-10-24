@@ -14,7 +14,7 @@
             $result = array();
             //if (isset($_GET["sabor"])) $result["sabor"] = "sabor=".$_GET["sabor"];
             //if (isset($_GET["tipo"])) $result["tipo"] = "tipo=".$_GET["tipo"];
-            //if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
+            if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
             if (isset($_GET["offset"])) $result["offset"] = "offset=".$_GET["offset"];
             $result[$campo] = $campo."=".$valor;
             return("comandas_index.php?".strtr(implode("&", $result), " ", "+"));
@@ -27,7 +27,7 @@
         $limit=500;
         $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
         $offset = $offset-($offset%$limit);
-        //$orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : "tipo asc";
+        $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'numero desc';
 
         $results=$db->query("
             select 
@@ -74,6 +74,7 @@
                     ) as tmp
                     group by tmp.comanda 
                 ) as tmp2 on comanda.numero=tmp2.comanda
+                order by $orderby
                 limit $limit
                 offset $offset
         ");
@@ -92,12 +93,12 @@
                 echo "<table>";
                     echo "<tr>\n";
                     echo "<td><a href=\"add.php\">➕</a></td>";
-                    echo "<td><b>Número</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Data</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Mesa</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Pizzas</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Valor</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Pago</b> <a href=\"".url("orderby", "nome+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "nome+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Número</b> <a href=\"".url("orderby", "numero+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "numero+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Data</b> <a href=\"".url("orderby", "data+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "data+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Mesa</b> <a href=\"".url("orderby", "mesa+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "mesa+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Pizzas</b> <a href=\"".url("orderby", "pizzas+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "pizzas+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Valor</b> <a href=\"".url("orderby", "preco+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "preco+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Pago</b> <a href=\"".url("orderby", "pago+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "pago+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td>🍕</td>";
                     echo "</tr>\n";
                     while ($row = $results->fetchArray()) {
