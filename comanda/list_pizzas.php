@@ -11,11 +11,18 @@
 <body>
     <div align="center">
     <?php
+        function url($numero,$campo, $valor) {
+            $result = array();
+            if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
+            $result[$campo] = $campo."=".$valor;
+            return("list_pizzas.php?comanda=$numero&".strtr(implode("&", $result), " ", "+"));
+        }
         if(isset($_GET["comanda"])){
             $comanda=$_GET["comanda"];
             $db=new SQLite3('../pizza.db');
             $db->exec("PRAGMA foreign_keys = ON");
             $result=$db->query("select numero from comanda");
+            $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'pizza asc';
             $comandas=[];
             while ($row=$result->fetchArray()){
                 array_push($comandas,$row["numero"]);
@@ -56,14 +63,15 @@
                                 group by pizza.codigo
                             ) as preco on preco.pizza=pizza.codigo
                         where pizza.comanda=$comanda
-                        group by pizza.codigo                
+                        group by pizza.codigo       
+                        order by $orderby         
                 ");
                 echo "<table>";
                 echo "<tr>";
-                echo "<td>Tamanho</td>";
-                echo "<td>Borda</td>";
-                echo "<td>Sabores</td>";
-                echo "<td>Preço</td>";
+                echo "<td><b>Tamanho</b> <a href=\"".url($comanda,"orderby", "tamanho+asc")."\">&#x25BE;</a> <a href=\"".url($comanda,"orderby", "tamanho+desc")."\">&#x25B4;</a></td>";
+                echo "<td><b>Borda</b> <a href=\"".url($comanda,"orderby", "borda+asc")."\">&#x25BE;</a> <a href=\"".url($comanda,"orderby", "borda+desc")."\">&#x25B4;</a></td>";
+                echo "<td><b>Sabores</b> <a href=\"".url($comanda,"orderby", "sabor+asc")."\">&#x25BE;</a> <a href=\"".url($comanda,"orderby", "sabor+desc")."\">&#x25B4;</a></td>";
+                echo "<td><b>Preço</b> <a href=\"".url($comanda,"orderby", "preco+asc")."\">&#x25BE;</a> <a href=\"".url($comanda,"orderby", "preco+desc")."\">&#x25B4;</a></td>";
                 echo "</tr>";
                 while($row=$results->fetchArray()){
                     echo "<tr>";
@@ -96,16 +104,25 @@
                     )
                 ")->fetchArray()["total"];
                 echo "<tr>";
-                echo "<td colspan=\"3\">Total:</td>";
-                echo "<td>R$$total</td>";
+                echo "<td colspan=\"3\"><b>Total:</b></td>";
+                echo "<td><b>R$$total</b></td>";
                 echo "</tr>";
                 echo "</table>";
                 echo "<br>";
                 echo "<div class=button><a href=\"comandas_index.php\">Voltar</a><div>";
+                $db->close();
             }
             else{
+                $db->close();
                 echo "<h2>Comanda inválida</h2>";
+                echo "<h2>Retornando...</h2>";
+                header( "refresh:1;url=comandas_index.php" );
+                die();
             }
+        }
+        else{
+            echo "<h2>Erro</h2>";
+            echo "<h2>Dados não foram enviados</h2>";
         }
     ?>
     </div>
