@@ -107,31 +107,30 @@ select
 
 
 select 
-    tmp.comanda as comanda,
-    sum(tmp.preco) as preco
-from
-(
-select 
-    comanda.numero as comanda, 
-    pizza.codigo as pizza,
-    sum(case 
-        when borda.preco is null then 0
-        else borda.preco
-    end+precoportamanho.preco) as preco
-from 
-    comanda 
-        join pizza on pizza.comanda=comanda.numero
-        join pizzasabor on pizza.codigo=pizzasabor.pizza
-        join sabor on pizzasabor.sabor=sabor.codigo
-        join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
-        left join borda on pizza.borda=borda.codigo
-group by pizza.codigo
+        tmp.comanda as comanda,
+        sum(tmp.preco) as preco
+    from
+    (
+    select 
+        comanda.numero as comanda, 
+        pizza.codigo as pizza,
+        sum(case 
+            when borda.preco is null then 0
+            else borda.preco
+        end+precoportamanho.preco) as preco
+    from 
+        comanda 
+            join pizza on pizza.comanda=comanda.numero
+            join pizzasabor on pizza.codigo=pizzasabor.pizza
+            join sabor on pizzasabor.sabor=sabor.codigo
+            join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+            left join borda on pizza.borda=borda.codigo
+    group by pizza.codigo
 
-) as tmp
-group by tmp.comanda 
+    ) as tmp
+    group by tmp.comanda 
+;
 
-
-select * from mesa
 
 
 
@@ -144,7 +143,7 @@ select
         when borda.nome==='NULL' then 'S/BORDA' 
         when borda.nome!='NULL' then borda.nome  
     end as borda
-from 
+    from 
     pizza
     join tamanho on tamanho.codigo=pizza.tamanho
     left join borda on pizza.borda=borda.codigo 
@@ -160,7 +159,7 @@ select
     end as borda,
     group_concat(sabor.nome,",") as sabor,
     preco.preco as preco
-from 
+    from 
     pizza
     join tamanho on tamanho.codigo=pizza.tamanho
     left join borda on pizza.borda=borda.codigo 
@@ -194,7 +193,7 @@ select
     end as borda,
     group_concat(sabor.nome,\",\") as sabor,
     preco.preco as preco
-from 
+    from 
     pizza
     join tamanho on tamanho.codigo=pizza.tamanho
     left join borda on pizza.borda=borda.codigo 
@@ -221,25 +220,25 @@ from
 ;
 
 select 
-sum(preco)
-from
-(
-select 
-pizza.codigo as pizza,
-sum(case 
-    when borda.preco is null then 0
-    else borda.preco
-end+precoportamanho.preco) as preco
-from 
-comanda 
-    join pizza on pizza.comanda=comanda.numero
-    join pizzasabor on pizza.codigo=pizzasabor.pizza
-    join sabor on pizzasabor.sabor=sabor.codigo
-    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
-    left join borda on pizza.borda=borda.codigo
-where pizza.comanda=1
-group by pizza.codigo
-)
+    sum(preco)
+    from
+    (
+    select 
+    pizza.codigo as pizza,
+    sum(case 
+        when borda.preco is null then 0
+        else borda.preco
+    end+precoportamanho.preco) as preco
+    from 
+    comanda 
+        join pizza on pizza.comanda=comanda.numero
+        join pizzasabor on pizza.codigo=pizzasabor.pizza
+        join sabor on pizzasabor.sabor=sabor.codigo
+        join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+        left join borda on pizza.borda=borda.codigo
+    where pizza.comanda=1
+    group by pizza.codigo
+    )
 ;
 
 
