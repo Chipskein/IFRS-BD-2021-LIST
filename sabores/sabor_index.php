@@ -61,7 +61,7 @@
                     echo "<td><a href=\"add.php\">➕</a></td>";
                     echo "<td><b>Sabor</b> <a href=\"".url("orderby", "sabor+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "sabor+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Tipo</b> <a href=\"".url("orderby", "tipo+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "tipo+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Ingredientes</b> <a href=\"".url("orderby", "ingredientes+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "ingredientes+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Ingredientes</b></td>\n";
                     echo "<td>🍕</td>";
                     echo "</tr>\n";
                     while ($row = $results->fetchArray()) {

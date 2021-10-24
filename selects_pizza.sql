@@ -54,7 +54,7 @@ select
         when comanda.pago=1 then "SIM"
         when comanda.pago=0 then "NAO"
     end as pago 
-from 
+    from 
     comanda
     join mesa on mesa.codigo=comanda.mesa
     join (select 
@@ -72,7 +72,7 @@ select
     pizzasabor.sabor,
     sabor.tipo
 
-from comanda 
+    from comanda 
     join pizza on pizza.comanda=comanda.numero
     join pizzasabor on pizza.codigo=pizzasabor.pizza
     join sabor on sabor.codigo=pizzasabor.sabor
