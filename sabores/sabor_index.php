@@ -13,6 +13,7 @@
             $result = array();
             if (isset($_GET["sabor"])) $result["sabor"] = "sabor=".$_GET["sabor"];
             if (isset($_GET["tipo"])) $result["tipo"] = "tipo=".$_GET["tipo"];
+            if (isset($_GET["ingrediente"])) $result["ingrediente"] = "ingrediente=".$_GET["ingrediente"];
             if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
             if (isset($_GET["offset"])) $result["offset"] = "offset=".$_GET["offset"];
             $result[$campo] = $campo."=".$valor;
@@ -27,7 +28,12 @@
         $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
         $offset = $offset-($offset%$limit);
         $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : "tipo asc";
-
+        
+        $where=array();
+        if (isset($_GET["sabor"])) $where[] = "where sabor.nome like '%".strtr($_GET["sabor"], " ", "%")."%'";
+        if (isset($_GET["tipo"])) $where[] = "where tipo.nome like '%".strtr($_GET["tipo"], " ", "%")."%'";
+        if (isset($_GET["ingrediente"])) $where[] = "where ingrediente.nome like '%".strtr($_GET["ingrediente"], " ", "%")."%'";
+        $where = (count($where) > 0) ? $where[0] : "";
         $results=$db->query("
             select 
                 sabor.codigo as codigo,
@@ -39,22 +45,23 @@
                     join saboringrediente on sabor.codigo=saboringrediente.sabor
                     join ingrediente on ingrediente.codigo=saboringrediente.ingrediente
                     join tipo on sabor.tipo=tipo.codigo
-            group by sabor.codigo
+            $where
+            group by sabor.codigo 
             order by $orderby
             limit $limit
             offset $offset
         ");
-        
+
         echo "<br><div align='center'>";
             echo "<h2>Pizzaria</h2>";
             echo "<div id='div_table'>";             
                 echo "<div id='div_select'>";
                     echo "<select>";
-                        echo "<option>Nome</option>";
-                        echo "<option>Tipo</option>";
-                        echo "<option>Ingrediente</option>";
-                    echo "</select>   ";
-                    echo "<input name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a href=\"sabor_index.php\">🔎</a>";
+                        echo "<option value=sabor >Nome</option>";
+                        echo "<option value=tipo >Tipo</option>";
+                        echo "<option value=ingrediente >Ingrediente</option>";
+                    echo "</select>";
+                    echo "<input id=filter_txt name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a id=pesquisar onclick=pesquisar()>🔎</a>";
                 echo "</div><br>";                      
                 echo "<table>";
                     echo "<tr>\n";
@@ -82,6 +89,15 @@
             echo "</div>";
         echo "</div>";
     ?>
-    
+    <script>
+        function pesquisar(){
+
+            input_value=document.getElementById("filter_txt").value;
+            if(input_value.trim()!=""){
+                value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
+                document.getElementById("pesquisar").href=`sabor_index.php?${value}=${input_value}`;
+            }
+        }
+    </script>
 </body>
 </html>
