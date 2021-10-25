@@ -116,7 +116,7 @@
                             echo "<td>".$row["mesa"]."</td>";
                             echo $row["pizzas"]!=0 ? "<td>".$row["pizzas"]."<a href=\"list_pizzas.php?comanda=$comanda\">📖</a>"."</td>":"<td>$row[pizzas]</td>";
                             echo "<td>R$ ".$row["preco"]."</td>";
-                            echo  $row["pago"]=="NAO" ? "<td>".$row["pago"]."<a href=\"\">💸</a><a href=\"\">💳</a></td>":"<td>".$row["pago"]."</td>";
+                            echo  $row["pago"]=="NAO" ? "<td>".$row["pago"]."<a href=\"update.php?comanda=$comanda\">💸</a><a href=\"update.php?comanda=$comanda\">💳</a></td>":"<td>".$row["pago"]."</td>";
                             echo  $row["pizzas"]==0 ?"<td><a href=delete_comanda.php?comanda=$comanda onclick=\"return(confirm('Excluir a comanda ".$row["numero"]."?'));\">❌</a></td>":"<td></td>";
                         echo "</tr>";
                     }
