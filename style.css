@@ -29,3 +29,9 @@ a:visited{
     color: black;
     background-color: white;
 }
+.input_d{
+    text-align: center;
+    background-color: black;
+    color: white;
+    width: 5%;
+}

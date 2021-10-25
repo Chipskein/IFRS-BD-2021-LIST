@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Comanda</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div align="center">
+        <?php
+            if(isset($_POST["data"])&&isset($_POST["numero"])&&isset($_POST["mesa"])){
+                //verica se a mesa existe verifica se o numero esta disponivel
+                $mesa=$_POST["mesa"];
+                //$data=$_POST["data"];
+                $numero=$_POST["numero"];
+                $db=new SQLite3('../pizza.db');
+                $db->exec("PRAGMA foreign_keys = ON");
+                $verify_mesa=$db->query("select codigo from mesa where codigo=$mesa")->fetchArray();
+                $verify_numero=$db->query("select numero from comanda where numero=$numero")->fetchArray();
+                if($verify_mesa&&!$verify_numero){
+                   $db->query("insert into comanda(numero,mesa,data,pago) values($numero,$mesa,CURRENT_DATE,0)");
+                   $db->close();
+                   echo "<h1>Comanda adicionada</h1>";
+                   header( "refresh:1;url=comandas_index.php" );
+                }
+                else{
+                    $db->close();
+                    echo "<h1>Um erro ocorreu tente novamente</h1>";
+                    echo "<h2>Retornando...</h2>";
+                    header( "refresh:1;url=add_comanda.php" );
+                die();
+                }
+            }
+            else{
+                echo "<h1>Dados Inválidos</h1>";
+                echo "<h2>Retornando...</h2>";
+                header( "refresh:1;url=comandas_index.php" );
+                die();
+            }
+        ?>
+    </div>
+</body>
+</html>
