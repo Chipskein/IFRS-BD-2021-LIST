@@ -11,7 +11,6 @@
     <div align="center">
         <h2>Inclusão de Comanda</h2>
         <?php
-        
             $db=new SQLite3('../pizza.db');
             $db->exec("PRAGMA foreign_keys = ON");
             $numero=$db->query("select max(numero) as last_row from comanda")->fetchArray()["last_row"]+1;
