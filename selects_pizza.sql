@@ -300,4 +300,6 @@ select
 
 insert into comanda(mesa,data,pago) values(2,CURRENT_DATE,0),(4,CURRENT_DATE,0)
 
+select count(*) from pizza where comanda=3880;
+
 
