@@ -11,22 +11,38 @@
     <div align="center">
         <h2>Inclusão de Comanda</h2>
         <?php
+        
             $db=new SQLite3('../pizza.db');
             $db->exec("PRAGMA foreign_keys = ON");
             $numero=$db->query("select max(numero) as last_row from comanda")->fetchArray()["last_row"]+1;
             $mesa_result=$db->query("select * from mesa");
-            echo "Numero:$numero<br>";
+            echo "<form action=add_c.php method=POST>";
+            echo "<label>";
+            echo "Numero:<input class=input_d id=numero name=\"numero\" disabled type=text value=$numero>";
+            echo "</label><br>";
+            
+            echo "<label>";
             $data=date("d/m/Y");
-            echo "Data:$data<br>";
-            echo "Mesa:<select>";
+            echo "Data:<input class=input_d id=data name=\"data\" disabled type=text value=$data><br>";
+            echo "</label>";
+            
+            echo "Mesa:<select name=mesa>";
                 while( $row=$mesa_result->fetchArray()){
                     $codigo=$row["codigo"];
                     echo "<option value=\"$codigo\">".$row["nome"]."</option>";
                 }
             echo "</select><br>";
-            echo "<button>Inclui</button>"        
 
+            echo "<input type=button onclick=enviar() value=Inclui>";
+            echo "</form>";       
         ?>
     </div>
+    <script>
+        function enviar(){
+            document.getElementById("numero").disabled=false;
+            document.getElementById("data").disabled=false;
+            document.querySelector("form").submit();
+        }
+    </script>
 </body>
 </html>
