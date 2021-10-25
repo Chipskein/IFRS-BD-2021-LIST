@@ -21,7 +21,9 @@
         };
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
-        $codigo=$db->query("insert into sabor(nome,tipo) values(\"$nome\",$tipo) returning codigo")->fetchArray()["codigo"];
+        $codigo=$db->exec("insert into sabor(nome,tipo) values(\"$nome\",$tipo)");
+        $codigo=$db->changes();
+        $codigo=$db->lastInsertRowID();
         foreach($ingredientes as $index=>$value){
             $db->query("insert into saboringrediente(sabor,ingrediente) values($codigo,$value)");
         };
