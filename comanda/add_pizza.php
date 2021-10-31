@@ -18,14 +18,15 @@
             $verify=$db->query("select * from comanda where numero=$comanda")->fetchArray()["pago"];
             $comanda_result=$db->query("select * from comanda where numero=$comanda");
             if($verify=="0"){
+                echo "<form id=form action=add_p.php method=POST>";
                 while($row=$comanda_result->fetchArray()){
                     $numero=$row["numero"];
                     $data=$row["data"];
-                    echo "Numero: $numero<br>";
-                    echo "data: $data<br>";
+                    echo "Numero: <input id=numero name=numero class=input_d type=text disabled value=$numero><br>";
+                    echo "data: <input id=data name=data type=text disabled value=$data><br>";
                 }
                 $tamanho=$db->query("select * from tamanho");
-                echo "Tamanho:<select id=select_tamanho>";
+                echo "Tamanho:<select name=tamanho id=select_tamanho>";
                 while($row=$tamanho->fetchArray()){
                     $nome=$row["nome"];
                     $codigo=$row["codigo"];
@@ -34,7 +35,7 @@
                 }
                 echo "</select><br>";
                 $borda=$db->query("select codigo,nome from borda");
-                echo "borda:<select>";
+                echo "borda:<select name=borda>";
                 echo "<option value=\"no\">S/BORDA</option>";
                 while($row=$borda->fetchArray()){
                     $nome=$row["nome"];
@@ -53,7 +54,7 @@
                 }
                 echo "</table>";
                 $tipo=$db->query("select codigo,nome from tipo");
-                echo "Sabores:<select id=tipo>";
+                echo "Sabores:<select name=tipo id=tipo>";
                 while($row=$tipo->fetchArray()){
                     $nome=$row["nome"];
                     $codigo=$row["codigo"];
@@ -64,6 +65,7 @@
                 echo "<br>";
                 echo "<table id=table_sabores></table>";
                 echo "<input id=input_send type=button value='Incluir'>";
+                echo "</form>";
                 $db->close();
             }
             else{
@@ -91,6 +93,7 @@
         tr.remove();
     }
     let input=document.getElementById("input_add");
+    let input_send=document.getElementById("input_send");
     let select=document.getElementById("tipo");
     let select_tamanho=document.getElementById("select_tamanho");
     let table=document.getElementById("sabores");
@@ -166,7 +169,15 @@
         table.append(tr);
         }
     });  
-    
+    input_send.addEventListener("click",()=>{
+            let table=document.getElementById("table_sabores");
+            if(table.children.length==0) alert("Adicione ao menos um sabor");
+            else{
+            document.getElementById("numero").disabled=false;
+            document.getElementById("data").disabled=false;
+            document.querySelector("form").submit();
+            }
+    })
 </script>
 </body>
 </html>
