@@ -132,9 +132,6 @@ select
 ;
 
 
-
-
-
 select 
     pizza.comanda as comanda,
     pizza.codigo as pizza,
@@ -298,8 +295,18 @@ select
 
 
 
-insert into comanda(mesa,data,pago) values(2,CURRENT_DATE,0),(4,CURRENT_DATE,0)
 
-select count(*) from pizza where comanda=3880;
+
+
+
+
+
+
+
+
+
+
+
+
 
 

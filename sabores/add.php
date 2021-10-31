@@ -63,6 +63,7 @@
    const input_add=document.querySelector("#add");
    const send=document.querySelector("#send");
    input_add.addEventListener("click",()=>{
+       if(select_add.options.length>0){
         table.children.length==0 ? last_index=0:last_index=table.children.length;
         const tr=document.createElement("tr");
         let input=document.createElement("input");
@@ -81,6 +82,7 @@
         tr.id=`tr${last_index}`;
         select_add.options[select_add.selectedIndex].remove();
         table.append(tr);
+       }
     });
    send.addEventListener("click",()=>{
         table.children.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();

@@ -24,12 +24,13 @@
                     echo "Numero: $numero<br>";
                     echo "data: $data<br>";
                 }
-                $tamanho=$db->query("select codigo,nome from tamanho");
-                echo "Tamanho:<select>";
+                $tamanho=$db->query("select * from tamanho");
+                echo "Tamanho:<select id=select_tamanho>";
                 while($row=$tamanho->fetchArray()){
                     $nome=$row["nome"];
                     $codigo=$row["codigo"];
-                    echo "<option value=\"$codigo\">$nome</option>";
+                    $qt=$row["qtdesabores"];
+                    echo "<option value=\"$codigo,$qt\">$nome</option>";
                 }
                 echo "</select><br>";
                 $borda=$db->query("select codigo,nome from borda");
@@ -41,17 +42,28 @@
                     echo "<option value=\"$codigo\">$nome</option>";
                 }
                 echo "</select><br>";
+                $sabores=$db->query("select * from sabor");
+                echo "<table id=sabores style=display:none>";
+                while($row=$sabores->fetchArray()){
+                    echo "<tr >";
+                    echo "<td>$row[codigo]</td>";
+                    echo "<td>$row[nome]</td>";
+                    echo "<td>$row[tipo]</td>";
+                    echo "</tr>";
+                }
+                echo "</table>";
                 $tipo=$db->query("select codigo,nome from tipo");
-                echo "Sabores:<select>";
+                echo "Sabores:<select id=tipo>";
                 while($row=$tipo->fetchArray()){
                     $nome=$row["nome"];
                     $codigo=$row["codigo"];
                     echo "<option value=\"$codigo\">$nome</option>";
                 }
-                echo "</select><input id=input_add type=button value='➕'>";
+                echo "</select><div id=add_selects></div><input id=input_add type=button value='➕'>";
+                
                 echo "<br>";
-                echo "<table></table>";
-                echo "<input id=input_add type=button value='Incluir'>";
+                echo "<table id=table_sabores></table>";
+                echo "<input id=input_send type=button value='Incluir'>";
                 $db->close();
             }
             else{
@@ -68,6 +80,93 @@
         }
     ?>
     </div>
+<script>
+    function remove_flist(id){
+        const tr=document.getElementById(`${id}`);
+        const option=document.createElement("option");
+        option.value=tr.children[0].value;
+        option.innerHTML=tr.children[1].innerHTML;
+        option.selected=true;
+        newselect.append(option);
+        tr.remove();
+    }
+    let input=document.getElementById("input_add");
+    let select=document.getElementById("tipo");
+    let select_tamanho=document.getElementById("select_tamanho");
+    let table=document.getElementById("sabores");
+    let div=document.getElementById("add_selects");
+    let tipo_val=select.options[select.selectedIndex].value;
+    let trs=table.children[0].children;
+    let newselect=document.createElement("select");
+    newselect.id="sabor_select"
+    for(tr of trs){
+        sabor_codigo=tr.children[0].innerHTML;
+        sabor_nome=tr.children[1].innerHTML;
+        tipo_sabor=tr.children[2].innerHTML;
+        if(tipo_sabor==tipo_val){
+            option=document.createElement("option");
+            option.value=sabor_codigo;
+            option.innerHTML=sabor_nome;
+            newselect.appendChild(option);   
+        }
+    }
+    div.appendChild(newselect);
+    select.onchange=()=>{
+            table2=document.getElementById("table_sabores")
+            while (table2.hasChildNodes()) {
+                table2.removeChild(table2.lastChild);
+            }
+            document.getElementById("sabor_select").remove();
+            newselect=document.createElement("select");
+            newselect.id="sabor_select"
+            tipo_val=select.options[select.selectedIndex].value;
+            for(tr of trs){
+            sabor_codigo=tr.children[0].innerHTML;
+            sabor_nome=tr.children[1].innerHTML;
+            tipo_sabor=tr.children[2].innerHTML;
+            if(tipo_sabor==tipo_val){
+                option=document.createElement("option");
+                option.value=sabor_codigo;
+                option.innerHTML=sabor_nome;
+                newselect.appendChild(option);   
+            }
+            div.appendChild(newselect);
+        }
+    }
+    select_tamanho.onchange=()=>{
+        limit=select_tamanho.options[select_tamanho.selectedIndex].value.split(",")[1];
+        let table=document.getElementById("table_sabores");
+        if(table.children.length>limit){
+            while (table.hasChildNodes()) {
+                remove_flist(table.lastChild.id);
+            }
+        } 
+    }
+    input.addEventListener("click",()=>{
+        limit=select_tamanho.options[select_tamanho.selectedIndex].value.split(",")[1];
+        let table=document.getElementById("table_sabores");
+        if(newselect.options.length>0&&table.children.length<limit){
+        table.children.length==0 ? last_index=0:last_index=table.children.length;
+        const tr=document.createElement("tr");
+        let input=document.createElement("input");
+            input.name=`input_sabor${last_index}`;
+            input.type="hidden";
+            input.value=newselect.options[newselect.selectedIndex].value;
+            tr.append(input);
+        const td=document.createElement("td");
+            td.innerText=newselect.options[newselect.selectedIndex].innerText;
+            tr.append(td);
+        input=document.createElement("input");
+            input.type="button";
+            input.value="❌";
+            input.addEventListener("click",()=>{remove_flist(tr.id)})
+            tr.append(input);
+        tr.id=`tr${last_index}`;
+        newselect.options[newselect.selectedIndex].remove();
+        table.append(tr);
+        }
+    });  
     
+</script>
 </body>
 </html>
