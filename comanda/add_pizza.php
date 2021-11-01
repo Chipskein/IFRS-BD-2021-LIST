@@ -79,6 +79,8 @@
         else{
             echo "<h2>Erro</h2>";
             echo "<h2>Dados não foram enviados</h2>";
+            header( "refresh:1;url=comandas_index.php" );
+            die();
         }
     ?>
     </div>
