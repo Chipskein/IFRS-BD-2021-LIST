@@ -22,7 +22,7 @@
             
             echo "<label>";
             $data=date("d/m/Y");
-            echo "Data:<input class=input_d id=data name=\"data\" disabled type=text value=$data><br>";
+            echo "Data:<input  id=data name=\"data\" disabled type=text value=$data><br>";
             echo "</label>";
             
             echo "Mesa:<select name=mesa>";
