@@ -12,8 +12,6 @@
     <?php
         function url($campo, $valor) {
             $result = array();
-            //if (isset($_GET["sabor"])) $result["sabor"] = "sabor=".$_GET["sabor"];
-            //if (isset($_GET["tipo"])) $result["tipo"] = "tipo=".$_GET["tipo"];
             if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
             if (isset($_GET["offset"])) $result["offset"] = "offset=".$_GET["offset"];
             $result[$campo] = $campo."=".$valor;
@@ -28,7 +26,14 @@
         $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
         $offset = $offset-($offset%$limit);
         $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'numero desc';
-
+        $where=array();
+        if (isset($_GET["numero"])) $where[] = "where numero like '%".strtr($_GET["numero"], " ", "%")."%'";
+        if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
+        if (isset($_GET["mesa"])) $where[] = "where mesa like '%".strtr($_GET["mesa"], " ", "%")."%'";
+        if (isset($_GET["pizzas"])) $where[] = "where pizzas like '%".strtr($_GET["pizzas"], " ", "%")."%'";
+        if (isset($_GET["preco"])) $where[] = "where preco like '%".strtr($_GET["preco"], " ", "%")."%'";
+        if (isset($_GET["pago"])) $where[] = "where pago = (case when pago like '%".strtr($_GET["pago"], " ", "%")."%' = 'SIM' then 1 else 0 end)";
+        $where = (count($where) > 0) ? $where[0] : "";
         $results=$db->query("
                 select 
                 comanda.numero as numero,
@@ -80,6 +85,7 @@
                         ) as tmp
                         group by tmp.comanda 
                     ) as tmp2 on comanda.numero=tmp2.comanda
+                    $where
                 order by $orderby
                 limit $limit
                 offset $offset
@@ -90,11 +96,14 @@
             echo "<div id='div_table'>";             
                 echo "<div id='div_select'>";
                     echo "<select>";
-                        echo "<option>Nome</option>";
-                        echo "<option>Tipo</option>";
-                        echo "<option>Ingrediente</option>";
+                        echo "<option value=numero>Numero</option>";
+                        echo "<option value=data>Data</option>";
+                        echo "<option value=mesa>Mesa</option>";
+                        echo "<option value=pizzas>Pizzas</option>";
+                        echo "<option value=preco>Valor</option>";
+                        echo "<option value=pago>Pago</option>";
                     echo "</select>   ";
-                    echo "<input name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a href=\"comandas_index.php\">🔎</a>";
+                    echo "<input id=filter_txt name='filter_txt' type='text' placeholder='Selecione o campo e pesquise'>  <a id=pesquisar onclick=pesquisar()>🔎</a>";
                 echo "</div><br>";                      
                 echo "<table>";
                     echo "<tr>\n";
@@ -129,6 +138,17 @@
             echo "</div>";
         echo "</div>";
     ?>
-    
+    <script>
+        function pesquisar(){
+            input_value=document.getElementById("filter_txt").value;
+            if(input_value.trim()!=""){
+                value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
+                document.getElementById("pesquisar").href=`comandas_index.php?${value}=${input_value}`;
+            }
+            if(input_value == "SIM"){
+                document.getElementById("filter_txt").value=1
+            }
+        }
+    </script>
 </body>
 </html>
