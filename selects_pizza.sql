@@ -290,9 +290,12 @@ select
         ) as tmp2 on comanda.numero=tmp2.comanda
 ;
 
-
-
-
+select numero,pago from comanda where numero=3879;
+select codigo from borda;
+select codigo from tipo
+select * from tamanho
+select codigo from sabor where tipo=1
+select * from pizzasabor;
 
 
 
