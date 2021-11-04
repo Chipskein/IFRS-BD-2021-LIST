@@ -297,6 +297,14 @@ select * from tamanho
 select codigo from sabor where tipo=1
 select * from pizzasabor;
 
+select count(*) as total from sabor where sabor.nome like "%costa rica%";
+
+select count(*) as total from sabor join tipo on sabor.tipo=tipo.codigo where tipo.nome like "%doces%";
+
+select count(*) as total from sabor 
+join saboringrediente on sabor.codigo=saboringrediente.sabor join ingrediente on ingrediente.codigo=saboringrediente.ingrediente 
+where ingrediente.nome like "%alface%"
+;
 
 
 
