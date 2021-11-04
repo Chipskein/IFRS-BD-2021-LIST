@@ -29,10 +29,11 @@
         $where=array();
         if (isset($_GET["numero"])) $where[] = "where numero like '%".strtr($_GET["numero"], " ", "%")."%'";
         if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
-        if (isset($_GET["mesa"])) $where[] = "where mesa like '%".strtr($_GET["mesa"], " ", "%")."%'";
+        if (isset($_GET["mesa"])) $where[] = "where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
         if (isset($_GET["pizzas"])) $where[] = "where pizzas like '%".strtr($_GET["pizzas"], " ", "%")."%'";
         if (isset($_GET["preco"])) $where[] = "where preco like '%".strtr($_GET["preco"], " ", "%")."%'";
-        if (isset($_GET["pago"])) $where[] = "where pago = (case when pago like '%".strtr($_GET["pago"], " ", "%")."%' = 'SIM' then 1 else 0 end)";
+        if (isset($_GET["pago"])){if(strtr($_GET["pago"], " ", "%") == 'SIM' || strtr($_GET["pago"], " ", "%") == 'sim'|| strtr($_GET["pago"], " ", "%") == 'Sim') $where[] = "where pago = 1";}
+        if (isset($_GET["pago"])){if(strtr($_GET["pago"], " ", "%") == 'NÃO' || strtr($_GET["pago"], " ", "%") == 'não'|| strtr($_GET["pago"], " ", "%") == 'Não'|| strtr($_GET["pago"], " ", "%") == 'nao'|| strtr($_GET["pago"], " ", "%") == 'Nao'|| strtr($_GET["pago"], " ", "%") == 'NAO') $where[] = "where pago = 0";} 
         $where = (count($where) > 0) ? $where[0] : "";
         $results=$db->query("
                 select 
