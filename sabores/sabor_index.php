@@ -24,12 +24,17 @@
         $where=array();
         if (isset($_GET["sabor"])) $where[] = "where sabor.nome like '%".strtr($_GET["sabor"], " ", "%")."%'";
         if (isset($_GET["tipo"])) $where[] = "where tipo.nome like '%".strtr($_GET["tipo"], " ", "%")."%'";
-        if (isset($_GET["ingrediente"])) $where[] = "where ingrediente.nome like '%".strtr($_GET["ingrediente"], " ", "%")."%'";
+        if (isset($_GET["ingrediente"])) $where[] = "where sabor.codigo in (
+            select sabor.codigo from sabor 
+            join saboringrediente on saboringrediente.sabor = sabor.codigo 
+            join ingrediente on ingrediente.codigo = saboringrediente.ingrediente 
+            where lower(ingrediente.nome) like '%".strtr($_GET["ingrediente"], " ", "%")."%')";
+
         $where = (count($where) > 0) ? $where[0] : "";
         $value="";
         if (isset($_GET["sabor"])) $value = $where;
         if (isset($_GET["tipo"])) $value = "join tipo on sabor.tipo=tipo.codigo $where";
-        if (isset($_GET["ingrediente"])) $value = "join saboringrediente on sabor.codigo=saboringrediente.sabor join ingrediente on ingrediente.codigo=saboringrediente.ingrediente $where";;
+        if (isset($_GET["ingrediente"])) $value = $where;
 
         $result=$db->query("select count(*) as total from sabor $value");
         $total=$result->fetchArray()['total'];
