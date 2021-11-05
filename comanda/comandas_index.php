@@ -32,7 +32,8 @@
         if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
         if (isset($_GET["mesa"])) $where[] = "where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
         if (isset($_GET["pizzas"])) $where[] = "where pizzas like '%".strtr($_GET["pizzas"], " ", "%")."%'";
-        if (isset($_GET["preco"])) $where[] = "where preco like '%".strtr($_GET["preco"], " ", "%")."%'";
+        if (isset($_GET["preco"])) $where[] = "where preco=".trim($_GET["preco"]);
+
         if (isset($_GET["pago"])){if(strtolower($_GET["pago"]) == 'sim') $where[] = "where pago = 1";}
         if (isset($_GET["pago"])){if(strtr($_GET["pago"], " ", "%") == 'NÃO' || strtr($_GET["pago"], " ", "%") == 'não'|| strtr($_GET["pago"], " ", "%") == 'Não'|| strtolower($_GET["pago"]) == 'nao') $where[] = "where pago = 0";} 
         $where = (count($where) > 0) ? $where[0] : "";
@@ -40,19 +41,19 @@
         else{
             if(isset($_GET["mesa"])) $value="join mesa on mesa.codigo=comanda.mesa where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
             if(isset($_GET["pizzas"])) $value="join 
-            (
-                select 
-                comanda.numero as comanda,
-                case 
-                    when tmp2.qt_pizza is null then 0 
-                    when tmp2.qt_pizza is not null then tmp2.qt_pizza 
-                end as qt_pizza
-                from comanda left join (select comanda,count(*) as qt_pizza from pizza group by comanda) as tmp2 on tmp2.comanda=comanda.numero
-            ) as tmp3 on tmp3.comanda=comanda.numero
-            where tmp3.qt_pizza=$_GET[pizzas]
-            ";
+                (
+                    select 
+                    comanda.numero as comanda,
+                    case 
+                        when tmp2.qt_pizza is null then 0 
+                        when tmp2.qt_pizza is not null then tmp2.qt_pizza 
+                    end as qt_pizza
+                    from comanda left join (select comanda,count(*) as qt_pizza from pizza group by comanda) as tmp2 on tmp2.comanda=comanda.numero
+                ) as tmp3 on tmp3.comanda=comanda.numero
+                where tmp3.qt_pizza=$_GET[pizzas]
+                ";
             if(isset($_GET["preco"])) $value="
-            join (
+                join (
                 select 
                 comanda.numero as comanda,
                 case 
@@ -106,10 +107,7 @@
                     when tmp.count is null then 0
                     else tmp.count 
                 end as pizzas,
-                case
-                    when tmp2.preco is null then 0
-                    else tmp2.preco 
-                end as preco,
+                tmp3.preco as preco,
                 case 
                     when comanda.pago=1 then \"SIM\"
                     when comanda.pago=0 then \"NAO\"
@@ -124,30 +122,40 @@
                         join pizza on pizza.comanda=comanda.numero
                         group by comanda.numero
                     ) as tmp on comanda.numero=tmp.comanda
-                left join (
+                    join (
+                        select 
+                        comanda.numero as comanda,
+                        case 
+                            when tmp2.preco is null then 0
+                            when tmp2.preco is not null then tmp2.preco
+                        end as preco 
+                        from comanda
+                        left join
+                        (
                         select 
                             tmp.comanda as comanda,
                             sum(tmp.preco) as preco
                         from
                         (
-                        select 
-                            comanda.numero as comanda, 
-                            pizza.codigo as pizza,
-                            sum(case 
-                                when borda.preco is null then 0
-                                when borda.preco is not null then borda.preco
-                            end+precoportamanho.preco) as preco
-                        from 
-                            comanda 
-                                join pizza on pizza.comanda=comanda.numero
-                                join pizzasabor on pizza.codigo=pizzasabor.pizza
-                                join sabor on pizzasabor.sabor=sabor.codigo
-                                join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
-                                left join borda on pizza.borda=borda.codigo
-                        group by pizza.codigo
+                            select 
+                                comanda.numero as comanda, 
+                                pizza.codigo as pizza,
+                                sum(case 
+                                    when borda.preco is null then 0
+                                    when borda.preco is not null then borda.preco
+                                end+precoportamanho.preco) as preco
+                            from 
+                                comanda 
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on pizzasabor.sabor=sabor.codigo
+                                    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                                    left join borda on pizza.borda=borda.codigo
+                            group by pizza.codigo
                         ) as tmp
-                        group by tmp.comanda 
-                    ) as tmp2 on comanda.numero=tmp2.comanda
+                            group by tmp.comanda 
+                        ) as tmp2 on comanda.numero=tmp2.comanda
+                        ) as tmp3 on comanda.numero=tmp3.comanda
                 $where
                 order by $orderby
                 limit $limit
