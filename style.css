@@ -16,10 +16,6 @@ a{
     text-decoration: none;
     color: white;
 }
-a:visited{
-    color: yellow;
-
-}
 .button>a{
     color: white;
     border: 2px white solid;
