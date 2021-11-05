@@ -23,12 +23,18 @@
             $result[$campo] = $campo."=".$valor;
             return("comandas_index.php?".strtr(implode("&", $result), " ", "+"));
         }
+        function pages($campo, $valor){
+            $result = array();
+            if (isset($_GET["page"])) $result["page"] = "page=".$_GET["page"];
+            $result[$campo] = $campo."=".$valor;
+            return '&'.(strtr(implode("&",$result), " ", "+"));
+        }
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
         
         $where=array();
         $value="";
-        if (isset($_GET["numero"])) $where[] = "where numero like '%".strtr($_GET["numero"], " ", "%")."%'";
+        if (isset($_GET["numero"])) $where[] = "where numero =".trim($_GET["numero"]);
         if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
         if (isset($_GET["mesa"])) $where[] = "where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
         if (isset($_GET["pizzas"])) $where[] = "where pizzas like '%".strtr($_GET["pizzas"], " ", "%")."%'";
@@ -202,21 +208,24 @@
                     }
                 
                     echo "</table>";
-                    $page = 0;
+                    
+                    $page = isset($_GET["page"]) ? strtr($_GET["page"], " ", "%") : 0;
                     $links = 4;
-                    echo "<a href=\"".url("offset",0*$limit)."\">primeira </a>";
+                    echo "<a href=\"".url("offset",0*$limit).pages("page", 0)."\">primeira </a>";
                     for($pag_inf = $page - $links ;$pag_inf <= $page - 1;$pag_inf++){
                         if($pag_inf >= 1 ){
-                            echo "<a href=\"".url("offset",$pag_inf*$limit)."\"> ".($pag_inf)." </a>";
+                            echo "<a href=\"".url("offset",($pag_inf-1)*$limit).pages("page", $pag_inf)."\"> ".($pag_inf)." </a>";
                         }
-                    }
-                    echo "$page";
+                    };
+                    if($page != 0 ){
+                        echo "<a style=color:yellow;>$page</a>";
+                    };
                     for($pag_sub = $page + 1;$pag_sub <= $page + $links;$pag_sub++){
-                        if($pag_sub <= ceil($total/$limit) ){
-                            echo "<a href=\"".url("offset",$pag_sub*$limit)."\"> ".($pag_sub)." </a>";
+                        if($pag_sub <= ceil($total/$limit)){
+                            echo "<a href=\"".url("offset",($pag_sub-1)*$limit).pages("page", $pag_sub)."\"> ".($pag_sub)." </a>";
                         }
                     }
-                    echo "<a href=\"".url("offset",ceil($total/$limit)*$limit)."\"> ultima</a>";
+                    echo "<a href=\"".url("offset",ceil($total/$limit)*$limit).pages("page", ceil($total/$limit))."\"> ultima</a>";
             echo "</div>";
         echo "</div>";
     ?>
