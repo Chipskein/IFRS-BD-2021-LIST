@@ -12,6 +12,12 @@
     <?php
         function url($campo, $valor) {
             $result = array();
+            if (isset($_GET["numero"])) $result["numero"] = "numero=".$_GET["numero"];
+            if (isset($_GET["data"])) $result["data"] = "data=".$_GET["data"];
+            if (isset($_GET["mesa"])) $result["mesa"] = "mesa=".$_GET["mesa"];
+            if (isset($_GET["pizzas"])) $result["pizzas"] = "pizzas=".$_GET["pizzas"];
+            if (isset($_GET["preco"])) $result["preco"] = "preco=".$_GET["preco"];
+            if (isset($_GET["pago"])) $result["pago"] = "pago=".$_GET["pago"];
             if (isset($_GET["orderby"])) $result["orderby"] = "orderby=".$_GET["orderby"];
             if (isset($_GET["offset"])) $result["offset"] = "offset=".$_GET["offset"];
             $result[$campo] = $campo."=".$valor;
@@ -19,12 +25,9 @@
         }
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
-
-        $limit=200;
-        $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
-        $offset = $offset-($offset%$limit);
-        $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'numero desc';
+        
         $where=array();
+        $value="";
         if (isset($_GET["numero"])) $where[] = "where numero like '%".strtr($_GET["numero"], " ", "%")."%'";
         if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
         if (isset($_GET["mesa"])) $where[] = "where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
@@ -32,42 +35,68 @@
         if (isset($_GET["preco"])) $where[] = "where preco like '%".strtr($_GET["preco"], " ", "%")."%'";
         if (isset($_GET["pago"])){if(strtolower($_GET["pago"]) == 'sim') $where[] = "where pago = 1";}
         if (isset($_GET["pago"])){if(strtr($_GET["pago"], " ", "%") == 'NÃO' || strtr($_GET["pago"], " ", "%") == 'não'|| strtr($_GET["pago"], " ", "%") == 'Não'|| strtolower($_GET["pago"]) == 'nao') $where[] = "where pago = 0";} 
-        $where = (count($where) > 0) ? $where[0] : null;
-        $value = $where;
-        $result=$db->query("select count(*) as total from comanda  join mesa on mesa.codigo=comanda.mesa
-        left join (select 
-                comanda.numero as comanda,count(*) as count
-                from 
-                comanda 
-                join pizza on pizza.comanda=comanda.numero
-                group by comanda.numero
-            ) as tmp on comanda.numero=tmp.comanda
-        left join (
+        $where = (count($where) > 0) ? $where[0] : "";
+        if(isset($_GET["numero"])||isset($_GET["data"])||isset($_GET["pago"])) $value=$where;
+        else{
+            if(isset($_GET["mesa"])) $value="join mesa on mesa.codigo=comanda.mesa where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
+            if(isset($_GET["pizzas"])) $value="join 
+            (
+                select 
+                comanda.numero as comanda,
+                case 
+                    when tmp2.qt_pizza is null then 0 
+                    when tmp2.qt_pizza is not null then tmp2.qt_pizza 
+                end as qt_pizza
+                from comanda left join (select comanda,count(*) as qt_pizza from pizza group by comanda) as tmp2 on tmp2.comanda=comanda.numero
+            ) as tmp3 on tmp3.comanda=comanda.numero
+            where tmp3.qt_pizza=$_GET[pizzas]
+            ";
+            if(isset($_GET["preco"])) $value="
+            join (
+                select 
+                comanda.numero as comanda,
+                case 
+                    when tmp2.preco is null then 0
+                    when tmp2.preco is not null then tmp2.preco
+                end as preco 
+                from comanda
+                left join
+                (
                 select 
                     tmp.comanda as comanda,
                     sum(tmp.preco) as preco
                 from
                 (
-                select 
-                    comanda.numero as comanda, 
-                    pizza.codigo as pizza,
-                    sum(case 
-                        when borda.preco is null then 0
-                        when borda.preco is not null then borda.preco
-                    end+precoportamanho.preco) as preco
-                from 
-                    comanda 
-                        join pizza on pizza.comanda=comanda.numero
-                        join pizzasabor on pizza.codigo=pizzasabor.pizza
-                        join sabor on pizzasabor.sabor=sabor.codigo
-                        join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
-                        left join borda on pizza.borda=borda.codigo
-                group by pizza.codigo
+                    select 
+                        comanda.numero as comanda, 
+                        pizza.codigo as pizza,
+                        sum(case 
+                            when borda.preco is null then 0
+                            when borda.preco is not null then borda.preco
+                        end+precoportamanho.preco) as preco
+                    from 
+                        comanda 
+                            join pizza on pizza.comanda=comanda.numero
+                            join pizzasabor on pizza.codigo=pizzasabor.pizza
+                            join sabor on pizzasabor.sabor=sabor.codigo
+                            join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                            left join borda on pizza.borda=borda.codigo
+                    group by pizza.codigo
                 ) as tmp
-                group by tmp.comanda 
-            ) as tmp2 on comanda.numero=tmp2.comanda
-            $value");
+                    group by tmp.comanda 
+                ) as tmp2 on comanda.numero=tmp2.comanda
+                ) as tmp3 on comanda.numero=tmp3.comanda
+                where tmp3.preco=$_GET[preco]
+                ";
+        }
+
+        $result=$db->query("select count(*) as total from comanda $value");
         $total=$result->fetchArray()['total'];
+        $limit=200;
+        $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
+        $offset = $offset-($offset%$limit);
+        $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'numero desc';
+       
         $results=$db->query("
                 select 
                 comanda.numero as numero,
@@ -119,7 +148,7 @@
                         ) as tmp
                         group by tmp.comanda 
                     ) as tmp2 on comanda.numero=tmp2.comanda
-                    $where
+                $where
                 order by $orderby
                 limit $limit
                 offset $offset
