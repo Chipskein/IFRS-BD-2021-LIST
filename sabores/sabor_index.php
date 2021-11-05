@@ -19,6 +19,12 @@
             $result[$campo] = $campo."=".$valor;
             return("sabor_index.php?".strtr(implode("&", $result), " ", "+"));
         }
+        function pages($campo, $valor){
+            $result = array();
+            if (isset($_GET["page"])) $result["page"] = "page=".$_GET["page"];
+            $result[$campo] = $campo."=".$valor;
+            return '&'.(strtr(implode("&",$result), " ", "+"));
+        }
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
         $where=array();
@@ -92,10 +98,24 @@
                     }
                 
                     echo "</table>";
-                    $db->close();            
-                    for ($page = 0; $page < ceil($total/$limit); $page++) {
-                        echo (($offset == $page*$limit) ? ($page+1) : "<a href=\"".url("offset", $page*$limit)."\">".($page+1)."</a>")." \n";
+                    $db->close();                      
+                    $page = isset($_GET["page"]) ? strtr($_GET["page"], " ", "%") : 0;
+                    $links = 4;
+                    echo "<a href=\"".url("offset",0*$limit).pages("page", 0)."\">primeira </a>";
+                    for($pag_inf = $page - $links ;$pag_inf <= $page - 1;$pag_inf++){
+                        if($pag_inf >= 1 ){
+                            echo "<a href=\"".url("offset",($pag_inf-1)*$limit).pages("page", $pag_inf)."\"> ".($pag_inf)." </a>";
+                        }
+                    };
+                    if($page != 0 ){
+                        echo "<a style=color:yellow;>$page</a>";
+                    };
+                    for($pag_sub = $page + 1;$pag_sub <= $page + $links;$pag_sub++){
+                        if($pag_sub <= ceil($total/$limit)){
+                            echo "<a href=\"".url("offset",($pag_sub-1)*$limit).pages("page", $pag_sub)."\"> ".($pag_sub)." </a>";
+                        }
                     }
+                    echo "<a href=\"".url("offset",ceil($total/$limit)*$limit).pages("page", ceil($total/$limit))."\"> ultima</a>";
             echo "</div>";
         echo "</div>";
     ?>
