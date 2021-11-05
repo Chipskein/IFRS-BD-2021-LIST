@@ -19,7 +19,9 @@
         }
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
-
+        $result=$db->query("select count(*) as total from comanda");
+        $total=$result->fetchArray()['total'];
+        
         $limit=200;
         $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
         $offset = $offset-($offset%$limit);
@@ -32,42 +34,7 @@
         if (isset($_GET["preco"])) $where[] = "where preco like '%".strtr($_GET["preco"], " ", "%")."%'";
         if (isset($_GET["pago"])){if(strtolower($_GET["pago"]) == 'sim') $where[] = "where pago = 1";}
         if (isset($_GET["pago"])){if(strtr($_GET["pago"], " ", "%") == 'NÃO' || strtr($_GET["pago"], " ", "%") == 'não'|| strtr($_GET["pago"], " ", "%") == 'Não'|| strtolower($_GET["pago"]) == 'nao') $where[] = "where pago = 0";} 
-        $where = (count($where) > 0) ? $where[0] : null;
-        $value = $where;
-        $result=$db->query("select count(*) as total from comanda  join mesa on mesa.codigo=comanda.mesa
-        left join (select 
-                comanda.numero as comanda,count(*) as count
-                from 
-                comanda 
-                join pizza on pizza.comanda=comanda.numero
-                group by comanda.numero
-            ) as tmp on comanda.numero=tmp.comanda
-        left join (
-                select 
-                    tmp.comanda as comanda,
-                    sum(tmp.preco) as preco
-                from
-                (
-                select 
-                    comanda.numero as comanda, 
-                    pizza.codigo as pizza,
-                    sum(case 
-                        when borda.preco is null then 0
-                        when borda.preco is not null then borda.preco
-                    end+precoportamanho.preco) as preco
-                from 
-                    comanda 
-                        join pizza on pizza.comanda=comanda.numero
-                        join pizzasabor on pizza.codigo=pizzasabor.pizza
-                        join sabor on pizzasabor.sabor=sabor.codigo
-                        join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
-                        left join borda on pizza.borda=borda.codigo
-                group by pizza.codigo
-                ) as tmp
-                group by tmp.comanda 
-            ) as tmp2 on comanda.numero=tmp2.comanda
-            $value");
-        $total=$result->fetchArray()['total'];
+        $where = (count($where) > 0) ? $where[0] : "";
         $results=$db->query("
                 select 
                 comanda.numero as numero,
@@ -165,10 +132,21 @@
                     }
                 
                     echo "</table>";
-                    $db->close();            
-                    for ($page = 0; $page < ceil($total/$limit); $page++) {
-                        echo (($offset == $page*$limit) ? ($page+1) : "<a href=\"".url("offset", $page*$limit)."\">".($page+1)."</a>")." \n";
+                    $page = 0;
+                    $links = 4;
+                    echo "<a href=\"".url("offset",0*$limit)."\">primeira </a>";
+                    for($pag_inf = $page - $links ;$pag_inf <= $page - 1;$pag_inf++){
+                        if($pag_inf >= 1 ){
+                            echo "<a href=\"".url("offset",$pag_inf*$limit)."\"> ".($pag_inf)." </a>";
+                        }
                     }
+                    echo "$page";
+                    for($pag_sub = $page + 1;$pag_sub <= $page + $links;$pag_sub++){
+                        if($pag_sub <= ceil($total/$limit) ){
+                            echo "<a href=\"".url("offset",$pag_sub*$limit)."\"> ".($pag_sub)." </a>";
+                        }
+                    }
+                    echo "<a href=\"".url("offset",ceil($total/$limit)*$limit)."\"> ultima</a>";
             echo "</div>";
         echo "</div>";
     ?>
