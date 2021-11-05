@@ -306,8 +306,62 @@ join saboringrediente on sabor.codigo=saboringrediente.sabor join ingrediente on
 where ingrediente.nome like "%alface%"
 ;
 
+select count(*) as total  from comanda
+join 
+(
+    select 
+    comanda.numero as comanda,
+    case 
+        when tmp2.qt_pizza is null then 0 
+        when tmp2.qt_pizza is not null then tmp2.qt_pizza 
+    end as qt_pizza
+    from comanda left join 
+    (select comanda,count(*) as qt_pizza from pizza group by comanda) as tmp2 on tmp2.comanda=comanda.numero
+) as tmp3 on tmp3.comanda=comanda.numero
+where tmp3.qt_pizza=0
+;
 
 
+
+
+select count(*) as total from comanda
+
+join (
+select 
+comanda.numero as comanda,
+case 
+    when tmp2.preco is null then 0
+    when tmp2.preco is not null then tmp2.preco
+end as preco 
+from comanda
+left join
+(
+select 
+    tmp.comanda as comanda,
+    sum(tmp.preco) as preco
+from
+(
+    select 
+        comanda.numero as comanda, 
+        pizza.codigo as pizza,
+        sum(case 
+            when borda.preco is null then 0
+            when borda.preco is not null then borda.preco
+        end+precoportamanho.preco) as preco
+    from 
+        comanda 
+            join pizza on pizza.comanda=comanda.numero
+            join pizzasabor on pizza.codigo=pizzasabor.pizza
+            join sabor on pizzasabor.sabor=sabor.codigo
+            join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+            left join borda on pizza.borda=borda.codigo
+    group by pizza.codigo
+) as tmp
+    group by tmp.comanda 
+) as tmp2 on comanda.numero=tmp2.comanda
+) as tmp3 on comanda.numero=tmp3.comanda
+where tmp3.preco=58
+;
 
 
 
