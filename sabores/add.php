@@ -13,11 +13,15 @@
     echo "<h2>Pizzaria</h2>";   
     $db=new SQLite3('../pizza.db');
     $db->exec("PRAGMA foreign_keys = ON");
+    $sabores_name=$db->query("select group_concat(sabor.nome,\",\") as sabores from sabor")->fetchArray();
+    echo "<script>";
+    echo "let sabores=\"$sabores_name[0]\".split(\",\")";
+    echo "</script>";
     $types=$db->query("select * from tipo");
     $ingredientes=$db->query("select * from ingrediente"); 
-    echo "<form method=POST action=\"insert.php\">";
+    echo "<form method=POST action=\"insert.php\" id=form>";
     echo "<label>Nome do Sabor<br>";               
-        echo "<input name=\"name_sabor\" type='text'".">";
+        echo "<input id=name_sabor name=\"name_sabor\" type=text".">";
     echo "</label>"; 
     echo "<br>";           
     echo "Tipo<br>";
@@ -42,12 +46,47 @@
         echo "<table>";
         echo "</table>";
     echo "<div>";
-    echo "<br><input id=\"send\" type='button' value=\"Incluir\" >";
-    echo "</form>"; 
+    echo "</form>";
+    echo "<br><input id=\"send\" type='button' value=\"Incluir\" >"; 
     $db->close();
     echo "</main>";
 ?>
 <script>
+    function verificar(){
+        console.log("Verificando");
+        let input=document.getElementById("name_sabor");
+        val=input.value
+        alp='ABCDEFGHIJKLMNOPQRSTUVXYZW'.split('');
+        input.value=val.toUpperCase();
+        input_val=input.value;
+        if(input.value.trim()!=""){
+            accents=false;
+            for(c=0;c<input_val.length;c++){
+                if(alp.includes(input_val[c].trim().toUpperCase())||input_val[c].trim().toUpperCase()==''){
+                    console.log("passou:"+input_val[c].trim().toUpperCase())
+                }
+                else{
+                    console.log("Acento:"+input_val[c].trim().toUpperCase())
+                    accents=true;
+                    break;
+                }
+            }
+            if(!accents&&!sabores.includes(input.value)){
+                console.log("Válido")
+                document.querySelector("form").submit();
+            }
+            else{
+                console.log("erro");
+                input.value = "";
+                input.focus();
+            }
+        }
+        else{
+            console.log("erro");
+            input.value = "";
+            input.focus();
+        }
+    };
     function remove_flist(id){
         const tr=document.getElementById(`${id}`);
         const option=document.createElement("option");
@@ -57,10 +96,16 @@
         select_add.append(option);
         tr.remove();
     }
-   const select_add=document.querySelector("#select_add");
+   const select_add=document.querySelector("select#select_add");
    const table=document.querySelector("table");
-   const input_add=document.querySelector("#add");
-   const send=document.querySelector("#send");
+   const input_add=document.querySelector("input#add");
+   const send=document.querySelector("input#send");
+   const form=document.getElementById("form");
+   form.addEventListener("keydown",(event)=>{
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+    }})
    input_add.addEventListener("click",()=>{
        if(select_add.options.length>0){
         table.children.length==0 ? last_index=0:last_index=table.children.length;
@@ -84,8 +129,9 @@
        }
     });
    send.addEventListener("click",()=>{
-        table.children.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();
+        table.children.length==0 ? alert("Adicione ao menos um ingrediente"):verificar();
     });
+    
 </script>    
 </body>
 </html>

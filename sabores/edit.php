@@ -17,6 +17,12 @@
             $db->exec("PRAGMA foreign_keys = ON");
             $types=$db->query("select * from tipo");
             $ingredientes=$db->query("select * from ingrediente");
+            $sabor_nome=$db->query("select nome from sabor where codigo=$sabor")->fetchArray()['nome'];
+            $sabores_name=$db->query("select group_concat(sabor.nome,\",\") as sabores from sabor")->fetchArray();
+            echo "<script>";
+            echo "let sabor_nome=\"$sabor_nome\";";
+            echo "let sabores=\"$sabores_name[0]\".split(\",\");";
+            echo "</script>";
             $results=$db->query("
                 select 
                     sabor.codigo as codigo,
@@ -35,10 +41,10 @@
                 $tipo_name=$results['tipo'];
                 $sabor_codigo=$results['codigo'];
                 $ingredientes_sabor=explode(',',$results['ingredientes']);
-                echo "<form method=POST action=update.php>";
+                echo "<form method=POST action=update.php id=form>";
                 echo "<input name=codigo type='hidden' value=\"$sabor_codigo\">";
                 echo "<label>Nome do Sabor<br>";               
-                    echo "<input name=\"name_sabor\" type='text'"."value=\"$name_sabor\"".">";
+                    echo "<input id=name_sabor name=\"name_sabor\" type='text'"."value=\"$name_sabor\"".">";
                 echo "</label>"; 
                 echo "<br>";           
                 echo "Tipo<br>";
@@ -91,6 +97,41 @@
     echo "</main>";
 ?>
 <script>
+    function verificar(){
+        console.log("Verificando");
+        let input=document.getElementById("name_sabor");
+        val=input.value
+        alp='ABCDEFGHIJKLMNOPQRSTUVXYZW'.split('');
+        input.value=val.toUpperCase();
+        input_val=input.value;
+        if(input.value.trim()!=""){
+            accents=false;
+            for(c=0;c<input_val.length;c++){
+                if(alp.includes(input_val[c].trim().toUpperCase())||input_val[c].trim().toUpperCase()==''){
+                    console.log("passou:"+input_val[c].trim().toUpperCase())
+                }
+                else{
+                    console.log("Acento:"+input_val[c].trim().toUpperCase())
+                    accents=true;
+                    break;
+                }
+            }
+            if(!accents&&((sabores.includes(input.value)&&input.value==sabor_nome)||(!sabores.includes(input.value)&&input.value!=sabor_nome))){
+                    console.log("Válido")
+                    document.querySelector("form").submit();
+            }
+            else{
+                console.log("erro1");
+                input.value = sabor_nome;
+                input.focus();
+            }
+        }
+        else{
+            console.log("erro2");
+            input.value = sabor_nome;
+            input.focus();
+        }
+    };
     function remove_flist(id){
         const tr=document.getElementById(`${id}`);
         const option=document.createElement("option");
@@ -106,6 +147,12 @@
     const input_add=document.querySelector("#add");
     const select_add=document.querySelector("#select_add");
     const send=document.querySelector("#send");
+    const form=document.getElementById("form");
+    form.addEventListener("keydown",(event)=>{
+        if(event.keyCode == 13) {
+        event.preventDefault();
+        return false;
+    }})
     for(c=0;c<table.length;c++){
         const tr=table[c];
         //add values to input hidden
@@ -154,7 +201,7 @@
         }
     });
     send.addEventListener("click",()=>{
-        table.length==0 ? alert("Adicione ao menos um ingrediente"):document.querySelector("form").submit();
+        table.length==0 ? alert("Adicione ao menos um ingrediente"):verificar();
     });
 </script>   
 </body>
