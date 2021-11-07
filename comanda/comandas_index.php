@@ -219,6 +219,9 @@
                     $page = isset($_GET["page"]) ? strtr($_GET["page"], " ", "%") : 0;
                     $links = 4;
                     echo "<a href=\"".url("offset",0*$limit).pages("page", 0)."\">primeira </a>";
+                    if($page>4) {
+                        echo "<a href=\"".url("offset",($page-5)*$limit).pages("page", $page-5)."\"> << </a>";
+                    };
                     for($pag_inf = $page - $links ;$pag_inf <= $page - 1;$pag_inf++){
                         if($pag_inf >= 1 ){
                             echo "<a href=\"".url("offset",($pag_inf-1)*$limit).pages("page", $pag_inf)."\"> ".($pag_inf)." </a>";
@@ -232,6 +235,9 @@
                             echo "<a href=\"".url("offset",($pag_sub-1)*$limit).pages("page", $pag_sub)."\"> ".($pag_sub)." </a>";
                         }
                     }
+                    if(ceil($total/$limit) > ($page+4)) {
+                        echo "<a href=\"".url("offset",($page+5)*$limit).pages("page", $page+5)."\"> >> </a>";
+                    };
                     echo "<a href=\"".url("offset",ceil($total/$limit)*$limit).pages("page", ceil($total/$limit))."\"> ultima</a>";
             echo "</div>";
         echo "</div>";
