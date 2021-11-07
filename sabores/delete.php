@@ -13,28 +13,33 @@
     </div>
     <?php
         if(isset($_GET['codigo_s'])){
-            $sabor=$_GET['codigo_s'];
-            $db=new SQLite3('../pizza.db');
-            $db->query("delete
-            from 
-            pizza 
-            where 
-            pizza.codigo in (
-            select
-            pizza.codigo
-            from pizza 
-            join pizzasabor on pizzasabor.pizza=pizza.codigo 
-            left join sabor on sabor.codigo=pizzasabor.sabor
-            where sabor.codigo =$sabor
-            )
-            ;");
-            $result=$db->query("delete from saboringrediente where saboringrediente.sabor=$sabor");
-            if($result){ 
-                $result2=$db->query("delete from sabor where sabor.codigo=$sabor");
-                if($result2) echo "Sabor Removido";
+            if(preg_match("/^[1-9][0-9]*$/",$_GET['codigo_s'])){
+                $sabor=$_GET['codigo_s'];
+                $db=new SQLite3('../pizza.db');
+                $codigo_exist=$db->query("select codigo from sabor where codigo=$sabor")->fetchArray()['codigo'];
+                if($codigo_exist){
+                    $db->query("delete from pizza where 
+                        pizza.codigo in (
+                        select
+                        pizza.codigo
+                        from pizza 
+                        join pizzasabor on pizzasabor.pizza=pizza.codigo 
+                        left join sabor on sabor.codigo=pizzasabor.sabor
+                        where sabor.codigo =$sabor
+                        )
+                    ");
+                    $result=$db->query("delete from saboringrediente where saboringrediente.sabor=$sabor");
+                    if($result){ 
+                        $result2=$db->query("delete from sabor where sabor.codigo=$sabor");
+                        if($result2) echo "Sabor Removido";
+                        else echo "Erro retornando";
+                    }
+                }
                 else echo "Erro retornando";
             }
-            else echo "Erro retornando";
+            else{
+                echo "Erro retornando";
+            }
         }
         else{
             echo "Erro retornando";
