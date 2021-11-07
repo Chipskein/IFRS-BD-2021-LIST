@@ -120,9 +120,42 @@
         echo "</div>";
     ?>
     <script>
+        function erro(){
+            let input=document.getElementById("filter_txt");
+            input.value='';
+            input.focus();
+        }
+        function verificar(){
+            let type=document.querySelector("#div_select>select").value
+            let input=document.getElementById("filter_txt");
+            let val=document.getElementById("filter_txt").value;
+            let passed=false;
+            let regex="";
+            switch(type){
+                case "sabor":
+                    val2=val.toUpperCase();
+                    console.log(val2);
+                    regex=new RegExp("^[A-Z ]*$");
+                    regex.test(val2) ? passed=true:erro()
+                    break;
+                case "tipo":
+                    val2=val.toUpperCase();
+                    console.log(val2);
+                    regex=new RegExp("^[A-Z ]*$");
+                    regex.test(val2) ? passed=true:erro()
+                    break;
+                case "ingrediente":
+                    val2=val.toUpperCase();
+                    console.log(val2);
+                    regex=new RegExp("^[A-Z ]*$");
+                    regex.test(val2) ? passed=true:erro()
+                    break;
+            }
+            return passed;
+        };
         function pesquisar(){
-            input_value=document.getElementById("filter_txt").value;
-            if(input_value.trim()!=""){
+            if(verificar()){
+                input_value=document.getElementById("filter_txt").value;
                 value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
                 document.getElementById("pesquisar").href=`sabor_index.php?${value}=${input_value}`;
             }

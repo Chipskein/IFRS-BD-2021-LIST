@@ -31,7 +31,6 @@
         }
         $db=new SQLite3('../pizza.db');
         $db->exec("PRAGMA foreign_keys = ON");
-        
         $where=array();
         $value="";
         if (isset($_GET["numero"])) $where[] = "where numero =".trim($_GET["numero"]);
@@ -96,7 +95,6 @@
                 where tmp3.preco=$_GET[preco]
                 ";
         }
-
         $result=$db->query("select count(*) as total from comanda $value");
         $total=$result->fetchArray()['total'];
         $limit=200;
@@ -174,7 +172,6 @@
                 limit $limit
                 offset $offset
         ");
-        
         echo "<br><div align='center'>";
             echo "<h2>Pizzaria</h2>";
             echo "<div id='div_table'>";             
@@ -344,16 +341,6 @@
                 value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
                 document.getElementById("pesquisar").href=`comandas_index.php?${value}=${input_value}`;
             }
-            /*
-            input_value=document.getElementById("filter_txt").value;
-            if(input_value.trim()!=""){
-                value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
-                document.getElementById("pesquisar").href=`comandas_index.php?${value}=${input_value}`;
-            }
-            if(input_value == "SIM"){
-                document.getElementById("filter_txt").value=1
-            }
-            */
         }
     </script>
 </body>
