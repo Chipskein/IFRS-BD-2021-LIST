@@ -131,25 +131,28 @@
             let val=document.getElementById("filter_txt").value;
             let passed=false;
             let regex="";
-            switch(type){
-                case "sabor":
-                    val2=val.toUpperCase();
-                    console.log(val2);
-                    regex=new RegExp("^[A-Z ]*$");
-                    regex.test(val2) ? passed=true:erro()
-                    break;
-                case "tipo":
-                    val2=val.toUpperCase();
-                    console.log(val2);
-                    regex=new RegExp("^[A-Z ]*$");
-                    regex.test(val2) ? passed=true:erro()
-                    break;
-                case "ingrediente":
-                    val2=val.toUpperCase();
-                    console.log(val2);
-                    regex=new RegExp("^[A-Z ]*$");
-                    regex.test(val2) ? passed=true:erro()
-                    break;
+            if(val.trim()!=""){
+                switch(type){
+                    case "sabor":
+                        val2=val.toUpperCase();
+                        val2=val2.trim();
+                        console.log(val2);
+                        regex=new RegExp("^[A-Z ]*$");
+                        regex.test(val2) ? passed=true:erro()
+                        break;
+                    case "tipo":
+                        val2=val.toUpperCase();
+                        val2=val2.trim();
+                        regex=new RegExp("^[A-Z ]*$");
+                        regex.test(val2) ? passed=true:erro()
+                        break;
+                    case "ingrediente":
+                        val2=val.toUpperCase();
+                        val2=val2.trim();
+                        regex=new RegExp("^[A-Z ]*$");
+                        regex.test(val2) ? passed=true:erro()
+                        break;
+                }
             }
             return passed;
         };

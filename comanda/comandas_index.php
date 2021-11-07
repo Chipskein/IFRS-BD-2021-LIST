@@ -310,8 +310,11 @@
 
                     break;
                 case "mesa":
-                    regex=new RegExp("");
-                    regex.test(val) ? passed=true:erro()
+                    val2=document.getElementById("filter_txt").value
+                    val2=val2.trim()
+                    val2=val2.toUpperCase();
+                    regex=new RegExp("[A-Z-0-9]");
+                    regex.test(val2)&&val2!='' ? passed=true:erro()
                     break;
                 case "pizzas":
                     regex=new RegExp("^(^0$)|[1-9][0-9]*$");
