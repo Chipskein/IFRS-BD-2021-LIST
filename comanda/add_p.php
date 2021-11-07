@@ -75,7 +75,7 @@
                     die(); 
                 }
             //verificar se numero de sabores bate com quantidade de sabores
-            if(count($sabores)==$qtdesabores){
+            if(count($sabores)<=$qtdesabores){
                 $data_sabores=[];
                 $data_sabores_query=$db->query("select codigo from sabor where tipo=$tipo");
                 while($row=$data_sabores_query->fetchArray()){
@@ -133,16 +133,16 @@
             $db->close();
             echo "<h1>Dados inválidos</h1>";
             echo "<h2>Retornando</h2>";
-            header( "refresh:1;url=comandas_index.php" );
-            die(); 
+            //header( "refresh:1;url=comandas_index.php" );
+            //die(); 
         }
 
     }
     else{
         echo "<h1>Dados inválidos</h1>";
-        echo "<h2>Retornando</h2>";
-        header( "refresh:1;url=comandas_index.php" );
-        die();
+        //echo "<h2>Retornando</h2>";
+        //header( "refresh:1;url=comandas_index.php" );
+        //die();
     }
     echo "</div>";
 ?>
