@@ -452,3 +452,15 @@ select
 select * from sabor;
 select group_concat(sabor.nome,",") as sabores from sabor;
 
+ 
+delete from pizza where pizza.codigo in (
+select
+pizza.codigo
+from pizza 
+join pizzasabor on pizzasabor.pizza=pizza.codigo 
+left join sabor on sabor.codigo=pizzasabor.sabor
+where sabor.codigo is null
+)
+;
+
+select * from pizza;
