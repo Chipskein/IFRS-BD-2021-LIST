@@ -237,7 +237,114 @@
         echo "</div>";
     ?>
     <script>
+        function verifydate(day,month,year){
+            let day_qt //31,30,29,28
+            let bissexto = false;
+            if ((year % 4 == 0 && year % 100 !== 0) || (year % 400 == 0)) bissexto = true;//
+            switch (month) {
+            case 1:
+                day_qt = 31
+                break
+            case 2:
+                if (bissexto) day_qt = 29
+                else day_qt = 28
+                break
+            case 3:
+                day_qt = 31
+                break
+            case 4:
+                day_qt = 30
+                break
+            case 5:
+                day_qt = 31
+                break
+            case 6:
+                day_qt = 30
+                break
+            case 7:
+                day_qt = 31
+                break
+            case 8:
+                day_qt = 31
+                break
+            case 9:
+                day_qt = 30
+                break
+            case 10:
+                day_qt = 31
+                break
+            case 11:
+                day_qt = 30
+                break
+            case 12:
+                day_qt = 31
+                break
+            }
+            if (day <= day_qt) return true
+            else return false
+        }
+        function erro(){
+            let input=document.getElementById("filter_txt");
+            input.value='';
+            input.focus();
+        }
+        function verificar(){
+            let type=document.querySelector("#div_select>select").value
+            let input=document.getElementById("filter_txt");
+            let val=document.getElementById("filter_txt").value;
+            let passed=false;
+            let regex="";
+            switch(type){
+                case "numero":
+                    regex=new RegExp("^[1-9][0-9]*$");
+                    regex.test(val) ? passed=true:erro()
+                    break;
+                case "data":   
+                    val2=input.value.split("/").join("-");            
+                    regex=new RegExp("^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\-(0[1-9]|1[0-2])\-[0-9]*$");
+                    if(regex.test(val2)){ 
+                        document.getElementById("filter_txt").value=val2;
+                        let day=parseInt(input.value.slice(0,2));
+                        let mounth=parseInt(input.value.slice(3,5));
+                        let year=parseInt(input.value.slice(6)); 
+                        passed=verifydate(day,mounth,year);
+                    }
+                    else erro()
+
+                    break;
+                case "mesa":
+                    regex=new RegExp("");
+                    regex.test(val) ? passed=true:erro()
+                    break;
+                case "pizzas":
+                    regex=new RegExp("^(^0$)|[1-9][0-9]*$");
+                    regex.test(val) ? passed=true:erro()
+                    break;
+                case "preco":
+                    val2=val;
+                    val2.split(",").join(".");
+                    document.getElementById("filter_txt").value=val2;
+                    regex=new RegExp("(^0$)|(^[1-9][0-9]*.[0-9]{1})$|^[1-9]*$");
+                    regex.test(val2) ? passed=true:erro()
+                    break;
+                case "pago":
+                    val2=document.getElementById("filter_txt").value
+                    val2=val2.trim()
+                    val2=val2.toUpperCase();
+                    regex=new RegExp("^SIM$|^NAO$");
+                    regex.test(val2) ? passed=true:erro()
+                    break;
+            }
+            return passed;
+        };
         function pesquisar(){
+            
+            if(verificar()){
+                input_value=document.getElementById("filter_txt").value;
+                value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
+                document.getElementById("pesquisar").href=`comandas_index.php?${value}=${input_value}`;
+            }
+            /*
             input_value=document.getElementById("filter_txt").value;
             if(input_value.trim()!=""){
                 value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
@@ -246,6 +353,7 @@
             if(input_value == "SIM"){
                 document.getElementById("filter_txt").value=1
             }
+            */
         }
     </script>
 </body>
