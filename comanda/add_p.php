@@ -108,22 +108,23 @@
             echo "<h1>Inserindo</h1>";
             echo "<h2>...</h2>";
             $insert_pizza=$db->exec("insert into pizza(comanda,tamanho,borda) values ($numero,\"$tamanho\",$borda)");
-            $pizza_codigo=$db->changes();
-            $pizza_codigo=$db->lastInsertRowID();
+            $pizza_codigo1=$db->changes();
+            $pizza_codigo2=$db->lastInsertRowID();
             $insert_sabores=false;
             foreach($sabores as $sabor){
-                $insert_sabores=$db->exec("insert into pizzasabor(pizza,sabor) values ($pizza_codigo,$sabor)");
+                $insert_sabores=$db->exec("insert into pizzasabor(pizza,sabor) values ($pizza_codigo2,$sabor)");
             };
-            $db->close();
             if($insert_pizza&&$insert_sabores){
+                $db->close();
                 echo "<h2>Pizza Adicionada com sucesso</h2>";
                 header( "refresh:1;url=comandas_index.php" );
                 die();
             }
             else{
+                $db->close();
                 echo "<h2>Pizza não adicionanda um erro ocorreu</h2>";
                 echo "<h3>Tente Novamente</h3>";
-                header( "refresh:1;url=add_pizza.php?comanda=$numero" );
+                header( "refresh:1;url=comandas_index.php" );
                 die();
             }
             
@@ -133,16 +134,16 @@
             $db->close();
             echo "<h1>Dados inválidos</h1>";
             echo "<h2>Retornando</h2>";
-            //header( "refresh:1;url=comandas_index.php" );
-            //die(); 
+            header( "refresh:1;url=comandas_index.php" );
+            die(); 
         }
 
     }
     else{
         echo "<h1>Dados inválidos</h1>";
-        //echo "<h2>Retornando</h2>";
-        //header( "refresh:1;url=comandas_index.php" );
-        //die();
+        echo "<h2>Retornando</h2>";
+        header( "refresh:1;url=comandas_index.php" );
+        die();
     }
     echo "</div>";
 ?>

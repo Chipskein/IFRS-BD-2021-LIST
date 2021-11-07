@@ -462,4 +462,5 @@ left join sabor on sabor.codigo=pizzasabor.sabor
 where sabor.codigo is null
 )
 ;
+
 select * from pizza;
