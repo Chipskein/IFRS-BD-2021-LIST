@@ -464,3 +464,18 @@ where sabor.codigo is null
 ;
 
 select * from pizza;
+select * from sabor;
+
+select group_concat(codigo,",") from sabor;
+
+
+
+
+
+
+
+
+
+
+
+
