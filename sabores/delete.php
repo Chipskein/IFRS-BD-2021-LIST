@@ -15,6 +15,19 @@
         if(isset($_GET['codigo_s'])){
             $sabor=$_GET['codigo_s'];
             $db=new SQLite3('../pizza.db');
+            $db->query("delete
+            from 
+            pizza 
+            where 
+            pizza.codigo in (
+            select
+            pizza.codigo
+            from pizza 
+            join pizzasabor on pizzasabor.pizza=pizza.codigo 
+            left join sabor on sabor.codigo=pizzasabor.sabor
+            where sabor.codigo =$sabor
+            )
+            ;");
             $result=$db->query("delete from saboringrediente where saboringrediente.sabor=$sabor");
             if($result){ 
                 $result2=$db->query("delete from sabor where sabor.codigo=$sabor");
