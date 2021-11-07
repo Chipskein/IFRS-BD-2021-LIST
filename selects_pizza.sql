@@ -459,8 +459,4 @@ select
 
 
 
-
-
-
-
-
+select group_concat(sabor.nome,",") as sabores from sabor;

@@ -15,7 +15,6 @@
     $db->exec("PRAGMA foreign_keys = ON");
     $types=$db->query("select * from tipo");
     $ingredientes=$db->query("select * from ingrediente"); 
-
     echo "<form method=POST action=\"insert.php\">";
     echo "<label>Nome do Sabor<br>";               
         echo "<input name=\"name_sabor\" type='text'".">";

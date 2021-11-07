@@ -121,7 +121,6 @@
     ?>
     <script>
         function pesquisar(){
-
             input_value=document.getElementById("filter_txt").value;
             if(input_value.trim()!=""){
                 value=document.querySelector("select").options[document.querySelector("select").selectedIndex].value;
