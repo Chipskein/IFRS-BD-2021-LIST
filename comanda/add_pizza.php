@@ -32,6 +32,7 @@
                         case 5:$dayofweek="Sex ";break;
                         case 6:$dayofweek="Sáb ";break;
                     }
+                    $data=date('d/m/Y', strtotime($data));
                     echo "Numero: <input id=numero name=numero class=input_d type=text disabled value=$numero><br>";
                     echo "data: <input id=data name=data type=text disabled value=\"$dayofweek $data\"><br>";
                 }

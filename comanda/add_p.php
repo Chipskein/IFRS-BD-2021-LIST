@@ -10,9 +10,8 @@
 <body>    
 <?php
     echo "<div align=center>";
-    if(isset($_POST["numero"])&&isset($_POST["data"])&&isset($_POST["borda"])&&isset($_POST["tipo"])&&isset($_POST["tamanho"])){
+    if(isset($_POST["numero"])&&isset($_POST["borda"])&&isset($_POST["tipo"])&&isset($_POST["tamanho"])){
         $numero=$_POST["numero"];
-        $data=date("d/m/Y",strtotime($_POST["data"]));
         $_POST["borda"]=="no" ? $borda="null":$borda=$_POST["borda"];
         $tipo=$_POST["tipo"];
         $tamanho=$_POST["tamanho"][0];
@@ -75,7 +74,7 @@
                     die(); 
                 }
             //verificar se numero de sabores bate com quantidade de sabores
-            if(count($sabores)<=$qtdesabores){
+            if(count($sabores)<=$qtdesabores&&count($sabores)>0){
                 $data_sabores=[];
                 $data_sabores_query=$db->query("select codigo from sabor where tipo=$tipo");
                 while($row=$data_sabores_query->fetchArray()){
@@ -108,11 +107,11 @@
             echo "<h1>Inserindo</h1>";
             echo "<h2>...</h2>";
             $insert_pizza=$db->exec("insert into pizza(comanda,tamanho,borda) values ($numero,\"$tamanho\",$borda)");
-            $pizza_codigo1=$db->changes();
-            $pizza_codigo2=$db->lastInsertRowID();
+            $pizza_codigo=$db->changes();
+            $pizza_codigo=$db->lastInsertRowID();
             $insert_sabores=false;
             foreach($sabores as $sabor){
-                $insert_sabores=$db->exec("insert into pizzasabor(pizza,sabor) values ($pizza_codigo2,$sabor)");
+                $insert_sabores=$db->exec("insert into pizzasabor(pizza,sabor) values ($pizza_codigo,$sabor)");
             };
             if($insert_pizza&&$insert_sabores){
                 $db->close();
