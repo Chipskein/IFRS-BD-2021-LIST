@@ -37,3 +37,8 @@ div#add_selects{
 div#add_selects>select{
     width: 8%;
 }
+input#data{
+    text-align: center;
+    background-color: black;
+    color: white;
+}

@@ -10,17 +10,17 @@
 <body>
     <div align="center">
         <?php
-            if(isset($_POST["data"])&&isset($_POST["numero"])&&isset($_POST["mesa"])){
+            if(isset($_POST["numero"])&&isset($_POST["mesa"])){
                 //verica se a mesa existe verifica se o numero esta disponivel
                 $mesa=$_POST["mesa"];
-                //$data=$_POST["data"];
                 $numero=$_POST["numero"];
+                
                 $db=new SQLite3('../pizza.db');
                 $db->exec("PRAGMA foreign_keys = ON");
                 $verify_mesa=$db->query("select codigo from mesa where codigo=$mesa")->fetchArray();
                 $verify_numero=$db->query("select numero from comanda where numero=$numero")->fetchArray();
-                if($verify_mesa&&!$verify_numero){
-                   $db->query("insert into comanda(numero,mesa,data,pago) values($numero,$mesa,CURRENT_DATE,0)");
+                if($verify_mesa&&$verify_numero){
+                   $db->query("update comanda set mesa=$mesa where numero=$numero");
                    $db->close();
                    echo "<h1>Comanda adicionada</h1>";
                    header( "refresh:1;url=comandas_index.php" );

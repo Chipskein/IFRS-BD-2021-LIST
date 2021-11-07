@@ -35,7 +35,7 @@
         $where=array();
         $value="";
         if (isset($_GET["numero"])) $where[] = "where numero =".trim($_GET["numero"]);
-        if (isset($_GET["data"])) $where[] = "where data like '%".strtr($_GET["data"], " ", "%")."%'";
+        if (isset($_GET["data"])) $where[] = "where strftime('%d-%m-%Y',comanda.data)="."'".trim($_GET["data"])."'";
         if (isset($_GET["mesa"])) $where[] = "where mesa.nome like '%".strtolower($_GET["mesa"])."%'";
         if (isset($_GET["pizzas"])) $where[] = "where pizzas like '%".strtr($_GET["pizzas"], " ", "%")."%'";
         if (isset($_GET["preco"])) $where[] = "where preco=".trim($_GET["preco"]);
@@ -103,11 +103,18 @@
         $offset = (isset($_GET["offset"])) ? max(0, min($_GET["offset"], $total-1)) : 0;
         $offset = $offset-($offset%$limit);
         $orderby = (isset($_GET["orderby"])) ? $_GET["orderby"] : 'numero desc';
-       
         $results=$db->query("
                 select 
                 comanda.numero as numero,
-                comanda.data as data,
+                case 
+                    when strftime(\"%w\",comanda.data)='0' then strftime(\"Dom %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='1' then strftime(\"Seg %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='2' then strftime(\"Ter %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='3' then strftime(\"Qua %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='4' then strftime(\"Qui %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='5' then strftime(\"Sex %d-%m-%Y\",comanda.data)
+                    when strftime(\"%w\",comanda.data)='6' then strftime(\"Sáb %d-%m-%Y\",comanda.data)
+                end as data,
                 mesa.nome as mesa,
                 case
                     when tmp.count is null then 0
@@ -186,7 +193,7 @@
                     echo "<tr>\n";
                     echo "<td><a href=\"add_comanda.php\">➕</a></td>";
                     echo "<td><b>Número</b> <a href=\"".url("orderby", "numero+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "numero+desc")."\">&#x25B4;</a></td>\n";
-                    echo "<td><b>Data</b> <a href=\"".url("orderby", "data+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "data+desc")."\">&#x25B4;</a></td>\n";
+                    echo "<td><b>Data</b> <a href=\"".url("orderby", "comanda.data+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "comanda.data+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Mesa</b> <a href=\"".url("orderby", "mesa+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "mesa+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Pizzas</b> <a href=\"".url("orderby", "pizzas+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "pizzas+desc")."\">&#x25B4;</a></td>\n";
                     echo "<td><b>Valor</b> <a href=\"".url("orderby", "preco+asc")."\">&#x25BE;</a> <a href=\"".url("orderby", "preco+desc")."\">&#x25B4;</a></td>\n";

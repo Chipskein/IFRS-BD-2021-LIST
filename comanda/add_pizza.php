@@ -22,8 +22,18 @@
                 while($row=$comanda_result->fetchArray()){
                     $numero=$row["numero"];
                     $data=$row["data"];
+                    $dayofweek = date('w', strtotime($data));
+                    switch ($dayofweek){
+                        case 0:$dayofweek="Dom ";break;
+                        case 1:$dayofweek="Seg ";break;
+                        case 2:$dayofweek="Ter ";break;
+                        case 3:$dayofweek="Qua ";break;
+                        case 4:$dayofweek="Qui ";break;
+                        case 5:$dayofweek="Sex ";break;
+                        case 6:$dayofweek="Sáb ";break;
+                    }
                     echo "Numero: <input id=numero name=numero class=input_d type=text disabled value=$numero><br>";
-                    echo "data: <input id=data name=data type=text disabled value=$data><br>";
+                    echo "data: <input id=data name=data type=text disabled value=\"$dayofweek $data\"><br>";
                 }
                 $tamanho=$db->query("select * from tamanho");
                 echo "Tamanho:<select name=tamanho id=select_tamanho>";

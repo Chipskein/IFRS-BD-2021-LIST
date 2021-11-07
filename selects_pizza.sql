@@ -389,10 +389,73 @@ from
 group by sabor.codigo 
 ;
 
+select 
+                comanda.numero as numero,
+                case 
+                    when strftime("%w",comanda.data)='0' then strftime("Dom %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='1' then strftime("Seg %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='2' then strftime("Ter %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='3' then strftime("Qua %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='4' then strftime("Qui %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='5' then strftime("Sex %d-%m-%Y",comanda.data)
+                    when strftime("%w",comanda.data)='6' then strftime("Sáb %d-%m-%Y",comanda.data)
+                end as data,
+                mesa.nome as mesa,
+                case
+                    when tmp.count is null then 0
+                    else tmp.count 
+                end as pizzas,
+                tmp3.preco as preco,
+                case 
+                    when comanda.pago=1 then "SIM"
+                    when comanda.pago=0 then "NAO"
+                end as pago 
+                from 
+                comanda
+                join mesa on mesa.codigo=comanda.mesa
+                left join (select 
+                        comanda.numero as comanda,count(*) as count
+                        from 
+                        comanda 
+                        join pizza on pizza.comanda=comanda.numero
+                        group by comanda.numero
+                    ) as tmp on comanda.numero=tmp.comanda
+                    join (
+                        select 
+                        comanda.numero as comanda,
+                        case 
+                            when tmp2.preco is null then 0
+                            when tmp2.preco is not null then tmp2.preco
+                        end as preco 
+                        from comanda
+                        left join
+                        (
+                        select 
+                            tmp.comanda as comanda,
+                            sum(tmp.preco) as preco
+                        from
+                        (
+                            select 
+                                comanda.numero as comanda, 
+                                pizza.codigo as pizza,
+                                sum(case 
+                                    when borda.preco is null then 0
+                                    when borda.preco is not null then borda.preco
+                                end+precoportamanho.preco) as preco
+                            from 
+                                comanda 
+                                    join pizza on pizza.comanda=comanda.numero
+                                    join pizzasabor on pizza.codigo=pizzasabor.pizza
+                                    join sabor on pizzasabor.sabor=sabor.codigo
+                                    join precoportamanho on pizza.tamanho=precoportamanho.tamanho and sabor.tipo=precoportamanho.tipo
+                                    left join borda on pizza.borda=borda.codigo
+                            group by pizza.codigo
+                        ) as tmp
+                            group by tmp.comanda 
+                        ) as tmp2 on comanda.numero=tmp2.comanda
+                        ) as tmp3 on comanda.numero=tmp3.comanda
 
-
-
-
+;
 
 
 
