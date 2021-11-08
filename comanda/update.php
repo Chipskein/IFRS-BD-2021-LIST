@@ -14,14 +14,22 @@
     </div>
     <?php
         if(isset($_GET["comanda"])){
-            $comanda=$_GET["comanda"];
-            $db=new SQLite3('../pizza.db');
-            $db->exec("PRAGMA foreign_keys = ON");
-            $comanda_result=$db->query("select numero from comanda where numero=$comanda")->fetchArray()['numero'];
-            $update=$db->query("update comanda set pago=\"1\" where numero=$comanda_result");
-            header( "refresh:1;url=comandas_index.php" );
-            die();
-            $db->close();
+            if(preg_match("/^[1-9][0-9]*$/",$_GET["comanda"])){
+                $comanda=$_GET["comanda"];
+                $db=new SQLite3('../pizza.db');
+                $db->exec("PRAGMA foreign_keys = ON");
+                $comanda_result=$db->query("select numero from comanda where numero=$comanda")->fetchArray()['numero'];
+                $update=$db->query("update comanda set pago=\"1\" where numero=$comanda_result");
+                header( "refresh:1;url=comandas_index.php" );
+                die();
+                $db->close();
+            }
+            else{
+                echo "<h2>Erro</h2>";
+                echo "<h2>Dados não foram enviados</h2>";
+                header( "refresh:1;url=comandas_index.php" );
+                die();
+            }
         }
         else{
             echo "<h2>Erro</h2>";
