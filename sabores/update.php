@@ -16,7 +16,7 @@
         $pass=false;
         $ingredientes=[];
         if(preg_match("/^[1-9][0-9]*$/",$_POST["codigo"])){
-            if(preg_match("/^[A-Z ]*$/",$_POST["name_sabor"])){
+            if(preg_match("/^[A-Z ]*$/",trim($_POST["name_sabor"]))){
                 if(preg_match("/^[1-9][0-9]*$/",$_POST["tipo"])){
                     foreach($_POST as $key => $value){
                         if(preg_match("/input_ingrediente/",$key)){
@@ -41,7 +41,7 @@
         else $pass=false;
         if($pass){
             $codigo=$_POST["codigo"];
-            $nome=$_POST["name_sabor"];
+            $nome=trim($_POST["name_sabor"]);
             $tipo=$_POST["tipo"];           
             $db=new SQLite3('../pizza.db');
             $db->exec("PRAGMA foreign_keys = ON");

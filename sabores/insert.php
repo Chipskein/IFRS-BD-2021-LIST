@@ -39,7 +39,7 @@
         else $pass=false;
 
         if($pass){
-            $nome=$_POST["name_sabor"];
+            $nome=trim($_POST["name_sabor"]);
             $tipo=$_POST["tipo"];
             $db=new SQLite3('../pizza.db');
             $db->exec("PRAGMA foreign_keys = ON");
