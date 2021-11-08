@@ -15,7 +15,7 @@
     if(isset($_POST["name_sabor"])&&isset($_POST["tipo"])){
         $pass=false;
         $ingredientes=[];
-        if(preg_match("/^[A-Z ]*$/",$_POST["name_sabor"])){
+        if(preg_match("/^[A-Z ]*$/",trim($_POST["name_sabor"]))){
             if(preg_match("/^[1-9][0-9]*$/",$_POST["tipo"])){
                 foreach($_POST as $key => $value){
                     if(preg_match("/input_ingrediente/",$key)){
