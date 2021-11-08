@@ -10,8 +10,7 @@
 <body>    
 <?php
     echo "<div align=center>";
-    if(isset($_POST["numero"])&&isset($_POST["borda"])&&isset($_POST["tipo"])&&isset($_POST["tamanho"])){
-        
+    if(isset($_POST["numero"])&&isset($_POST["borda"])&&isset($_POST["tipo"])&&isset($_POST["tamanho"])){   
         if(preg_match("/^[1-9][0-9]*$/",$_POST["numero"])&&preg_match("/^(no)$|(^[1-9][0-9]*$)/",$_POST["borda"])&&preg_match("/(^[1-9][0-9]*$)/",$_POST["tipo"])){   
             $numero=$_POST["numero"];
             $_POST["borda"]=="no" ? $borda="null":$borda=$_POST["borda"];
