@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercicio 2</title>
+    <style>
+        body {
+            background-color: #454141;
+            color: white;
+        }
+
+        div.exerc {
+            text-align: center;
+            width: 30%;
+            margin-top: 10px;
+            background-color: #504E4E;
+        }
+        div.row {
+            display: flex;
+            flex-direction: row;
+        }
+        div#main {
+            border-top: solid 40px #296179;
+            margin: 5%;
+            background-color: #504E4E;
+            width: 90%;
+        }
+
+        button {
+            border: none;
+            color: white;
+            background: #358FB6;
+            margin-left: 20px;
+        }
+
+        button:hover {
+            background: #296179;
+
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id='main' align=center>
+            <div  class="exerc">
+                <h3>Exercicio 2</h2>
+                    <div class='row'>
+                <form action="exer2.php" method="post" id='form2'>
+                    <label for="data">
+                        Data:<input pattern="^(0[1-9]|1[0-9]|2[0-9]|3[0-1])\/(0[1-9]|1[0-2])\/[0-9]*$"type="text" id="data" name="data" required placeholder="dd/mm/aaaa">
+                    </label>
+                    <br>
+                    <label for="dias">
+                        Dias Uteis:<input type="text" pattern="^[1-9]{1}[0-9]*$" id="dias" name="dias" required>
+                    </label>
+                    <br>
+                </form>
+                <button type='button' id='enviar2' onclick="validardata()">Enviar</button>
+            </div>
+            <br>
+            </div>
+    </main>
+    <script src="exer2.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercicio 5</title>
+    <style>
+        body {
+            background-color: #454141;
+            color: white;
+        }
+
+        div.exerc {
+            text-align: center;
+            width: 30%;
+            margin-top: 10px;
+            background-color: #504E4E;
+        }
+        div.row {
+            display: flex;
+            flex-direction: row;
+        }
+        div#main {
+            border-top: solid 40px #296179;
+            margin: 5%;
+            background-color: #504E4E;
+            width: 90%;
+        }
+        div#ex5{
+            width: 70%;
+        }
+        button {
+            border: none;
+            color: white;
+            background: #358FB6;
+            margin-left: 20px;
+        }
+
+        button:hover {
+            background: #296179;
+
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <div id='main' align=center>
+            <div id='ex5' class="exerc">
+                <h3>Exercicio 5</h2>
+                <form action="exer5.php" method="post" id='form5'>
+                    <div id='form-div1'>
+                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero0' size="10" required>
+                        <select name="operation0">
+                            <option value="+">+</option>
+                            <option value="/">/</option>
+                            <option value="*">*</option>
+                            <option value="-">-</option>
+                        </select>
+                        <input pattern="^(?=[MDCLXVI])M*(C[MD]|D?C*)(X[CL]|L?X*)(I[XV]|V?I*)$" type="text" name='numero1' size="10" required> 
+                    </div>
+                    <button type='button' onclick="addr()">+</button>
+                    <button type='button' id='enviar5' onclick="validarcalcr()">=</button>
+                </form>
+            </div>
+            <br>
+            </div>
+    </main>
+    <script src="exer5.js"></script>
+</body>
+
+</html>
+
+
