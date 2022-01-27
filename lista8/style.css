@@ -1,0 +1,44 @@
+
+body{
+    background-color: black;
+    color: white;
+}
+table{
+    border: white 2px solid;
+}
+td{
+    border: white 2px solid; 
+}
+div#div_table{
+    width: 90%;
+}
+a{
+    text-decoration: none;
+    color: white;
+}
+.button>a{
+    color: white;
+    border: 2px white solid;
+    padding : 10px;
+}
+.button>a:hover{
+    color: black;
+    background-color: white;
+}
+.input_d{
+    text-align: center;
+    background-color: black;
+    color: white;
+    width: 5%;
+}
+div#add_selects{
+    display: inline;
+}
+div#add_selects>select{
+    width: 8%;
+}
+input#data{
+    text-align: center;
+    background-color: black;
+    color: white;
+}
